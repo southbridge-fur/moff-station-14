@@ -1,7 +1,7 @@
 - type: entity
-  name: mixed colorful lightbulb box
   parent: BoxLightbulb
   id: BoxLightbulbColorfulMixed
+  name: mixed colorful lightbulb box
   components:
   - type: StorageFill
     contents:
@@ -19,9 +19,9 @@
         amount: 2
 
 - type: entity
-  name: mixed colorful lighttube box
   parent: BoxLighttube
   id: BoxLighttubeColorfulMixed
+  name: mixed colorful lighttube box
   components:
   - type: StorageFill
     contents:

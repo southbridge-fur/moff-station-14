@@ -1,6 +1,6 @@
 - type: entity
-  id: CrateServiceColorfulLights
   parent: CrateGenericSteel
+  id: CrateServiceColorfulLights
   name: colorful lights crate
   description: It's not a party until it's hard to see, a little disorienting, and your ears hurt.
   components:
