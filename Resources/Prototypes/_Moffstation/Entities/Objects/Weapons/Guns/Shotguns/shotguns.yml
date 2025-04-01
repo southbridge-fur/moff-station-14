@@ -1,0 +1,29 @@
+- type: entity
+  name: temp Eclipse Sunshade shotgun
+  parent: [BaseWeaponShotgun, BaseGunWieldable]
+  id: PersonalWeaponShotgunFoam
+  description: Placeholder description
+  components:
+  - type: Sprite
+    sprite: _Moffstation/Objects/Weapons/Guns/Shotguns/temp.rsi
+  - type: Item
+    size: Normal
+    shape:
+    - 0,0,4,0
+    sprite: _Moffstation/Objects/Weapons/Guns/Shotguns/temp.rsi
+    state: icon
+  - type: GunRequiresWield
+  - type: BallisticAmmoProvider
+    capacity: 2
+    whitelist:
+      tags:
+      - BulletFoam
+    proto: BulletFoam
+  - type: Gun
+    fireRate: 3
+    clumsyProof: true
+    soundGunshot:
+      path: /Audio/Effects/thunk.ogg
+    soundEmpty:
+      path: /Audio/Weapons/Guns/Empty/empty.ogg
+  - type: PacifismAllowedGun
