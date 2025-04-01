@@ -6,18 +6,19 @@
   components:
   - type: Sprite
     sprite: _Moffstation/Objects/Weapons/Guns/Shotguns/temp.rsi
+  - type: Clothing
+    sprite: _Moffstation/Objects/Weapons/Guns/Shotguns/temp.rsi
   - type: Item
     size: Normal
     shape:
     - 0,0,4,0
-    sprite: _Moffstation/Objects/Weapons/Guns/Shotguns/temp.rsi
-    state: icon
+    sprite: _Moffstation/Objects/Weapons/Guns/Shotguns/temp_inhands_64x.rsi
   - type: GunRequiresWield
   - type: BallisticAmmoProvider
-    capacity: 2
     whitelist:
       tags:
       - BulletFoam
+    capacity: 2
     proto: BulletFoam
   - type: Gun
     fireRate: 3
