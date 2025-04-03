@@ -3,6 +3,7 @@
   parent: [BaseWeaponShotgun, BaseGunWieldable]
   id: PersonalItemEclipseSunshadeGun
   description: "It seems based of the Double-Barrel Shotgun, but the gun feels lighter, has an orange tip on the end of the barrel, resembling that of a foam blaster, and has a smooth dark blue polymer finish to both the stock and the handguard, resembling the paramedic's Voidsuit colors. On the handguard is a decoration of a rose hairflower embedded to it on both sides, symbolizing something important to the original user itself. Uses foam darts as ammunition."
+  suffix: PersonalItem
   components:
   - type: Sprite
     sprite: _Moffstation/PersonalItems/Items/eclipsetoyshotgun.rsi
