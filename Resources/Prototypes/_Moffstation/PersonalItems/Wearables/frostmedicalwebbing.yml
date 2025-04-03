@@ -1,0 +1,20 @@
+- type: entity
+  parent: ClothingBeltMedical
+  id: PersonalItemFrostMedicalWebbing
+  name: "Winters' medical rig"
+  description: "Winters' chest rig brought from home, modified to fit medical supplies. Looks oddly familiar to some with certain backgrounds."
+  components:
+  - type: Sprite
+    sprite: _Moffstation/PersonalItems/Wearables/frostmedicalwebbing.rsi
+  - type: Clothing
+    sprite: _Moffstation/PersonalItems/Wearables/frostmedicalwebbing.rsi
+
+- type: loadout
+  id: PersonalItemFrostMedicalWebbing
+  storage:
+    back:
+    - PersonalItemFrostMedicalWebbing
+  effects:
+  - !type:PersonalItemLoadoutEffect
+    character:
+    - Frost Winters
