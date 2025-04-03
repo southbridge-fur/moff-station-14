@@ -1,18 +1,18 @@
 - type: entity
   name: "Eclipse Sunshade's Toy Shotgun"
   parent: [BaseWeaponShotgun, BaseGunWieldable]
-  id: PersonalWeaponShotgunFoam
+  id: PersonalItemEclipseSunshadeGun
   description: "It seems based of the Double-Barrel Shotgun, but the gun feels lighter, has an orange tip on the end of the barrel, resembling that of a foam blaster, and has a smooth dark blue polymer finish to both the stock and the handguard, resembling the paramedic's Voidsuit colors. On the handguard is a decoration of a rose hairflower embedded to it on both sides, symbolizing something important to the original user itself. Uses foam darts as ammunition."
   components:
   - type: Sprite
-    sprite: _Moffstation/Objects/Weapons/Guns/Shotguns/temp.rsi
+    sprite: _Moffstation/PersonalItems/Items/eclipsetoyshotgun.rsi
   - type: Clothing
-    sprite: _Moffstation/Objects/Weapons/Guns/Shotguns/temp.rsi
+    sprite: _Moffstation/PersonalItems/Items/eclipsetoyshotgun.rsi
   - type: Item
     size: Normal
     shape:
     - 0,0,4,0
-    sprite: _Moffstation/Objects/Weapons/Guns/Shotguns/temp_inhands_64x.rsi
+    sprite: _Moffstation/PersonalItems/Items/eclipsetoyshotgun_inhands_64x.rsi
   - type: GunRequiresWield
   - type: BallisticAmmoProvider
     whitelist:
@@ -28,3 +28,13 @@
     soundEmpty:
       path: /Audio/Weapons/Guns/Empty/empty.ogg
   - type: PacifismAllowedGun
+
+- type: loadout
+  id: PersonalItemEclipseSunshadeGun
+  storage:
+    back:
+    - PersonalItemEclipseSunshadeGun
+  effects:
+  - !type:PersonalItemLoadoutEffect
+    character:
+    - Eclipse Sunshade
