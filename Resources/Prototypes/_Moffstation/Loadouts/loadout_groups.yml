@@ -13,8 +13,8 @@
   minLimit: 0
   maxLimit: 2
   loadouts:
+  - PersonalItemFrostMedicalWebbing
   - PersonalItemGigsShaker
   - PersonalItemKatieWristBand
   - PersonalItemRykerPen
   - PersonalItemScribblesPlushie
-  - PersonalItemFrostMedicalWebbing
