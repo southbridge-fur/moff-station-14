@@ -2,7 +2,7 @@
   name: "Eclipse Sunshade's Toy Shotgun"
   parent: [BaseWeaponShotgun, BaseGunWieldable]
   id: PersonalItemEclipseSunshadeGun
-  description: "It seems based on the Double-Barrel Shotgun, but the gun feels lighter, has an orange tip on the end of the barrel, resembling that of a foam blaster, and has a smooth dark blue polymer finish to both the stock and the handguard, resembling the paramedic's Voidsuit colors. On the handguard is a decoration of a rose hairflower embedded to it on both sides, symbolizing something important to the original user itself. Uses foam darts as ammunition."
+  description: A plastic double-barrel shotgun that fires foam darts. It has been customized.
   suffix: PersonalItem
   components:
   - type: Sprite
@@ -29,6 +29,8 @@
     soundEmpty:
       path: /Audio/Weapons/Guns/Empty/empty.ogg
   - type: PacifismAllowedGun
+  - type: DetailExaminable
+    content: "It seems based on the Double-Barrel Shotgun, but the gun feels lighter, has an orange tip on the end of the barrel, resembling that of a foam blaster, and has a smooth dark blue polymer finish to both the stock and the handguard, resembling the paramedic's Voidsuit colors. On the handguard is a decoration of a rose hairflower embedded to it on both sides, symbolizing something important to the original user itself. Uses foam darts as ammunition."
 
 - type: loadout
   id: PersonalItemEclipseSunshadeGun
