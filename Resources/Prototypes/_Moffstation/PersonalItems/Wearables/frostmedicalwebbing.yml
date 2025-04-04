@@ -23,7 +23,7 @@
 - type: loadout
   id: PersonalItemFrostMedicalWebbing
   storage:
-    back:
+    belt:
     - PersonalItemFrostMedicalWebbing
   effects:
   - !type:PersonalItemLoadoutEffect
