@@ -6,14 +6,14 @@
   suffix: PersonalItem
   components:
   - type: Sprite
-    sprite: _Moffstation/PersonalItems/Items/eclipsetoyshotgun.rsi
+    sprite: _Moffstation/PersonalItems/Items/Kento/Eclipse_Sunshade/eclipsetoyshotgun.rsi
   - type: Clothing
-    sprite: _Moffstation/PersonalItems/Items/eclipsetoyshotgun.rsi
+    sprite: _Moffstation/PersonalItems/Items/Kento/Eclipse_Sunshade/eclipsetoyshotgun.rsi
   - type: Item
     size: Normal
     shape:
     - 0,0,4,0
-    sprite: _Moffstation/PersonalItems/Items/eclipsetoyshotgun_inhands_64x.rsi
+    sprite: _Moffstation/PersonalItems/Items/Kento/Eclipse_Sunshade/eclipsetoyshotgun_inhands_64x.rsi
   - type: GunRequiresWield
   - type: BallisticAmmoProvider
     whitelist:
