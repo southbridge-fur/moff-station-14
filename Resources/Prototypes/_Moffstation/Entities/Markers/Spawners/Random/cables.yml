@@ -1,0 +1,16 @@
+- type: entity
+  name: Random HV Wire Spawner
+  id: WireHVSpawner
+  parent: MarkerBase
+  suffix: 50%
+  components:
+  - type: Sprite
+    layers:
+    - sprite: Structures/Power/Cables/hv_cable.rsi
+      state: hvcable_4
+  - type: RandomSpawner
+    prototypes:
+    - CableHV
+    chance: 0.5
+  placement:
+    mode: AlignTileAny
