@@ -46,7 +46,7 @@ entities:
     - type: MetaData
       name: Central Command
     - type: Transform
-      pos: -77.5,-48.5
+      pos: 0.0,0.0
       parent: invalid
     - type: MapGrid
       chunks:
