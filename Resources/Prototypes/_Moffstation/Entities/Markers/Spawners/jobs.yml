@@ -54,19 +54,18 @@
     - state: green
     - state: serviceworker
 
-# Bartender already exists
-# - type: entity
-#   id: ArrivalsSpawnPointBartender
-#   parent: ArrivalsSpawnPointJobBase
-#   suffix: bartender
-#   components:
-#   - type: ArrivalsSpawnPoint
-#     jobs:
-#     - Bartender
-#   - type: Sprite
-#     layers:
-#     - state: green
-#     - state: bartender
+- type: entity
+  id: ArrivalsSpawnPointBartender
+  parent: ArrivalsSpawnPointJobBase
+  suffix: bartender
+  components:
+  - type: ArrivalsSpawnPoint
+    jobs:
+    - Bartender
+  - type: Sprite
+    layers:
+    - state: green
+    - state: bartender
 
 - type: entity
   id: ArrivalsSpawnPointChef
