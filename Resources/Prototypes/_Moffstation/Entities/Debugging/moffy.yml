@@ -9,9 +9,9 @@
     scale: 4,4
     layers:
     - state: left
-      map: [ "revealing" ]
+      map: ["revealing"]
     - state: right
-      map: [ "hiding" ]
+      map: ["hiding"]
     - state: down
       visible: false
-      map: [ "speaking" ]
+      map: ["speaking"]
