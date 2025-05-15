@@ -5,7 +5,6 @@
   components:
   - type: Sprite
     sprite: _Moffstation/Tips/moffy.rsi
-    netsync: false
     noRot: false
     scale: 4,4
     layers:
