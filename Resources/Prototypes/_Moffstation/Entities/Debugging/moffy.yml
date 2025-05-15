@@ -4,17 +4,15 @@
   categories: [ HideSpawnMenu ]
   components:
   - type: Sprite
+    sprite: _Moffstation/Tips/moffy.rsi
     netsync: false
     noRot: false
     scale: 4,4
     layers:
-    - sprite: _Moffstation/Tips/moffy.rsi
-      state: left
+    - state: left
       map: [ "revealing" ]
-    - sprite: _Moffstation/Tips/moffy.rsi
-      state: right
+    - state: right
       map: [ "hiding" ]
-    - sprite: _Moffstation/Tips/moffy.rsi
-      state: down
+    - state: down
       visible: false
       map: [ "speaking" ]
