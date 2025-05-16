@@ -14,7 +14,7 @@
   weights:
     DisruptionObjective: 1
     SabotageObjective: 1
-    # InfiltrateObjective: 1
+    InfiltrateObjective: 1
     JailbreakObjective: 1
     DistractSecObjective: 1
     # IncriminateObjective: 1

@@ -43,22 +43,22 @@
   - type: DisruptionObjective
   - type: PickRandomDepartment
 
-# # Open-ended objective to infiltrate a department
-# - type: entity
-#   parent: BaseTraitorObjective
-#   id: InfiltrateObjective
-#   name: Infiltrate Department
-#   description: We need you to infiltrate this department and disrupt their activities.
-#   components:
-#   - type: Objective
-#     difficulty: 1.5
-#     icon:
-#       sprite: Clothing/Eyes/Glasses/outlawglasses.rsi
-#       state: icon
-#   - type: TargetDepartment
-#     title: objective-condition-infiltrate-department
-#   - type: DisruptionObjective
-#   - type: PickRandomDepartment
+# Open-ended objective to infiltrate a department
+- type: entity
+  parent: BaseTraitorObjective
+  id: InfiltrateObjective
+  name: Infiltrate Department
+  description: We need you to infiltrate this department and disrupt their activities.
+  components:
+  - type: Objective
+    difficulty: 1.5
+    icon:
+      sprite: Clothing/Eyes/Glasses/outlawglasses.rsi
+      state: icon
+  - type: TargetDepartment
+    title: objective-condition-infiltrate-department
+  - type: DisruptionObjective
+  - type: PickRandomDepartment
 
 # Open-ended objective to cause/setup a Jailbreak
 - type: entity
@@ -205,19 +205,19 @@
   - type: DisruptionObjective
   - type: PickRandomDepartment
 
-# # Open-ended objective to infiltrate a department, thief addition
-# - type: entity
-#   parent: BaseThiefObjective
-#   id: its
-#   name: Infiltrate Department
-#   description: We need you to infiltrate this department and disrupt their activities.
-#   components:
-#   - type: Objective
-#     difficulty: 1.5
-#     icon:
-#       sprite: Clothing/Eyes/Glasses/outlawglasses.rsi
-#       state: icon
-#   - type: TargetDepartment
-#     title: objective-condition-infiltrate-department
-#   - type: DisruptionObjective
-#   - type: PickRandomDepartment
+# Open-ended objective to infiltrate a department, thief addition
+- type: entity
+  parent: BaseThiefObjective
+  id: its
+  name: Infiltrate Department
+  description: We need you to infiltrate this department and disrupt their activities.
+  components:
+  - type: Objective
+    difficulty: 1.5
+    icon:
+      sprite: Clothing/Eyes/Glasses/outlawglasses.rsi
+      state: icon
+  - type: TargetDepartment
+    title: objective-condition-infiltrate-department
+  - type: DisruptionObjective
+  - type: PickRandomDepartment
