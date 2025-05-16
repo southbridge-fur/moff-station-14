@@ -129,7 +129,7 @@
   description: Let them know who did it.
   components:
   - type: Objective
-    difficulty: 0.8
+    difficulty: 0.5
     icon:
       sprite: Objects/Misc/bureaucracy.rsi
       state: syndicate_card
@@ -139,7 +139,7 @@
   - type: ObjectiveBlacklistRequirement
     blacklist:
       components:
-        GreytextObjective # put this on top of regular objectives
+      - GreytextObjective # put this on top of regular objectives
 
 # Open-ended objective to drop a calling card on somebody
 - type: entity
