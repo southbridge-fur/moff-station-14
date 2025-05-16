@@ -17,7 +17,7 @@
   description: We need you to disrupt this department's activities.
   components:
   - type: Objective
-    difficulty: 1.5
+    difficulty: 1.2
     icon:
       sprite: Objects/Tools/jaws_of_life.rsi
       state: jaws_pry
@@ -34,7 +34,7 @@
   description: We need you to sabotage this department's activities.
   components:
   - type: Objective
-    difficulty: 1.5
+    difficulty: 1.2
     icon:
       sprite: Objects/Tools/emag.rsi
       state: icon
@@ -43,22 +43,22 @@
   - type: DisruptionObjective
   - type: PickRandomDepartment
 
-# Open-ended objective to infiltrate a department
-- type: entity
-  parent: BaseTraitorObjective
-  id: InfiltrateObjective
-  name: Infiltrate Department
-  description: We need you to infiltrate this department and disrupt their activities.
-  components:
-  - type: Objective
-    difficulty: 1.5
-    icon:
-      sprite: Clothing/Eyes/Glasses/outlawglasses.rsi
-      state: icon
-  - type: TargetDepartment
-    title: objective-condition-infiltrate-department
-  - type: DisruptionObjective
-  - type: PickRandomDepartment
+# # Open-ended objective to infiltrate a department
+# - type: entity
+#   parent: BaseTraitorObjective
+#   id: InfiltrateObjective
+#   name: Infiltrate Department
+#   description: We need you to infiltrate this department and disrupt their activities.
+#   components:
+#   - type: Objective
+#     difficulty: 1.5
+#     icon:
+#       sprite: Clothing/Eyes/Glasses/outlawglasses.rsi
+#       state: icon
+#   - type: TargetDepartment
+#     title: objective-condition-infiltrate-department
+#   - type: DisruptionObjective
+#   - type: PickRandomDepartment
 
 # Open-ended objective to cause/setup a Jailbreak
 - type: entity
@@ -104,22 +104,58 @@
   - type: PickRandomPerson
   - type: GreytextObjective
 
-# Incriminate objective, attempt to get someone else arrested by security
+# Removing temporarily until we implement a method to target non-heads
+# # Incriminate objective, attempt to get someone else arrested by security
+# - type: entity
+#   parent: BaseTraitorObjective
+#   id: IncriminateObjective
+#   description: We need you to incriminate this person in the eyes of station security.
+#   components:
+#   - type: Objective
+#     difficulty: 1.5
+#     icon:
+#       sprite: Clothing/Head/Hats/brownfedora.rsi
+#       state: icon
+#   - type: TargetObjective
+#     title: objective-condition-incriminate
+#   - type: PickRandomPerson
+#   - type: GreytextObjective
+
+# Open-ended objective to leave a calling card
 - type: entity
   parent: BaseTraitorObjective
-  id: IncriminateObjective
-  description: We need you to incriminate this person in the eyes of station security.
+  id: LeaveCallingCardObjective
+  name: Leave a Calling Card
+  description: Let them know who did it.
   components:
   - type: Objective
-    difficulty: 1.5
+    difficulty: 0.5
     icon:
-      sprite: Clothing/Head/Hats/brownfedora.rsi
-      state: icon
+      sprite: Objects/Misc/bureaucracy.rsi
+      state: syndicate_card
+  - type: SimpleObjective
+    title: objective-condition-leave-card
+  - type: ObjectiveBlacklistRequirement
+    blacklist:
+      components:
+        GreytextObjective # put this on top of regular objectives
+
+# Open-ended objective to drop a calling card on somebody
+- type: entity
+  parent: BaseTraitorObjective
+  id: LeaveCallingCardOnPersonObjective
+  name: Leave a Clear Message
+  description: This person has stepped out of line, leave them a reminder.
+  components:
+  - type: Objective
+    difficulty: 0.8
+    icon:
+      sprite: Objects/Misc/bureaucracy.rsi
+      state: syndicate_card
   - type: TargetObjective
-    title: objective-condition-incriminate
+    title: objective-condition-leave-card-on-person
   - type: PickRandomPerson
   - type: GreytextObjective
-
 
 # thieves
 
@@ -144,7 +180,7 @@
   description: You need money, so steal as much of it as you can.
   components:
   - type: Objective
-    difficulty: 1.5
+    difficulty: 1.2
     icon:
       sprite: Objects/Economy/cash.rsi
       state: cash
@@ -158,7 +194,7 @@
   description: This department has some nice goodies, its time to make them your own.
   components:
   - type: Objective
-    difficulty: 1.5
+    difficulty: 1.0
     icon:
       sprite: Clothing/Hands/Gloves/Color/black.rsi
       state: icon
@@ -167,19 +203,19 @@
   - type: DisruptionObjective
   - type: PickRandomDepartment
 
-# Open-ended objective to infiltrate a department, thief addition
-- type: entity
-  parent: BaseThiefObjective
-  id: its
-  name: Infiltrate Department
-  description: We need you to infiltrate this department and disrupt their activities.
-  components:
-  - type: Objective
-    difficulty: 1.5
-    icon:
-      sprite: Clothing/Eyes/Glasses/outlawglasses.rsi
-      state: icon
-  - type: TargetDepartment
-    title: objective-condition-infiltrate-department
-  - type: DisruptionObjective
-  - type: PickRandomDepartment
+# # Open-ended objective to infiltrate a department, thief addition
+# - type: entity
+#   parent: BaseThiefObjective
+#   id: its
+#   name: Infiltrate Department
+#   description: We need you to infiltrate this department and disrupt their activities.
+#   components:
+#   - type: Objective
+#     difficulty: 1.5
+#     icon:
+#       sprite: Clothing/Eyes/Glasses/outlawglasses.rsi
+#       state: icon
+#   - type: TargetDepartment
+#     title: objective-condition-infiltrate-department
+#   - type: DisruptionObjective
+#   - type: PickRandomDepartment

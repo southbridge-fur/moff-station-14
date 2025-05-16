@@ -14,10 +14,12 @@
   weights:
     DisruptionObjective: 1
     SabotageObjective: 1
-    InfiltrateObjective: 1
+    # InfiltrateObjective: 1
     JailbreakObjective: 1
     DistractSecObjective: 1
-    IncriminateObjective: 1
+    # IncriminateObjective: 1
+    LeaveCallingCardObjective: 1
+    LeaveCallingCardOnPersonObjective: 1
 # Moffstation - End
 
 - type: weightedRandom
@@ -68,10 +70,10 @@
 - type: weightedRandom
   id: ThiefObjectiveOpenEnded
   weights:
-    StealEverythingObjective: 1
-    StealMoneyObjective: 1
+    StealEverythingObjective: 0.5
+    StealMoneyObjective: 0.5
     RobDepartmentObjective: 1
-    InfiltrateThiefObjective: 1
+    # InfiltrateThiefObjective: 1
 # Moffstation - End
 
 - type: weightedRandom
