@@ -18,8 +18,8 @@
     JailbreakObjective: 1
     DistractSecObjective: 1
     # IncriminateObjective: 1
-    LeaveCallingCardObjective: 1
-    LeaveCallingCardOnPersonObjective: 1
+    LeaveCallingCardObjective: 0.5
+    LeaveCallingCardOnPersonObjective: 0.5
 # Moffstation - End
 
 - type: weightedRandom
