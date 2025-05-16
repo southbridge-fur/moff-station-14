@@ -73,7 +73,7 @@
     StealEverythingObjective: 0.5
     StealMoneyObjective: 0.5
     RobDepartmentObjective: 1
-    # InfiltrateThiefObjective: 1
+    InfiltrateThiefObjective: 1
 # Moffstation - End
 
 - type: weightedRandom
