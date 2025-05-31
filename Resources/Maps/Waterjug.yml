@@ -1,11 +1,11 @@
 meta:
   format: 7
   category: Map
-  engineVersion: 260.0.0
+  engineVersion: 261.1.0
   forkId: ""
   forkVersion: ""
-  time: 05/28/2025 02:45:04
-  entityCount: 15972
+  time: 05/31/2025 02:59:37
+  entityCount: 15966
 maps:
 - 1
 grids:
@@ -53,7 +53,6 @@ entities:
     - type: Map
       mapPaused: True
     - type: GridTree
-    - type: MovedGrids
     - type: Broadphase
     - type: OccluderTree
   - uid: 2
@@ -7521,7 +7520,7 @@ entities:
       pos: -12.5,46.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -204078.73
+      secondsUntilStateChange: -204091.22
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -7946,7 +7945,7 @@ entities:
       pos: -15.5,30.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -18502.734
+      secondsUntilStateChange: -18515.225
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -8220,7 +8219,7 @@ entities:
       pos: -27.5,53.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -188101.52
+      secondsUntilStateChange: -188114
       state: Opening
     - type: DeviceLinkSource
       lastSignals:
@@ -41760,7 +41759,7 @@ entities:
       pos: -41.5,59.5
       parent: 2
     - type: Door
-      secondsUntilStateChange: -182593.6
+      secondsUntilStateChange: -182606.08
       state: Closing
   - uid: 7249
     components:
