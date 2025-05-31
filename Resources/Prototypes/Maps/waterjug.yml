@@ -61,3 +61,5 @@
             #silicon
             StationAi: [ 1, 1 ]
             Borg: [ 2, 2 ]
+            #Moffstation
+            Prisoner: [ 1, 1 ]
