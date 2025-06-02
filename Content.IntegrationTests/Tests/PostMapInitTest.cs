@@ -94,7 +94,7 @@ namespace Content.IntegrationTests.Tests
             "Relic",
             "dm01-entryway",
             "Waterjug"
-
+            "Tram2",
         };
 
         /// <summary>
