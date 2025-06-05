@@ -36,9 +36,11 @@
   parent: [BaseBloodBrotherObjective, DieObjective]
   id: BloodBrotherDieObjective
 
-- type: entity
-  parent: [BaseBloodBrotherObjective, TraitorSurviveObjective]
-  id: BloodBrotherSurviveObjective
+# Moffstation - Start - Survive doesn't exist as an objective yet, but it would be easy to make.
+# - type: entity
+#   parent: [BaseBloodBrotherObjective, TraitorSurviveObjective]
+#   id: BloodBrotherSurviveObjective
+# Moffstaion - End
 
 # kill
 
@@ -50,9 +52,11 @@
   parent: [BaseBloodBrotherObjective, KillRandomHeadObjective]
   id: BloodbrotherKillRandomHeadObjective
 
-- type: entity
-  parent: [BaseBloodBrotherObjective, TeachLessonRandomPersonObjective]
-  id: BloodBrotherTeachLessonRandomPersonObjective
+# Moffstation - Start - We don't have Harmony's Teach a lesson objective
+# - type: entity
+#   parent: [BaseBloodBrotherObjective, TeachLessonRandomPersonObjective]
+#   id: BloodBrotherTeachLessonRandomPersonObjective
+# Moffstation - end
 
 # steal
 
