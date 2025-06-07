@@ -3,6 +3,7 @@ using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Body.Organ;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Components.SolutionManager;
+using Content.Shared.FixedPoint; // Moffstation - Added partial transfers
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
@@ -107,6 +108,39 @@ namespace Content.Server.Body.Systems
                 // TODO: For now no partial transfers. Potentially change by design
                 && stomachSolution.CanAddSolution(solution);
         }
+
+        // Moffstation - Start - Helper functions for the StomachSystem
+        public FixedPoint2 MaxTransferableSolution(
+            EntityUid uid,
+            Solution solution,
+            FixedPoint2 quantity,
+            StomachComponent? stomach = null,
+            SolutionContainerManagerComponent? solutions = null)
+        {
+            return Resolve(uid, ref stomach, ref solutions, logMissing: false)
+                   && _solutionContainerSystem.ResolveSolution((uid, solutions),
+                       DefaultSolutionName,
+                       ref stomach.Solution,
+                       out var stomachSolution)
+                ? stomachSolution.MaxTransferableSolution(solution, quantity)
+                : FixedPoint2.Zero;
+        }
+
+        public FixedPoint2 MaxTransferableSolution(
+            EntityUid uid,
+            FixedPoint2 quantity,
+            StomachComponent? stomach = null,
+            SolutionContainerManagerComponent? solutions = null)
+        {
+            return Resolve(uid, ref stomach, ref solutions, logMissing: false)
+                   && _solutionContainerSystem.ResolveSolution((uid, solutions),
+                       DefaultSolutionName,
+                       ref stomach.Solution,
+                       out var stomachSolution)
+                ? stomachSolution.MaxTransferableSolution(quantity)
+                : FixedPoint2.Zero;
+        }
+        // Moffstation - End
 
         public bool TryTransferSolution(
             EntityUid uid,

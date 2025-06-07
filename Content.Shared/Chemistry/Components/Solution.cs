@@ -76,6 +76,21 @@ namespace Content.Shared.Chemistry.Components
             return solution.Volume <= AvailableVolume;
         }
 
+        // Moffstation - Start - Adding helper function to Solution
+        /// <summary>
+        ///     Gets the maximum amount of solution that can be transferred from the solution up to the quantity.
+        /// </summary>
+        public FixedPoint2 MaxTransferableSolution(Solution solution, FixedPoint2 quantity)
+        {
+            return FixedPoint2.Min(solution.Volume, AvailableVolume, quantity);
+        }
+
+        public FixedPoint2 MaxTransferableSolution(FixedPoint2 quantity)
+        {
+            return FixedPoint2.Min(AvailableVolume, quantity);
+        }
+        // Moffstation - End
+
         /// <summary>
         ///     The total heat capacity of all reagents in the solution.
         /// </summary>

@@ -1,0 +1,52 @@
+- type: entity
+  parent: OrganAnimalStomach
+  id: OrganVampireStomach
+  name: stomach
+  description: A stomach which reeks of undeath and iron.
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Metabolizer
+    maxReagents: 1
+    metabolizerTypes: [ Vampire ] # We can't use bloodsucker because bloodsucker heals
+    groups:
+    - Drink
+    - Food
+  - type: SolutionContainerManager
+    solutions:
+      stomach:
+        maxVol: 100
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: Ash
+          Quantity: 5
+  - type: Stomach
+    specialDigestible:
+      tags:
+      - Meat
+      - Bloodpack # TODO: doesn't actually do anything right now since bloodpacks don't give any nutrients
+    isSpecialDigestibleExclusive: true
+
+- type: entity
+  parent: OrganAnimalLiver
+  id: OrganVampireLiver
+  name: liver
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Metabolizer
+    maxReagents: 1
+    metabolizerTypes: [ Vampire ]
+    groups: []
+
+- type: entity
+  parent: OrganAnimalHeart
+  id: OrganVampireHeart
+  name: heart
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: Sprite
+    state: heart-off # It has stopped beating
+  - type: Metabolizer
+    maxReagents: 1
+    metabolizerTypes: [ Vampire ]
+    groups: []
