@@ -8,6 +8,9 @@ using Content.Shared._Moffstation.Vampire.Components;
 using Content.Server.Chemistry.EntitySystems;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Components.SolutionManager;
+using Content.Shared.Humanoid;
+using Content.Shared.Mobs.Components;
+using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
 namespace Content.Server._Moffstation.Vampire.EntitySystems;
@@ -21,6 +24,7 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
     [Dependency] private readonly BodySystem _body = default!;
     [Dependency] private readonly StomachSystem _stomach = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
+    [Dependency] private readonly IPrototypeManager _proto = default!;
 
     /// <summary>
     /// Extracts blood from the target creature and places it in the user's stomach.
@@ -55,25 +59,40 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
 
         transferAmount = _stomach.MaxTransferableSolution(firstStomach.Value, transferAmount);
 
+        var tempSolution = new Solution();
+        tempSolution.MaxVolume = transferAmount;
+
         if (_solutionContainerSystem.ResolveSolution(target, targetBloodstream.ChemicalSolutionName, ref targetBloodstream.ChemicalSolution, out var targetChemSolution))
         {
-            var chemSolution = targetChemSolution.SplitSolution(transferAmount * 0.15f); // make a fraction of what we pull come from the chem solution
-            if (!_stomach.TryTransferSolution(firstStomach.Value, chemSolution))
-                _solutionContainerSystem.TryAddSolution(targetBloodstream.ChemicalSolution.Value, chemSolution); // put that thing back where it came from or so help me
-            else
-                transferAmount -= chemSolution.Volume;
+            // make a fraction of what we pull come from the chem solution
+            // Technically this does allow someone to drink blood in order to then have that blood be taken and
+            // give essence but I don't care too much about that possible issue.
+            tempSolution.AddSolution(targetChemSolution.SplitSolution(transferAmount * 0.15f), _proto);
+            transferAmount -= tempSolution.Volume;
             _solutionContainerSystem.UpdateChemicals(targetBloodstream.ChemicalSolution.Value);
-
         }
 
         if (_solutionContainerSystem.ResolveSolution(target, targetBloodstream.BloodSolutionName, ref targetBloodstream.BloodSolution, out var targetBloodSolution))
         {
-            var bloodSolution = targetBloodSolution.SplitSolution(transferAmount);
-            if (!_stomach.TryTransferSolution(firstStomach.Value, bloodSolution))
-                _solutionContainerSystem.TryAddSolution(targetBloodstream.BloodSolution.Value, bloodSolution);
+            tempSolution.AddSolution(targetBloodSolution.SplitSolution(transferAmount), _proto);
             _solutionContainerSystem.UpdateChemicals(targetBloodstream.BloodSolution.Value);
         }
 
-        return true;
+        if (HasComp<MobStateComponent>(target)
+            && HasComp<HumanoidAppearanceComponent>(target)
+            && !HasComp<BloodEssenceUserComponent>(target))
+        {
+            // check how much blood is in this and subtract that blood amount from their BloodEssence component.
+            var bloodEssence = EnsureComp<BloodEssenceComponent>(target);
+
+            foreach (var reagentId in bloodEssenceUser.ValidBloodTypes)
+            {
+                if (!tempSolution.TryGetReagentQuantity(reagentId, out var volume))
+                    continue;
+                bloodEssenceUser.BloodEssenceBalance += bloodEssence.Withdraw(volume);
+            }
+        }
+
+        return _stomach.TryTransferSolution(firstStomach.Value, tempSolution);
     }
 }

@@ -1,0 +1,24 @@
+﻿- type: entity
+  parent: BaseAction
+  id: ActionVampireShop
+  name: Shop
+  description: Opens the ability shop.
+  components:
+  - type: Action
+    icon: Interface/Actions/shop.png
+  - type: InstantAction
+    event: !type:VampireShopActionEvent
+
+- type: entity
+  parent: BaseAction
+  id: ActionVampireShop
+  name: Shop
+  description: Opens the ability shop.
+  components:
+  - type: Action
+    icon:
+    - sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
+      state: base
+    - state: fangs
+  - type: InstantAction
+    event: !type:VampireShopActionEvent
