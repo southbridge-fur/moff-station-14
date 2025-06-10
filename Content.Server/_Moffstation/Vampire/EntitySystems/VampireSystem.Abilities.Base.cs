@@ -2,8 +2,10 @@ using Content.Shared._Moffstation.Vampire;
 using Content.Shared._Moffstation.Vampire.Components;
 using Content.Server.Body.Components;
 using Content.Shared._Moffstation.Vampire.EntitySystems;
+using Content.Shared.Damage.Components;
 using Content.Shared.DoAfter;
 using Content.Shared.Popups;
+using Robust.Shared.Map;
 
 namespace Content.Server._Moffstation.Vampire.EntitySystems;
 
@@ -17,13 +19,43 @@ public sealed partial class VampireSystem : SharedVampireSystem
         SubscribeLocalEvent<VampireComponent, VampireEventFeedDoAfter>(OnFeedEnd);
     }
 
-    private void OnGlare(EntityUid uid, VampireComponent component, VampireEventGlare args)
+    private void OnGlare(EntityUid uid, VampireComponent? component, VampireEventGlare args)
     {
+        if (!Resolve(uid, ref component))
+            return;
+
+        // todo: make generic arc attacks and just do 4 of them at once.
+        (var coords, var facing) = _transform.GetMoverCoordinateRotation(uid, Transform(uid));
+
+        GlareStun(uid, component, coords, facing - Angle.FromDegrees(-45), component.GlareDamageFront);
+        GlareStun(uid, component, coords, facing - Angle.FromDegrees(-135), component.GlareDamageSides);
+        GlareStun(uid, component, coords, facing - Angle.FromDegrees(45), component.GlareDamageSides);
+        GlareStun(uid, component, coords, facing - Angle.FromDegrees(135), component.GlareDamageRear);
+
         args.Handled = true;
     }
 
-    private void OnRejuvenate(EntityUid uid, VampireComponent component, VampireEventRejuvenate args)
+    private void GlareStun(EntityUid uid, VampireComponent component, EntityCoordinates coords, Angle angle, float damage)
     {
+        var nearbyEntities = _lookup.GetEntitiesInArc(coords, component.GlareRange, angle, 90, LookupFlags.Uncontained);
+        foreach (var entity in nearbyEntities)
+        {
+            if (entity == uid)
+                continue;
+            _stamina.TakeStaminaDamage(entity, damage);
+        }
+    }
+
+    private void OnRejuvenate(EntityUid uid, VampireComponent? component, VampireEventRejuvenate args)
+    {
+        if (!Resolve(uid, ref component))
+            return;
+
+        if (!TryComp<StaminaComponent>(uid, out var stamina))
+            return;
+
+        _stamina.TakeStaminaDamage(uid, -Math.Abs(component.RejuvenateStamHealing));
+
         args.Handled = true;
     }
 

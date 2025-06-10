@@ -30,4 +30,25 @@ public sealed partial class VampireComponent : Component
     public float FeedDuration = 2.5f;
 #endregion // Feed
 
+#region Glare Ability
+
+    // Glare should really be changed to a more generic ability that is then customized for this but I'm lazy right now
+    [DataField]
+    public float GlareRange = 1.0f;
+
+    [DataField]
+    public float GlareDamageFront = 70;
+
+    [DataField]
+    public float GlareDamageSides = 35;
+
+    [DataField]
+    public float GlareDamageRear = 10;
+
+#endregion // Glare
+
+#region Rejuvenate Ability
+    [DataField]
+    public float RejuvenateStamHealing = 100;
+#endregion // Rejuvenate
 }
