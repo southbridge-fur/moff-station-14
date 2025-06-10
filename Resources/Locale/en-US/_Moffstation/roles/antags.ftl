@@ -1,4 +1,5 @@
-﻿roles-antag-pirate-captain-name = Pirate Captain
+﻿# Pirates
+roles-antag-pirate-captain-name = Pirate Captain
 roles-antag-pirate-captain-objective = Pillage, Plunder, and lead the pirate crew
 
 roles-antag-pirate-medic-name = Pirate Apothecary
@@ -23,3 +24,10 @@ pirates-description = The station has come under attack by a band of thieving pi
 comms-console-announcement-title-pirate = Space Pirate
 
 pirate-briefing = You're a pirate in dire need of some cash. Loot the station and sell its belongings to make as much money as you can.
+
+# Vampries
+
+roles-antag-vampire-name = Vampire
+roles-antag-vampire-objective = Feed on the crew, stay quiet, instill fear.
+
+vampire-briefing = You're a creature of the night. Stay out of the light, protect your existence, and feed off the crew.

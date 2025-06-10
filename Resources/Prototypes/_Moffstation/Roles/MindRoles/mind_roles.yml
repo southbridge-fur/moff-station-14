@@ -25,3 +25,24 @@
   components:
   - type: MindRole
     antagPrototype: PirateCaptain
+
+- type: entity
+  parent: MindRolePirateCrew
+  id: MindRolePirateCaptain
+  name: Pirate Captain Role
+  components:
+  - type: MindRole
+    antagPrototype: PirateCaptain
+
+# Vampires
+
+- type: entity
+  parent: BaseMindRoleAntag
+  id: MindRolePirateCrew
+  name: Vampire Role
+  components:
+  - type: MindRole
+    roleType: SoloAntagonist
+    exclusiveAntag: true
+    antagPrototype: Vampire
+  - type: VampireRole
