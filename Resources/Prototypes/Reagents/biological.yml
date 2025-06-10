@@ -27,14 +27,6 @@
         - !type:AdjustReagent
           reagent: UncookedAnimalProteins
           amount: 0.1
-        # Moffstation - Start - Make vampires satiate hunger from blood
-        - !type:SatiateHunger
-          factor: 1.0
-          conditions:
-          - !type:OrganType
-            type: Vampire
-            shouldHave: true
-        # Moffstation - End
     Medicine:
       effects:
       - !type:HealthChange
@@ -45,6 +37,16 @@
           groups:
             Brute: -3
             Burn: -1.25
+    # Moffstation - Start - Added blood metabolism group
+    Blood:
+      metabolismRate: 0.8
+      effects:
+      - !type:ModifyBloodLevel
+        conditions:
+        - !type:OrganType
+          type: Vampire
+          shouldHave: true
+    # Moffstation - End
   plantMetabolism:
     - !type:PlantAdjustWater
       amount: 0.5

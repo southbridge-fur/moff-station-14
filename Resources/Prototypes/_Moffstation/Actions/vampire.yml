@@ -11,14 +11,65 @@
 
 - type: entity
   parent: BaseAction
-  id: ActionVampireShop
-  name: Shop
-  description: Opens the ability shop.
+  id: ActionVampireFeed
+  name: Feed
+  description: Drink blood from a creature.
   components:
   - type: Action
     icon:
     - sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
-      state: base
-    - state: fangs
+      state: fangs
+    keywords:
+    - bite
+    - feed
+    - drink
+    actionCooldown: 3.0
+  - type: TargetAction
+    repeat: false
+    deselectOnMiss: true
+    checkCanAccess: true
+    range: 0.8
+    interactOnMiss: false
+  - type: EntityTargetAction
+    event: !type:VampireEventFeed
+    whitelist:
+      components:
+      - HumanoidAppearance
+    canTargetSelf: false
+
+- type: entity
+  parent: BaseAction
+  id: ActionVampireGlare
+  name: Glare
+  description: Enstill fear and dispair in those around you, weakening their resolve, stunning them.
+  - type: Action
+    icon:
+    - sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
+      state: glare
+    keywords:
+    - glare
+    - stare
+    - eye
+    actionCooldown: 1.0
+  - type: ChargesAction
+    maxCharges: 2
+    rechargeDuration: 20.0
   - type: InstantAction
-    event: !type:VampireShopActionEvent
+    event: !type:VampireEventGlare
+
+
+- type: entity
+  parent: BaseAction
+  id: ActionVampireRejuvenate
+  name: Rejuvenate
+  description:
+  - type: Action
+    icon: Restore your resolve.
+    - sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
+      state: rejuvenate
+    keywords:
+    - heal
+    - rejuvenate
+    actionCooldown: 20.0
+  - type: InstantAction
+    event: !type:VampireEventRejuvenate

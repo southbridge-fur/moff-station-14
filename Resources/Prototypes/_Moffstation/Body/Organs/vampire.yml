@@ -1,5 +1,5 @@
 - type: entity
-  parent: OrganAnimalStomach
+  parent: OrganHumanStomach
   id: OrganVampireStomach
   name: stomach
   description: A stomach which reeks of undeath and iron.
@@ -7,8 +7,10 @@
   components:
   - type: Metabolizer
     maxReagents: 1
+    removeEmpty: true
     metabolizerTypes: [ Vampire ] # We can't use bloodsucker because bloodsucker heals
     groups:
+    - Blood
     - Drink
     - Food
   - type: SolutionContainerManager
@@ -28,18 +30,7 @@
     isSpecialDigestibleExclusive: true
 
 - type: entity
-  parent: OrganAnimalLiver
-  id: OrganVampireLiver
-  name: liver
-  categories: [ HideSpawnMenu ]
-  components:
-  - type: Metabolizer
-    maxReagents: 1
-    metabolizerTypes: [ Vampire ]
-    groups: []
-
-- type: entity
-  parent: OrganAnimalHeart
+  parent: OrganHumanHeart
   id: OrganVampireHeart
   name: heart
   categories: [ HideSpawnMenu ]
@@ -48,5 +39,7 @@
     state: heart-off # It has stopped beating
   - type: Metabolizer
     maxReagents: 1
+    removeEmpty: true
     metabolizerTypes: [ Vampire ]
-    groups: []
+    groups:
+    - Blood
