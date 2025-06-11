@@ -7,3 +7,10 @@ vampire-feeding-successful-vampire = You drink from {CAPITALIZE(THE($target))}
 vampire-feeding-successful-target = {CAPITALIZE(THE($vampire))} drinks your blood!
 
 flavor-ash-and-undeath = ash and undeath
+
+vampire-store-name = Vampire Abilities
+
+
+admin-verb-make-vampire = Make the target into a vampire.
+
+admin-verb-text-make-vampire = Make Vampire

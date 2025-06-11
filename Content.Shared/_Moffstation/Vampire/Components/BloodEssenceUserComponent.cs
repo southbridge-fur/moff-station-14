@@ -16,7 +16,7 @@ public sealed partial class BloodEssenceUserComponent : Component
     public FixedPoint2 BloodEssenceBalance = 0.0;
 
     [DataField]
-    public List<ReagentId> ValidBloodTypes = new();
+    public List<ProtoId<ReagentPrototype>> BloodWhitelist = new();
 
     // todo: Keep a record of people who we have taken blood essence from
 

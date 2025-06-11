@@ -10,9 +10,5 @@ namespace Content.Shared._Moffstation.Vampire.Components;
 [RegisterComponent, Access(typeof(SharedVampireSystem))]
 public sealed partial class VampireComponent : Component
 {
-    /// <summary>
-    /// The BloodEssence prototype for the shop
-    /// </summary>
-    [DataField]
-    public ProtoId<CurrencyPrototype> StolenBloodEssenceCurrencyPrototype = "BloodEssence";
+
 }

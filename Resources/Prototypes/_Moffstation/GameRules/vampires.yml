@@ -20,6 +20,15 @@
       - type: Vampire
       - type: VampireHunger
       - type: BloodEssenceUser
+        BloodWhitelist:
+        - Blood
+        - InsectBlood
+        - Slime
+        - Sap
+        - CopperBlood
+        - AmmoniaBlood
+        - ZombieBlood
+        - Ichor
       - type: Damageable
         damageContainer: BiologicalMetaphysical
         damageModifierSet: Vampire
@@ -32,6 +41,22 @@
         - heart: OrganVampireHeart
         - lungs: OrganVampireLungs
         - stomach: OrganVampireStomach
+      - type: Store
+        name: vampire-store-name
+        categories:
+        - VampireAbilityBasic
+        - VampireAbilityGargentua
+        - VampireAbilityHaemomancer
+        - VampireAbilityUmbrae
+        - VampireAbilityDantalion
+        currencyWhitelist:
+        - BloodEssence
+        balance:
+          BloodEssence: 0
+      - type: UserInterface
+        interfaces:
+          enum.StoreUiKey.Key:
+            type: StoreBoundUserInterface
       - type: Bloodstream
         bleedReductionAmount: 1.0
         maxBleedAmount: 0.0

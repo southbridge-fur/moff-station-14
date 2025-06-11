@@ -8,6 +8,7 @@ using Content.Shared._Moffstation.Vampire.Components;
 using Content.Server.Chemistry.EntitySystems;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Components.SolutionManager;
+using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Humanoid;
 using Content.Shared.Mobs.Components;
 using Robust.Shared.Prototypes;
@@ -85,9 +86,9 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
             // check how much blood is in this and subtract that blood amount from their BloodEssence component.
             var bloodEssence = EnsureComp<BloodEssenceComponent>(target);
 
-            foreach (var reagentId in bloodEssenceUser.ValidBloodTypes)
+            foreach (var reagentProto in bloodEssenceUser.BloodWhitelist)
             {
-                if (!tempSolution.TryGetReagentQuantity(reagentId, out var volume))
+                if (!tempSolution.TryGetReagentQuantity(new ReagentId(reagentProto.Id, null), out var volume))
                     continue;
                 bloodEssenceUser.BloodEssenceBalance += bloodEssence.Withdraw(volume);
             }
