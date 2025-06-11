@@ -62,6 +62,14 @@ public sealed class BurnedBySunSystem : EntitySystem
     {
         if (!TryComp<DamageableComponent>(uid, out var dmgComp))
             return;
-        _damage.TryChangeDamage(uid, comp.Damage);
+
+        // Make it ramp up in severity over time.
+        if (comp.LastBurn >= comp.NextUpdate - comp.UpdateInterval)
+            comp.Accumulation = Math.Clamp(comp.Accumulation + 0.2f, 0.0f, 1.0f);
+        else
+            comp.Accumulation = 0.0f;
+
+        _damage.TryChangeDamage(uid, comp.Damage*comp.Accumulation);
+        comp.LastBurn = _timing.CurTime;
     }
 }

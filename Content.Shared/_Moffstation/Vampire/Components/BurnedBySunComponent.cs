@@ -16,7 +16,10 @@ public sealed partial class BurnedBySunComponent : Component
     public TimeSpan UpdateInterval = TimeSpan.FromSeconds(0.5);
 
     [DataField]
-    public float Accumulated = 0.0f;
+    public TimeSpan LastBurn = TimeSpan.Zero;
+
+    [DataField]
+    public float Accumulation = 0.0f;
 
     [DataField]
     public DamageSpecifier Damage = new();

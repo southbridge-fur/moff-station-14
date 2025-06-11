@@ -15,40 +15,4 @@ public sealed partial class VampireComponent : Component
     /// </summary>
     [DataField]
     public ProtoId<CurrencyPrototype> StolenBloodEssenceCurrencyPrototype = "BloodEssence";
-
-#region Feed Ability
-    /// <summary>
-    /// The amount of blood to drink from someone per feed action
-    /// </summary>
-    [DataField]
-    public FixedPoint2 BloodPerFeed = 10.0;
-
-    /// <summary>
-    /// The duration of the feed action (in seconds)
-    /// </summary>
-    [DataField]
-    public TimeSpan FeedDuration = TimeSpan.FromSeconds(2.5);
-#endregion // Feed
-
-#region Glare Ability
-
-    // Glare should really be changed to a more generic ability that is then customized for this but I'm lazy right now
-    [DataField]
-    public float GlareRange = 1.0f;
-
-    [DataField]
-    public float GlareDamageFront = 70;
-
-    [DataField]
-    public float GlareDamageSides = 35;
-
-    [DataField]
-    public float GlareDamageRear = 10;
-
-#endregion // Glare
-
-#region Rejuvenate Ability
-    [DataField]
-    public float RejuvenateStamHealing = 100;
-#endregion // Rejuvenate
 }
