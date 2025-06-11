@@ -20,13 +20,9 @@
       - type: Vampire
       - type: VampireHunger
       - type: BloodEssenceUser
-      - type: Hunger
-        starvationDamage:
-           types:
-             Piercing: 5
       - type: Damageable
         damageContainer: BiologicalMetaphysical
-        damageModifierSet: Vampire\
+        damageModifierSet: Vampire
       - type: BurnedBySun
         damage:
           type:
@@ -36,5 +32,14 @@
         - heart: OrganVampireHeart
         - lungs: OrganVampireLungs
         - stomach: OrganVampireStomach
+      - type: Bloodstream
+        bleedReductionAmount: 1.0
+        maxBleedAmount: 0.0
+        bloodlossThreshold: 0.05
+        bloodlossDamage:
+          types:
+            Bloodloss: 10 # if they're out of blood they're taking bloodloss damage
+        bloodlossHealDamage: VampireHealing
+        bloodRefreshAmount: 0.0
       mindRoles:
       - MindRoleVampire
