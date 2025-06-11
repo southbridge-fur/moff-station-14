@@ -27,7 +27,7 @@ public sealed partial class VampireComponent : Component
     /// The duration of the feed action (in seconds)
     /// </summary>
     [DataField]
-    public float FeedDuration = 2.5f;
+    public TimeSpan FeedDuration = TimeSpan.FromSeconds(2.5);
 #endregion // Feed
 
 #region Glare Ability

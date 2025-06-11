@@ -30,4 +30,8 @@ pirate-briefing = You're a pirate in dire need of some cash. Loot the station an
 roles-antag-vampire-name = Vampire
 roles-antag-vampire-objective = Feed on the crew, stay quiet, instill fear.
 
-vampire-briefing = You're a creature of the night. Stay out of the light, protect your existence, and feed off the crew.
+roles-antag-vampire-briefing = You're a creature of the night. Stay out of the light, protect your existence, and feed off the crew.
+
+vampire-existing = [color=Crimson]There was a [bold]Vampire[/bold]![/color]
+vampires-existing = [color=Crimson]There were {$total} [bold]Vampires[/bold]![/color]
+vampire-list-name-user = [color=White]{$name}[/color] ([color=gray]{$user}[/color])

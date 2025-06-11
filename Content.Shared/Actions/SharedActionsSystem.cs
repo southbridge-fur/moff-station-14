@@ -17,11 +17,6 @@ using Robust.Shared.Map;
 using Robust.Shared.Timing;
 using Robust.Shared.Utility;
 
-// Moffstation - Start - Adding the ability for actions to have charges
-using Content.Shared._Moffstation.Actions.Components;
-using Content.Shared._Moffstation.Actions.EntitySystems;
-// Moffstation - End
-
 namespace Content.Shared.Actions;
 
 public abstract class SharedActionsSystem : EntitySystem
@@ -35,8 +30,6 @@ public abstract class SharedActionsSystem : EntitySystem
     [Dependency] private   readonly SharedAudioSystem _audio = default!;
     [Dependency] private   readonly SharedInteractionSystem _interaction = default!;
     [Dependency] private   readonly SharedTransformSystem _transform = default!;
-
-    [Dependency] private   readonly SharedChargesActionSystem _charges = default!;
 
     private EntityQuery<ActionComponent> _actionQuery;
     private EntityQuery<ActionsComponent> _actionsQuery;
@@ -297,14 +290,6 @@ public abstract class SharedActionsSystem : EntitySystem
         var curTime = GameTiming.CurTime;
         if (IsCooldownActive(action, curTime))
             return;
-
-        // Moffstation - Begin - Adding actions which can have charges
-        if (TryComp<ChargesActionComponent>(action, out var charges))
-        {
-            if (!_charges.TryUseCharge(action, charges))
-                return;
-        }
-        // Moffstation - End
 
         // check for action use prevention
         // TODO: make code below use this event with a dedicated component

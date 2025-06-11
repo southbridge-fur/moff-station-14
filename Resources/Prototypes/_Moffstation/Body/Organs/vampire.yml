@@ -1,10 +1,36 @@
 - type: entity
+  parent: BaseHumanOrgan
+  id: BaseVampireOrgan
+  abstract: true
+  categories: [ HideSpawnMenu ]
+  components:
+  - type: SolutionContainerManager
+    solutions:
+      organ:
+        reagents:
+        - ReagentId: Ash
+          Quantity: 10
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: Ash
+          Quantity: 5
+  - type: FlavorProfile
+    flavors:
+    - flavor-ash-and-undeath
+
+- type: entity
   parent: OrganHumanStomach
   id: OrganVampireStomach
   name: stomach
   description: A stomach which reeks of undeath and iron.
   categories: [ HideSpawnMenu ]
   components:
+  - type: Sprite
+    state: stomach
+  - type: Item
+    size: Small
+    heldPrefix: stomach
   - type: Metabolizer
     maxReagents: 1
     removeEmpty: true
@@ -33,7 +59,7 @@
   parent: OrganHumanHeart
   id: OrganVampireHeart
   name: heart
-  categories: [ HideSpawnMenu ]
+  description: "Best with a steak run through it."
   components:
   - type: Sprite
     state: heart-off # It has stopped beating
@@ -43,3 +69,41 @@
     metabolizerTypes: [ Vampire ]
     groups:
     - Blood
+  - type: Item
+    size: Small
+    heldPrefix: heart
+
+- type: entity
+  id: OrganVampireLungs
+  parent: BaseVampireOrgan
+  name: lungs
+  description: "Delicate and brittle. Long unused, now they crumble like ash."
+  components:
+  - type: Sprite
+    layers:
+    - state: lung-l
+    - state: lung-r
+  - type: Item
+    size: Small
+    heldPrefix: lungs
+  - type: Lung
+  - type: Metabolizer
+    removeEmpty: false
+    solutionOnBody: false
+    solution: "Lung"
+    metabolizerTypes: []
+    groups: []
+  - type: SolutionContainerManager
+    solutions:
+      organ:
+        reagents:
+        - ReagentId: Ash
+          Quantity: 10
+      Lung:
+        maxVol: 50.0
+        canReact: true
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: Ash
+          Quantity: 5

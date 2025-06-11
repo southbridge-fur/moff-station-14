@@ -1,6 +1,7 @@
 using Content.Shared.Popups;
 using Content.Shared.DoAfter;
 using Content.Server.Actions;
+using Content.Server.Body.Components;
 using Content.Shared._Moffstation.Vampire.Components;
 using Content.Server.Store.Systems;
 using Content.Shared._Moffstation.Vampire.EntitySystems;
@@ -8,6 +9,7 @@ using Content.Shared.Alert;
 using Content.Shared.Damage;
 using Content.Shared.Damage.Systems;
 using Robust.Shared.Random;
+using Robust.Shared.Timing;
 
 namespace Content.Server._Moffstation.Vampire.EntitySystems;
 
@@ -23,6 +25,8 @@ public sealed partial class VampireSystem : SharedVampireSystem
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly SharedStaminaSystem  _stamina = default!;
     [Dependency] private readonly SharedTransformSystem _transform = default!;
+    [Dependency] private readonly IEntityManager _entityManager = default!;
+
 
     [Dependency] private readonly BloodEssenceUserSystem _bloodEssence = default!;
 
@@ -30,18 +34,11 @@ public sealed partial class VampireSystem : SharedVampireSystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<VampireComponent, ComponentStartup>(OnStartup);
         SubscribeLocalEvent<VampireComponent, MapInitEvent>(OnMapInit);
-
-    }
-
-    private void OnStartup(EntityUid uid, VampireComponent component, ComponentStartup args)
-    {
-        //todo
     }
 
     private void OnMapInit(EntityUid uid, VampireComponent component, MapInitEvent args)
     {
-        //todo
+        _entityManager.RemoveComponent<RespiratorComponent>(uid); // Don't need them to breath
     }
 }

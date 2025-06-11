@@ -1,0 +1,40 @@
+- type: entity
+  parent: BaseGameRule
+  id: Vampire
+  components:
+  - type: GameRule
+    minPlayers: 25
+  - type: VampireRule
+  - type: AntagSelection
+    selectionTime: IntraPlayerSpawn
+    definitions:
+    - prefRoles: [ Vampire ]
+      max: 1
+      briefing:
+        text: roles-antag-vampire-briefing
+        color: Crimson
+        sound: "/Audio/_Moffstation/Ambience/Antag/vampire_alert.ogg"
+      lateJoinAdditional: true
+      allowNonHumans: true
+      components:
+      - type: Vampire
+      - type: VampireHunger
+      - type: BloodEssenceUser
+      - type: Hunger
+        starvationDamage:
+           types:
+             Piercing: 5
+      - type: Damageable
+        damageContainer: BiologicalMetaphysical
+        damageModifierSet: Vampire\
+      - type: BurnedBySun
+        damage:
+          type:
+            Heat: 5
+      - type: OrganSwap
+        organSwaps:
+        - heart: OrganVampireHeart
+        - lungs: OrganVampireLungs
+        - stomach: OrganVampireStomach
+      mindRoles:
+      - MindRoleVampire

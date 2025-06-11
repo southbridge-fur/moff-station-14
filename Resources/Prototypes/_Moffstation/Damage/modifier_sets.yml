@@ -1,0 +1,16 @@
+﻿- type: damageModifierSet
+  id: Vampire
+  coefficients:
+    Blunt: 0.3
+    Slash: 0.3
+    Piercing: 0.5
+    Heat: 1.8
+    Shock: 0.1
+    Cold: 0.1
+    Caustic: 0.5
+    Poison: 0.0
+    Radiation: 0.0
+    Asphyxiation: 0.0
+    Bloodloss: 0.0
+    Cellular: 0.0
+    Holy: 2

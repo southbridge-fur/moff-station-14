@@ -41,8 +41,10 @@
   parent: BaseAction
   id: ActionVampireGlare
   name: Glare
-  description: Enstill fear and dispair in those around you, weakening their resolve, stunning them.
+  description: Instill fear and despair in those around you, weakening their resolve, stunning them.
+  components:
   - type: Action
+    checkCanInteract: false
     icon:
     - sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
       state: glare
@@ -51,9 +53,10 @@
     - stare
     - eye
     actionCooldown: 1.0
-  - type: ChargesAction
+  - type: AutoRecharge
+    rechargeDuration: 20
+  - type: LimitedCharges
     maxCharges: 2
-    rechargeDuration: 20.0
   - type: InstantAction
     event: !type:VampireEventGlare
 
@@ -62,9 +65,10 @@
   parent: BaseAction
   id: ActionVampireRejuvenate
   name: Rejuvenate
-  description:
+  description: Restore your resolve.
+  components:
   - type: Action
-    icon: Restore your resolve.
+    icon:
     - sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
       state: rejuvenate
     keywords:
