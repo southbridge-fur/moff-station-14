@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 using Content.Server._Moffstation.GameTicking.Rules.Components; // Moffstation - Added Vampires
+=======
+using Content.Server._Harmony.GameTicking.Rules.Components; // Harmony
+>>>>>>> 253df7b864830fec49c04699f951c02e55be7aa8
 using Content.Server.Administration.Commands;
 using Content.Server.Antag;
 using Content.Server.GameTicking;
@@ -36,6 +40,11 @@ public sealed partial class AdminVerbSystem
 
     [ValidatePrototypeId<EntityPrototype>]
     private const string DefaultThiefRule = "Thief";
+
+    // Harmony start
+    [ValidatePrototypeId<EntityPrototype>]
+    private const string DefaultBloodBrotherRule = "BloodBrothers";
+    // Harmony end
 
     [ValidatePrototypeId<StartingGearPrototype>]
     private const string PirateGearId = "PirateGear";
@@ -211,5 +220,23 @@ public sealed partial class AdminVerbSystem
         if (HasComp<HumanoidAppearanceComponent>(args.Target)) // only humanoids can be vampries
             args.Verbs.Add(vampire);
         // Moffstation - End
+
+        // Harmony start
+        var bloodBrotherName = Loc.GetString("admin-verb-text-make-blood-brother");
+        Verb bloodBrother = new()
+        {
+            Text = bloodBrotherName,
+            Category = VerbCategory.Antag,
+            Icon = new SpriteSpecifier.Rsi(new("/Textures/_Harmony/Interface/Misc/job_icons.rsi"), "BloodBrother"),
+            Act = () =>
+            {
+                _antag.ForceMakeAntag<BloodBrotherRuleComponent>(targetPlayer, DefaultBloodBrotherRule);
+            },
+            Impact = LogImpact.High,
+            Message = string.Join(": ", bloodBrotherName, Loc.GetString("admin-verb-make-blood-brother")),
+        };
+        args.Verbs.Add(bloodBrother);
+        // Harmony end
+
     }
 }
