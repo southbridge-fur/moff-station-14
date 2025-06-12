@@ -1,7 +1,8 @@
-﻿using Content.Server.Body.Components;
+﻿using Robust.Shared.GameStates;
 
-namespace Content.Server._Moffstation.Vampire.Components;
+namespace Content.Shared._Moffstation.Vampire.Components;
 
+[RegisterComponent, NetworkedComponent]
 public sealed partial class BloodConsumptionComponent : Component
 {
     /// <summary>

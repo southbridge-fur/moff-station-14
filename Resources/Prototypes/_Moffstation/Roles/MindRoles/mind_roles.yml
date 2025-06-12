@@ -26,14 +26,6 @@
   - type: MindRole
     antagPrototype: PirateCaptain
 
-- type: entity
-  parent: MindRolePirateCrew
-  id: MindRolePirateCaptain
-  name: Pirate Captain Role
-  components:
-  - type: MindRole
-    antagPrototype: PirateCaptain
-
 # Vampires
 
 - type: entity

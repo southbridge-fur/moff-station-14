@@ -90,7 +90,7 @@ public sealed class AbilityFeedSystem : EntitySystem
             return;
 
         var collectedEssence = _bloodEssence.TryExtractBlood(uid, component.BloodPerFeed, target.Value, targetBloodstream);
-        if (collectedEssence > FixedPoint2.Zero)
+        if (collectedEssence > 0.0f)
         {
             // todo: play sound
             _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-vampire", ("target", target)), uid, uid, PopupType.Medium);

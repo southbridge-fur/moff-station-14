@@ -4,7 +4,7 @@ using Robust.Shared.Serialization;
 
 namespace Content.Shared._Moffstation.Vampire;
 
-public sealed partial class VampireShopOpenEvent : InstantActionEvent;
+public sealed partial class VampireShopEvent : InstantActionEvent;
 
 
 

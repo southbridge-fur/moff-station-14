@@ -1,6 +1,6 @@
-﻿using Content.Server._Moffstation.Vampire.Components;
-using Content.Server.Body.Components;
+﻿using Content.Server.Body.Components;
 using Content.Server.Body.Systems;
+using Content.Shared._Moffstation.Vampire.Components;
 using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
 using Robust.Shared.Timing;
@@ -9,10 +9,10 @@ namespace Content.Server._Moffstation.Vampire.EntitySystems;
 
 public sealed class BloodConsumptionSystem : EntitySystem
 {
-    [Dependency] private readonly GameTiming _timing = default!;
     [Dependency] private readonly BloodstreamSystem _bloodstreamSystem = default!;
     [Dependency] private readonly HungerSystem _hungerSystem = default!;
     [Dependency] private readonly ThirstSystem _thirstSystem = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
 
     public override void Initialize()
     {

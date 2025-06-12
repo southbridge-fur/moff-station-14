@@ -1,7 +1,9 @@
-﻿using Robust.Shared.Prototypes;
+﻿using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 
 namespace Content.Server._Moffstation.Vampire.Abilities.Components;
 
+[RegisterComponent, NetworkedComponent]
 public sealed partial class AbilityRejuvenateComponent : Component
 {
     [DataField]

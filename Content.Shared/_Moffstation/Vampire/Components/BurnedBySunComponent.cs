@@ -1,9 +1,11 @@
 ﻿using Content.Shared.Damage;
 using Content.Shared.Maps;
+using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Moffstation.Vampire.Components;
 
+[RegisterComponent, NetworkedComponent]
 public sealed partial class BurnedBySunComponent : Component
 {
     [DataField]

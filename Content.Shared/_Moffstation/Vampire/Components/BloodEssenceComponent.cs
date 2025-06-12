@@ -7,7 +7,7 @@ namespace Content.Shared._Moffstation.Vampire.Components;
 public sealed partial class BloodEssenceComponent : Component
 {
     [DataField]
-    public FixedPoint2 BloodEssence = 200.0;
+    public float BloodEssence = 200.0f;
 
     /// <summary>
     /// Handles withdrawl of blood essence from this component.
@@ -17,9 +17,9 @@ public sealed partial class BloodEssenceComponent : Component
     /// Returns a value between 0.0 and `withdraw` which corresponds to the amount of BloodEssence withdrawn.
     /// 0.0 being the minimum value if the owner is out of BloodEssence.
     /// </returns>
-    public FixedPoint2 Withdraw(FixedPoint2 withdraw)
+    public float Withdraw(float withdraw)
     {
-        BloodEssence = FixedPoint2.Max(0.0, BloodEssence - withdraw);
+        BloodEssence = Math.Max(0.0f, BloodEssence - withdraw);
         return BloodEssence;
     }
 }

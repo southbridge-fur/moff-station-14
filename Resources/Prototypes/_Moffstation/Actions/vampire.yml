@@ -7,7 +7,7 @@
   - type: Action
     icon: Interface/Actions/shop.png
   - type: InstantAction
-    event: !type:VampireShopActionEvent
+    event: !type:VampireShopEvent
 
 - type: entity
   parent: BaseAction
@@ -17,7 +17,7 @@
   components:
   - type: Action
     icon:
-    - sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
+      sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
       state: fangs
     keywords:
     - bite
@@ -31,7 +31,7 @@
     range: 0.8
     interactOnMiss: false
   - type: EntityTargetAction
-    event: !type:VampireEventFeed
+    event: !type:VampireEventFeedAbility
     whitelist:
       components:
       - HumanoidAppearance
@@ -46,7 +46,7 @@
   - type: Action
     checkCanInteract: false
     icon:
-    - sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
+      sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
       state: glare
     keywords:
     - glare
@@ -58,7 +58,7 @@
   - type: LimitedCharges
     maxCharges: 2
   - type: InstantAction
-    event: !type:VampireEventGlare
+    event: !type:VampireEventGlareAbility
 
 
 - type: entity
@@ -69,11 +69,11 @@
   components:
   - type: Action
     icon:
-    - sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
+      sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
       state: rejuvenate
     keywords:
     - heal
     - rejuvenate
     actionCooldown: 20.0
   - type: InstantAction
-    event: !type:VampireEventRejuvenate
+    event: !type:VampireEventRejuvenateAbility

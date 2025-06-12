@@ -23,7 +23,7 @@ public sealed partial class VampireSystem : SharedVampireSystem
         base.Initialize();
 
         SubscribeLocalEvent<VampireComponent, MapInitEvent>(OnMapInit);
-        SubscribeLocalEvent<VampireComponent, VampireShopOpenEvent>(OnShopOpenAction);
+        SubscribeLocalEvent<VampireComponent, VampireShopEvent>(OnShopOpenAction);
     }
 
     private void OnMapInit(EntityUid uid, VampireComponent? comp, MapInitEvent args)
@@ -41,7 +41,7 @@ public sealed partial class VampireSystem : SharedVampireSystem
         EnsureComp<AbilityRejuvenateComponent>(uid);
     }
 
-    private void OnShopOpenAction(EntityUid uid, VampireComponent comp, VampireShopOpenEvent args)
+    private void OnShopOpenAction(EntityUid uid, VampireComponent comp, VampireShopEvent args)
     {
         if (!TryComp<StoreComponent>(uid, out var store))
             return;
@@ -49,9 +49,9 @@ public sealed partial class VampireSystem : SharedVampireSystem
         _storeSystem.ToggleUi(uid, uid, store);
     }
 
-    public void DepositEssence(EntityUid uid, VampireComponent? comp, FixedPoint2 amount)
+    public void DepositEssence(EntityUid uid, VampireComponent? comp, float amount)
     {
-        if (amount <= FixedPoint2.Zero)
+        if (amount <= 0.0f)
             return;
 
         if (!Resolve(uid, ref comp))

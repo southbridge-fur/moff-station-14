@@ -37,9 +37,9 @@
             Heat: 5
       - type: OrganSwap
         organSwaps:
-        - heart: OrganVampireHeart
-        - lungs: OrganVampireLungs
-        - stomach: OrganVampireStomach
+          heart: OrganVampireHeart
+          lungs: OrganVampireLungs
+          stomach: OrganVampireStomach
       - type: Store
         name: vampire-store-name
         categories:
@@ -63,7 +63,14 @@
         bloodlossDamage:
           types:
             Bloodloss: 10 # if they're out of blood they're taking bloodloss damage
-        bloodlossHealDamage: VampireHealing
+        bloodlossHealDamage:
+          types:
+            Brute: -0.5
+            Burn: -0.1
+            Airloss: -1.0
+            Toxin: -0.5
+            Genetic: -0.5
+            Metaphysical: -0.1
         bloodRefreshAmount: -0.3 # Loses blood every update (3 seconds)
       mindRoles:
       - MindRoleVampire

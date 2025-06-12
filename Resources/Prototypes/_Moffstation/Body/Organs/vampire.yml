@@ -36,9 +36,9 @@
     removeEmpty: true
     metabolizerTypes: [ Vampire ] # We can't use bloodsucker because bloodsucker heals
     groups:
-    - Blood
-    - Drink
-    - Food
+    - id: Blood
+    - id: Drink
+    - id: Food
   - type: SolutionContainerManager
     solutions:
       stomach:
@@ -68,7 +68,7 @@
     removeEmpty: true
     metabolizerTypes: [ Vampire ]
     groups:
-    - Blood
+    - id: Blood
   - type: Item
     size: Small
     heldPrefix: heart
@@ -91,8 +91,9 @@
     removeEmpty: false
     solutionOnBody: false
     solution: "Lung"
-    metabolizerTypes: []
-    groups: []
+    metabolizerTypes: [ Vampire ]
+    groups:
+    - id: Blood
   - type: SolutionContainerManager
     solutions:
       organ:

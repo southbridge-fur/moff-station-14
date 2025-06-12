@@ -2,4 +2,4 @@
 
 namespace Content.Shared._Moffstation.Vampire.Events;
 
-public sealed partial class VampireEventRejuvenate : InstantActionEvent ;
+public sealed partial class VampireEventRejuvenateAbility : InstantActionEvent ;

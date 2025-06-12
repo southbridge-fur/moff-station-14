@@ -1,8 +1,10 @@
 ﻿using Content.Shared.FixedPoint;
+using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server._Moffstation.Vampire.Abilities.Components;
 
+[RegisterComponent, NetworkedComponent]
 public sealed partial class AbilityFeedComponent : Component
 {
     /// <summary>
@@ -15,7 +17,7 @@ public sealed partial class AbilityFeedComponent : Component
     /// The amount of blood to drink from someone per feed action
     /// </summary>
     [DataField]
-    public FixedPoint2 BloodPerFeed = 10.0;
+    public float BloodPerFeed = 10.0f;
 
     [DataField]
     public EntProtoId ActionProto = "ActionVampireFeed";

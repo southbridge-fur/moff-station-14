@@ -14,7 +14,7 @@ public sealed class AbilityRejuvenateSystem : EntitySystem
     {
         base.Initialize();
 
-        SubscribeLocalEvent<AbilityRejuvenateComponent, VampireEventRejuvenate>(OnRejuvenate);
+        SubscribeLocalEvent<AbilityRejuvenateComponent, VampireEventRejuvenateAbility>(OnRejuvenate);
         SubscribeLocalEvent<AbilityRejuvenateComponent, MapInitEvent>(OnMapInit);
     }
 
@@ -25,7 +25,7 @@ public sealed class AbilityRejuvenateSystem : EntitySystem
         _action.AddAction(uid, ref comp.Action, comp.ActionProto, uid);
     }
 
-    private void OnRejuvenate(EntityUid uid, AbilityRejuvenateComponent? comp, VampireEventRejuvenate args)
+    private void OnRejuvenate(EntityUid uid, AbilityRejuvenateComponent? comp, VampireEventRejuvenateAbility args)
     {
         if (args.Handled)
             return;

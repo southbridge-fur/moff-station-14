@@ -9,7 +9,7 @@ namespace Content.Server._Moffstation.Vampire.EntitySystems;
 public sealed class BurnedBySunSystem : EntitySystem
 {
     [Dependency] private readonly SharedMapSystem _map = default!;
-    [Dependency] private readonly GameTiming _timing = default!;
+    [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly ITileDefinitionManager _tileDefs = default!;
     [Dependency] private readonly DamageableSystem _damage = default!;
 

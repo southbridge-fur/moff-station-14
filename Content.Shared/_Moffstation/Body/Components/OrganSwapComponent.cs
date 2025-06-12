@@ -1,4 +1,5 @@
 ﻿using Content.Shared.Body.Organ;
+using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Moffstation.Body.Components;
@@ -6,6 +7,7 @@ namespace Content.Shared._Moffstation.Body.Components;
 /// <summary>
 /// A component that on initialization swaps out the organs within a body.
 /// </summary>
+[RegisterComponent, NetworkedComponent]
 public sealed partial class OrganSwapComponent : Component
 {
     /// <summary>

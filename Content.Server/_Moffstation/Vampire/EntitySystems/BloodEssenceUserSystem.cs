@@ -20,12 +20,12 @@ namespace Content.Server._Moffstation.Vampire.EntitySystems;
 /// </summary>
 public sealed partial class BloodEssenceUserSystem : EntitySystem
 {
-    [Dependency] private readonly InjectorSystem _injectorSystem = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly BodySystem _body = default!;
     [Dependency] private readonly StomachSystem _stomach = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
+
 
     /// <summary>
     /// Extracts blood from the target creature and places it in the user's stomach.
@@ -33,30 +33,30 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
     /// pull essence from the target and put it in the user's BloodEssencePool
     /// </summary>
     /// <param name="uid"></param>
-    /// <param name="transferAmount"></param>
+    /// <param name="quantity"></param>
     /// <param name="target"></param>
     /// <param name="targetBloodstream"></param>
-    /// <returns></returns>
-    public FixedPoint2 TryExtractBlood(Entity<BloodEssenceUserComponent?,BodyComponent?> uid, FixedPoint2 quantity, EntityUid target, BloodstreamComponent? targetBloodstream)
+    /// <returns>The amount of blood essence extracted.</returns>
+    public float TryExtractBlood(Entity<BloodEssenceUserComponent?,BodyComponent?> uid, float quantity, EntityUid target, BloodstreamComponent? targetBloodstream)
     {
-        if (!(quantity > FixedPoint2.Zero))
-            return FixedPoint2.Zero;
+        if (!(quantity > 0.0f))
+            return 0.0f;
 
         var transferAmount = quantity;
         if (!TryComp<BloodEssenceUserComponent>(uid, out var bloodEssenceUser) || !TryComp<BodyComponent>(uid, out var body))
-            return FixedPoint2.Zero;
+            return 0.0f;
 
         if (!Resolve(target, ref targetBloodstream))
-            return FixedPoint2.Zero;
+            return 0.0f;
 
         if (!_body.TryGetBodyOrganEntityComps<StomachComponent>((uid, body), out var stomachs))
-            return FixedPoint2.Zero;
+            return 0.0f;
 
-        var firstStomach = stomachs.FirstOrNull(stomach => _stomach.MaxTransferableSolution(stomach, transferAmount) > FixedPoint2.Zero);
+        var firstStomach = stomachs.FirstOrNull(stomach => _stomach.MaxTransferableSolution(stomach, transferAmount) > 0.0f);
 
         // All stomachs are full or null somehow
         if (firstStomach == null)
-            return FixedPoint2.Zero;
+            return 0.0f;
 
         var transferableAmount = _stomach.MaxTransferableSolution(firstStomach.Value, transferAmount);
 
@@ -79,7 +79,7 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
             _solutionContainerSystem.UpdateChemicals(targetBloodstream.BloodSolution.Value);
         }
 
-        var essenceCollected = FixedPoint2.Zero;
+        var essenceCollected = 0.0f;
 
         if (HasComp<MobStateComponent>(target)
             && HasComp<HumanoidAppearanceComponent>(target)
@@ -92,7 +92,7 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
             {
                 if (!tempSolution.TryGetReagentQuantity(new ReagentId(reagentProto.Id, null), out var volume))
                     continue;
-                essenceCollected += bloodEssence.Withdraw(volume);
+                essenceCollected += bloodEssence.Withdraw((float) volume);
             }
         }
 
@@ -100,7 +100,7 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
             bloodEssenceUser.FedFrom[target] += essenceCollected;
         else
             bloodEssenceUser.FedFrom.Add(target,essenceCollected);
-        
+
         bloodEssenceUser.BloodEssenceTotal += essenceCollected;
         _stomach.TryTransferSolution(firstStomach.Value, tempSolution);
 
