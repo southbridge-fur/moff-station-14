@@ -3,7 +3,7 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._Moffstation.Vampire.Abilities.Components;
 
-[RegisterComponent, NetworkedComponent]
+[RegisterComponent]
 public sealed partial class AbilityGlareComponent : Component
 {
     [DataField]

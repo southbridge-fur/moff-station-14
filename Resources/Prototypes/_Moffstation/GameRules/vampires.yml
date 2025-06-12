@@ -13,14 +13,14 @@
       briefing:
         text: roles-antag-vampire-briefing
         color: Crimson
-        sound: "/Audio/_Moffstation/Ambience/Antag/vampire_start.ogg"
+        sound: "/Audio/_Moffstation/Ambience/Antags/vampire_start.ogg"
       lateJoinAdditional: true
       allowNonHumans: true
       components:
       - type: Vampire
       - type: BloodConsumption
       - type: BloodEssenceUser
-        BloodWhitelist:
+        bloodWhitelist:
         - Blood
         - InsectBlood
         - Slime
@@ -44,7 +44,7 @@
         name: vampire-store-name
         categories:
         - VampireAbilitiesBasic
-        - VampireAbilitiesGargentua
+        - VampireAbilitiesGargantua
         - VampireAbilitiesHaemomancer
         - VampireAbilitiesUmbrae
         - VampireAbilitiesDantalion

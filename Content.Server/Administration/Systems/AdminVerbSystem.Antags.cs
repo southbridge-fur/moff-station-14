@@ -206,13 +206,13 @@ public sealed partial class AdminVerbSystem
         {
             Text = vampName,
             Category = VerbCategory.Antag,
-            Icon = new SpriteSpecifier.Rsi(new ResPath("/Textures/_Moffstation/Interface/Misc/job_icons"), "Vampire"),
+            Icon = new SpriteSpecifier.Rsi(new ResPath("/Textures/_Moffstation/Interface/Misc/job_icons.rsi"), "Vampire"),
             Act = () =>
             {
                 _antag.ForceMakeAntag<VampireRuleComponent>(targetPlayer, DefaultVampireRule);
             },
             Impact = LogImpact.High,
-            Message = string.Join(": ", thiefName, Loc.GetString("admin-verb-make-vampire")),
+            Message = string.Join(": ", vampName, Loc.GetString("admin-verb-make-vampire")),
         };
 
         if (HasComp<HumanoidAppearanceComponent>(args.Target)) // only humanoids can be vampries
