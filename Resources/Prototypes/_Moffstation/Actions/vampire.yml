@@ -23,7 +23,7 @@
     - bite
     - feed
     - drink
-    actionCooldown: 3.0
+    cooldown: 3.0
   - type: TargetAction
     repeat: false
     deselectOnMiss: true
@@ -52,7 +52,7 @@
     - glare
     - stare
     - eye
-    actionCooldown: 1.0
+    cooldown: 1.0
   - type: AutoRecharge
     rechargeDuration: 20
   - type: LimitedCharges
@@ -74,6 +74,6 @@
     keywords:
     - heal
     - rejuvenate
-    actionCooldown: 20.0
+    cooldown: 20.0
   - type: InstantAction
     event: !type:VampireEventRejuvenateAbility

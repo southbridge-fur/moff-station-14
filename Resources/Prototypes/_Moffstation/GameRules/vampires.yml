@@ -13,7 +13,7 @@
       briefing:
         text: roles-antag-vampire-briefing
         color: Crimson
-        sound: "/Audio/_Moffstation/Ambience/Antag/vampire_alert.ogg"
+        sound: "/Audio/_Moffstation/Ambience/Antag/vampire_start.ogg"
       lateJoinAdditional: true
       allowNonHumans: true
       components:
@@ -43,11 +43,11 @@
       - type: Store
         name: vampire-store-name
         categories:
-        - VampireAbilityBasic
-        - VampireAbilityGargentua
-        - VampireAbilityHaemomancer
-        - VampireAbilityUmbrae
-        - VampireAbilityDantalion
+        - VampireAbilitiesBasic
+        - VampireAbilitiesGargentua
+        - VampireAbilitiesHaemomancer
+        - VampireAbilitiesUmbrae
+        - VampireAbilitiesDantalion
         currencyWhitelist:
         - BloodEssence
         balance:

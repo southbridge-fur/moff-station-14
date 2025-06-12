@@ -1,1 +1,1 @@
-metabolism-group-vampire = Vampire
+metabolism-group-blood = Blood
