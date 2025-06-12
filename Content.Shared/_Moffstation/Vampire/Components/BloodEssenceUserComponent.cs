@@ -13,11 +13,12 @@ public sealed partial class BloodEssenceUserComponent : Component
     /// The vampire's current amount of blood essence collected.
     /// </summary>
     [DataField]
-    public FixedPoint2 BloodEssenceBalance = 0.0;
+    public FixedPoint2 BloodEssenceTotal = 0.0;
 
     [DataField]
     public List<ProtoId<ReagentPrototype>> BloodWhitelist = new();
 
-    // todo: Keep a record of people who we have taken blood essence from
+    [DataField]
+    public Dictionary<EntityUid, FixedPoint2> FedFrom = new();
 
 }

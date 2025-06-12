@@ -9,9 +9,9 @@
     Cold: 0.1
     Caustic: 0.5
     Poison: 0.0
-    Radiation: 0.0
+    Radiation: 0.2
     Asphyxiation: 0.0
-    Bloodloss: 0.0
+    Bloodloss: 1.0 # Vampires take this damage when they are out of blood
     Cellular: 0.0
     Holy: 2
 

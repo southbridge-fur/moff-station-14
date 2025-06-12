@@ -69,7 +69,7 @@ public sealed class BurnedBySunSystem : EntitySystem
         else
             comp.Accumulation = 0.0f;
 
-        _damage.TryChangeDamage(uid, comp.Damage*comp.Accumulation);
+        _damage.TryChangeDamage(uid, comp.Damage * comp.Accumulation);
         comp.LastBurn = _timing.CurTime;
     }
 }

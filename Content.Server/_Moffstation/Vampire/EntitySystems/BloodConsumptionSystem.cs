@@ -65,6 +65,11 @@ public sealed class BloodConsumptionSystem : EntitySystem
         if (!TryComp<BloodstreamComponent>(uid, out var bloodstream))
             return; // we need at least the blood stream before we can do something.
 
+        UpdateHungerThirst(uid, comp, bloodstream);
+    }
+
+    private void UpdateHungerThirst(EntityUid uid, BloodConsumptionComponent comp, BloodstreamComponent bloodstream)
+    {
         var bloodstreamPercentage = _bloodstreamSystem.GetBloodLevelPercentage(uid, bloodstream);
         var modificationPercentage = Math.Clamp(
             bloodstreamPercentage - comp.PrevBloodPercentage,
@@ -76,5 +81,4 @@ public sealed class BloodConsumptionSystem : EntitySystem
             _thirstSystem.ModifyThirst(uid, thirst, modificationPercentage * thirst.ThirstThresholds[ThirstThreshold.OverHydrated]);
         comp.PrevBloodPercentage += modificationPercentage;
     }
-
 }

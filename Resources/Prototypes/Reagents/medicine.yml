@@ -1123,12 +1123,12 @@
           shouldHave: true
         damage:
           types:
-            Heat: 1.5 # 1.5 heat damage per unit of holy water, ouch
+            Holy: 1.0
       - !type:FlammableReaction
         conditions:
         - !type:OrganType
           type: Vampire
-          shouldHave: true # Make them more flamable
+          shouldHave: true # Make them more flammable
   # Moffstation - End - Making holywater hurt vampires
   reactiveEffects:
     Extinguish:

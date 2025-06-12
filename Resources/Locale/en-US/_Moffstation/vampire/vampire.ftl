@@ -12,5 +12,6 @@ vampire-store-name = Vampire Abilities
 
 
 admin-verb-make-vampire = Make the target into a vampire.
-
 admin-verb-text-make-vampire = Make Vampire
+
+vampire-glare-alert = {CAPITALIZE(THE($vampire))} glares at those around {POSS-ADJ($vampire)}!

@@ -39,7 +39,7 @@
             Burn: -1.25
     # Moffstation - Start - Added blood metabolism group
     Blood:
-      metabolismRate: 0.8
+      metabolismRate: 0.95 # Ensure there's always a little loss
       effects:
       - !type:ModifyBloodLevel
         conditions:
@@ -84,6 +84,16 @@
       effects:
       - !type:SatiateHunger
         factor: 1
+    # Moffstation - Start - Added blood metabolism group
+    Blood:
+      metabolismRate: 0.80
+      effects:
+      - !type:ModifyBloodLevel
+        conditions:
+        - !type:OrganType
+          type: Vampire
+          shouldHave: true
+    # Moffstation - End
   footstepSound:
     collection: FootstepSlime # makes sense
     params:
@@ -109,6 +119,16 @@
         factor: 1
       - !type:SatiateThirst
         factor: 1
+    # Moffstation - Start - Added blood metabolism group
+    Blood:
+      metabolismRate: 0.80
+      effects:
+      - !type:ModifyBloodLevel
+        conditions:
+        - !type:OrganType
+          type: Vampire
+          shouldHave: true
+    # Moffstation - End
   footstepSound:
     collection: FootstepSlime
     params:
@@ -158,7 +178,16 @@
             Poison: 4
       - !type:ChemVomit
         probability: 0.25
-
+    # Moffstation - Start - Added blood metabolism group
+    Blood:
+      metabolismRate: 0.5 # Terrible for you but it works
+      effects:
+      - !type:ModifyBloodLevel
+        conditions:
+        - !type:OrganType
+          type: Vampire
+          shouldHave: true
+    # Moffstation - End
 - type: reagent
   id: Ichor
   name: reagent-name-ichor

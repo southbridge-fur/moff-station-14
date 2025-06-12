@@ -1,33 +1,46 @@
-﻿using Content.Server.Body.Components;
+﻿using Content.Server._Moffstation.Vampire.Abilities.Components;
+using Content.Server._Moffstation.Vampire.EntitySystems;
+using Content.Server.Body.Components;
 using Content.Shared._Moffstation.Vampire;
 using Content.Shared._Moffstation.Vampire.Components;
 using Content.Shared.DoAfter;
 using Content.Shared.Popups;
 using Content.Shared._Moffstation.Vampire.Events;
+using Content.Shared.Actions;
+using Content.Shared.FixedPoint;
 
-namespace Content.Server._Moffstation.Vampire.EntitySystems.Abilities;
+namespace Content.Server._Moffstation.Vampire.Abilities.EntitySystems;
 
-// todo: consider moving this to a generic "bloodsucker" or "bloodfeeder" component/system
-public sealed class ActionFeed : EntitySystem
+public sealed class AbilityFeedSystem : EntitySystem
 {
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedDoAfterSystem _doAfter = default!;
     [Dependency] private readonly BloodEssenceUserSystem _bloodEssence = default!;
+    [Dependency] private readonly VampireSystem _vampire = default!;
+    [Dependency] private readonly SharedActionsSystem _action = default!;
 
     public override void Initialize()
     {
         base.Initialize();
 
-        SubscribeLocalEvent<VampireComponent, VampireEventFeedAbility>(OnFeedStart);
-        SubscribeLocalEvent<VampireComponent, VampireEventFeedAbilityDoAfter>(OnFeedEnd);
+        SubscribeLocalEvent<AbilityFeedComponent, VampireEventFeedAbility>(OnFeedStart);
+        SubscribeLocalEvent<AbilityFeedComponent, VampireEventFeedAbilityDoAfter>(OnFeedEnd);
+        SubscribeLocalEvent<AbilityFeedComponent, MapInitEvent>(OnMapInit);
     }
 
-    private void OnFeedStart(EntityUid uid, VampireComponent? component, VampireEventFeedAbility args)
+    public void OnMapInit(EntityUid uid, AbilityFeedComponent? comp, MapInitEvent args)
     {
-        if (!Resolve(uid, ref component))
+        if (!Resolve(uid, ref comp))
+            return;
+        _action.AddAction(uid, ref comp.Action, comp.ActionProto, uid);
+    }
+
+    private void OnFeedStart(EntityUid uid, AbilityFeedComponent? component, VampireEventFeedAbility args)
+    {
+        if (args.Handled)
             return;
 
-        if (args.Handled)
+        if (!Resolve(uid, ref component))
             return;
 
         args.Handled = true;
@@ -46,7 +59,7 @@ public sealed class ActionFeed : EntitySystem
             return;
         }
 
-        var feedDoAfter = new DoAfterArgs(EntityManager, uid, args.FeedDuration, new VampireEventFeedAbilityDoAfter(), uid, target: target)
+        var feedDoAfter = new DoAfterArgs(EntityManager, uid, component.FeedDuration, new VampireEventFeedAbilityDoAfter(), uid, target: target)
         {
             BreakOnMove = true,
             BreakOnWeightlessMove = false,
@@ -60,23 +73,29 @@ public sealed class ActionFeed : EntitySystem
         _popup.PopupEntity(Loc.GetString("vampire-feeding-on-target", ("vampire", uid)), uid, target, PopupType.LargeCaution);
     }
 
-    private void OnFeedEnd(EntityUid uid, VampireComponent component, VampireEventFeedAbilityDoAfter args)
+    private void OnFeedEnd(EntityUid uid, AbilityFeedComponent? component, VampireEventFeedAbilityDoAfter args)
     {
         // if canceled return (maybe spray blood?)
         if (args.Handled || args.Cancelled)
             return;
 
-        if (!TryComp<VampireComponent>(uid, out var vampire))
+        if (!Resolve(uid, ref component) || !TryComp<VampireComponent>(uid, out var vampire))
             return;
 
         var target = args.Args.Target;
-        if (target == null || !TryComp<BloodstreamComponent>(target, out var targetBloodstream))
+        if (target is not { } || !TryComp<BloodstreamComponent>(target, out var targetBloodstream))
             return;
 
-        if (_bloodEssence.TryExtractBlood(uid, args.BloodPerFeed, target.Value, targetBloodstream))
+        if (!TryComp<BloodEssenceUserComponent>(uid, out var bloodEssenceUser))
+            return;
+
+        var collectedEssence = _bloodEssence.TryExtractBlood(uid, component.BloodPerFeed, target.Value, targetBloodstream);
+        if (collectedEssence > FixedPoint2.Zero)
         {
+            // todo: play sound
             _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-vampire", ("target", target)), uid, uid, PopupType.Medium);
             _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-target", ("vampire", uid)), uid, target.Value, PopupType.MediumCaution);
+            _vampire.DepositEssence(uid, vampire, collectedEssence);
         }
 
         args.Handled = true;

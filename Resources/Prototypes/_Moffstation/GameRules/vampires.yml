@@ -18,7 +18,7 @@
       allowNonHumans: true
       components:
       - type: Vampire
-      - type: VampireHunger
+      - type: BloodConsumption
       - type: BloodEssenceUser
         BloodWhitelist:
         - Blood
@@ -28,7 +28,6 @@
         - CopperBlood
         - AmmoniaBlood
         - ZombieBlood
-        - Ichor
       - type: Damageable
         damageContainer: BiologicalMetaphysical
         damageModifierSet: Vampire
@@ -65,6 +64,6 @@
           types:
             Bloodloss: 10 # if they're out of blood they're taking bloodloss damage
         bloodlossHealDamage: VampireHealing
-        bloodRefreshAmount: 0.0
+        bloodRefreshAmount: -0.3 # Loses blood every update (3 seconds)
       mindRoles:
       - MindRoleVampire
