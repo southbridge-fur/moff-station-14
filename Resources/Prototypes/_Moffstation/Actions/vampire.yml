@@ -23,7 +23,7 @@
     - bite
     - feed
     - drink
-    cooldown: 3.0
+    useDelay: 3.0
   - type: TargetAction
     repeat: false
     deselectOnMiss: true
@@ -52,14 +52,13 @@
     - glare
     - stare
     - eye
-    cooldown: 1.0
+    useDelay: 1.0
   - type: AutoRecharge
     rechargeDuration: 20
   - type: LimitedCharges
     maxCharges: 2
   - type: InstantAction
     event: !type:VampireEventGlareAbility
-
 
 - type: entity
   parent: BaseAction
@@ -74,6 +73,6 @@
     keywords:
     - heal
     - rejuvenate
-    cooldown: 20.0
+    useDelay: 20.0
   - type: InstantAction
     event: !type:VampireEventRejuvenateAbility
