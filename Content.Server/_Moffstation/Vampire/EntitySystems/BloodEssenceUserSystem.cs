@@ -6,6 +6,7 @@ using Content.Server.Body.Systems;
 using Content.Server.Body.Components;
 using Content.Shared._Moffstation.Vampire.Components;
 using Content.Server.Chemistry.EntitySystems;
+using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Chemistry.Reagent;
@@ -69,7 +70,7 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
             // Technically this does allow someone to drink blood in order to then have that blood be taken and
             // give essence but I don't care too much about that possible issue.
             tempSolution.AddSolution(targetChemSolution.SplitSolution(transferableAmount * 0.15f), _proto);
-            transferableAmount -= tempSolution.Volume;
+            transferableAmount -= (float) tempSolution.Volume;
             _solutionContainerSystem.UpdateChemicals(targetBloodstream.ChemicalSolution.Value);
         }
 

@@ -1,8 +1,6 @@
-<<<<<<< HEAD
 using Content.Server._Moffstation.GameTicking.Rules.Components; // Moffstation - Added Vampires
-=======
 using Content.Server._Harmony.GameTicking.Rules.Components; // Harmony
->>>>>>> 253df7b864830fec49c04699f951c02e55be7aa8
+
 using Content.Server.Administration.Commands;
 using Content.Server.Antag;
 using Content.Server.GameTicking;

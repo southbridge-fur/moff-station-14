@@ -80,14 +80,14 @@ namespace Content.Shared.Chemistry.Components
         /// <summary>
         ///     Gets the maximum amount of solution that can be transferred from the solution up to the quantity.
         /// </summary>
-        public FixedPoint2 MaxTransferableSolution(Solution solution, FixedPoint2 quantity)
+        public float MaxTransferableSolution(Solution solution, float quantity)
         {
-            return FixedPoint2.Min(solution.Volume, AvailableVolume, quantity);
+            return Math.Min((float) solution.Volume, Math.Min((float) AvailableVolume, quantity));
         }
 
-        public FixedPoint2 MaxTransferableSolution(FixedPoint2 quantity)
+        public float MaxTransferableSolution(float quantity)
         {
-            return FixedPoint2.Min(AvailableVolume, quantity);
+            return Math.Min((float) AvailableVolume, quantity);
         }
         // Moffstation - End
 
