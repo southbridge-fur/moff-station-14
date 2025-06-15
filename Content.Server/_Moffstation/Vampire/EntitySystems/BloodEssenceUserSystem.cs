@@ -6,6 +6,7 @@ using Content.Server.Body.Systems;
 using Content.Server.Body.Components;
 using Content.Shared._Moffstation.Vampire.Components;
 using Content.Server.Chemistry.EntitySystems;
+using Content.Shared.Body.Organ;
 using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Components.SolutionManager;
@@ -30,8 +31,8 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
 
     /// <summary>
     /// Extracts blood from the target creature and places it in the user's stomach.
-    /// This also handles giving the target the BloodEssenceComponent as well as interacts with that component to
-    /// pull essence from the target and put it in the user's BloodEssencePool
+    /// This also handles giving the target the BloodEssenceComponent and interacts with it to
+    /// pull essence from the target and put it in the user's BloodEssence pool
     /// </summary>
     /// <param name="uid"></param>
     /// <param name="quantity"></param>
@@ -86,12 +87,12 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
             && HasComp<HumanoidAppearanceComponent>(target)
             && !HasComp<BloodEssenceUserComponent>(target))
         {
-            // check how much blood is in this and subtract that blood amount from their BloodEssence component.
+            // check how much blood is in our temporary solution and subtract it from their BloodEssence component.
             var bloodEssence = EnsureComp<BloodEssenceComponent>(target);
 
             foreach (var reagentProto in bloodEssenceUser.BloodWhitelist)
             {
-                if (!tempSolution.TryGetReagentQuantity(new ReagentId(reagentProto.Id, null), out var volume))
+                if (!TryGetReagentQuantityByProto(tempSolution, reagentProto, out var volume))
                     continue;
                 essenceCollected += bloodEssence.Withdraw((float) volume);
             }
@@ -104,7 +105,29 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
 
         bloodEssenceUser.BloodEssenceTotal += essenceCollected;
         _stomach.TryTransferSolution(firstStomach.Value, tempSolution);
+        Dirty<StomachComponent>(firstStomach.Value);
 
         return essenceCollected;
+    }
+
+    /// <summary>
+    /// Pretty much a copy of Solution:TryGetReagentQuantity but compares by prototype instead.
+    /// </summary>
+    /// <param name="solution"></param>
+    /// <param name="proto"></param>
+    /// <param name="volume"></param>
+    /// <returns></returns>
+    private bool TryGetReagentQuantityByProto(Solution solution, ProtoId<ReagentPrototype> proto, out float volume)
+    {
+        foreach (var tuple in solution.Contents)
+        {
+            if (tuple.Reagent.Prototype != proto)
+                continue;
+            volume = (float) tuple.Quantity;
+            return true;
+        }
+
+        volume = 0.0f;
+        return false;
     }
 }

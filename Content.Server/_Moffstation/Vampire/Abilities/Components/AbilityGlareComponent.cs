@@ -1,4 +1,5 @@
-﻿using Robust.Shared.GameStates;
+﻿using Robust.Shared.Audio;
+using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
 namespace Content.Server._Moffstation.Vampire.Abilities.Components;
@@ -23,6 +24,9 @@ public sealed partial class AbilityGlareComponent : Component
 
     [DataField]
     public TimeSpan StunTime = TimeSpan.FromSeconds(8);
+
+    [DataField]
+    public SoundSpecifier Sound = new SoundPathSpecifier("/Audio/_Moffstation/Effects/blind.ogg");
 
     [DataField]
     public EntProtoId ActionProto = "ActionVampireGlare";

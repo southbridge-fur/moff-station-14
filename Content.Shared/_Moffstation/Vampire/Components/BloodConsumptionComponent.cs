@@ -1,4 +1,5 @@
-﻿using Robust.Shared.GameStates;
+﻿using Content.Shared.Damage;
+using Robust.Shared.GameStates;
 
 namespace Content.Shared._Moffstation.Vampire.Components;
 
@@ -18,13 +19,31 @@ public sealed partial class BloodConsumptionComponent : Component
     public TimeSpan UpdateInterval = TimeSpan.FromSeconds(5);
 
     /// <summary>
+    /// The amount of blood to lose per update. In standard units (u).
+    /// </summary>
+    [DataField]
+    public float BaseBloodlossPerUpdate = -0.01f;
+
+    /// <summary>
+    /// The amount of blood to lose per update while restoring health naturally. In standard units (u).
+    /// </summary>
+    [DataField]
+    public float HealingBloodlossPerUpdate = -1.0f;
+
+    /// <summary>
+    /// Damage to deal per update (use negative values to specify healing)
+    /// </summary>
+    [DataField]
+    public DamageSpecifier HealPerUpdate = new();
+
+    /// <summary>
     /// Previous Blood Percentage
     /// </summary>
     [DataField]
     public float PrevBloodPercentage = 0.5f;
 
     /// <summary>
-    /// The maximum percentage of change per update.
+    /// The maximum percentage (0.0-1.0) of change per update.
     /// </summary>
     [DataField]
     public float MaxChange = 0.1f;

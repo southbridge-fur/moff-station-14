@@ -1,4 +1,5 @@
 ﻿using Content.Shared.FixedPoint;
+using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
@@ -18,6 +19,12 @@ public sealed partial class AbilityFeedComponent : Component
     /// </summary>
     [DataField]
     public float BloodPerFeed = 10.0f;
+
+    [DataField]
+    public SoundSpecifier FeedStartSound = new SoundCollectionSpecifier("retractor");
+
+    [DataField]
+    public SoundSpecifier FeedSuccessSound = new SoundCollectionSpecifier("blood");
 
     [DataField]
     public EntProtoId ActionProto = "ActionVampireFeed";

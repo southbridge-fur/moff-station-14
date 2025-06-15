@@ -18,7 +18,6 @@
       allowNonHumans: true
       components:
       - type: Vampire
-      - type: BloodConsumption
       - type: BloodEssenceUser
         bloodWhitelist:
         - Blood
@@ -40,6 +39,7 @@
           heart: OrganVampireHeart
           lungs: OrganVampireLungs
           stomach: OrganVampireStomach
+          core: OrganVampireHeart # Slime cores
       - type: Store
         name: vampire-store-name
         categories:
@@ -56,21 +56,27 @@
         interfaces:
           enum.StoreUiKey.Key:
             type: StoreBoundUserInterface
-      - type: Bloodstream
-        bleedReductionAmount: 1.0
-        maxBleedAmount: 0.0
-        bloodlossThreshold: 0.05
-        bloodlossDamage:
+      - type: BloodConsumption
+        healPerUpdate:
           types:
-            Bloodloss: 10 # if they're out of blood they're taking bloodloss damage
-        bloodlossHealDamage:
-          types:
+            Holy: -0.1
+          groups:
             Brute: -0.5
-            Burn: -0.1
+            Burn: -0.2
             Airloss: -1.0
             Toxin: -0.5
             Genetic: -0.5
-            Metaphysical: -0.1
-        bloodRefreshAmount: -0.3 # Loses blood every update (3 seconds)
+      - type: Bloodstream
+        bleedReductionAmount: 1.0
+        maxBleedAmount: 0.0
+        bleedPuddleThreshold: 100.0
+        bloodlossThreshold: 0.02
+        bloodlossDamage:
+          types:
+            Bloodloss: 0.1 # if they're out of blood they're taking bloodloss damage
+        bloodlossHealDamage:
+          types:
+            Bloodloss: -1.0
+        bloodRefreshAmount: 0.0 # Gets handled by the BloodConsumptionSystem
       mindRoles:
       - MindRoleVampire

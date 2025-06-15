@@ -112,20 +112,6 @@ public partial class SharedBodySystem
         if (protoRoot.Part is null)
             return;
 
-        // Moffstation - Start - Enable OrganSwapComponent
-        if (TryComp<OrganSwapComponent>(bodyEntity, out var organSwaps))
-        {
-            foreach ((var slotName, var slot) in prototype.Slots)
-            {
-                foreach ((var organSlotName, var organ) in slot.Organs)
-                {
-                    if (organSwaps.OrganSwaps.TryGetValue(organSlotName, out var newOrgan))
-                        slot.Organs[organSlotName] = newOrgan;
-                }
-            }
-        }
-        // Moffstation - End
-
         // This should already handle adding the entity to the root.
         var rootPartUid = SpawnInContainerOrDrop(protoRoot.Part, bodyEntity, BodyRootContainerId);
         var rootPart = Comp<BodyPartComponent>(rootPartUid);

@@ -4,23 +4,12 @@
   abstract: true
   categories: [ HideSpawnMenu ]
   components:
-  - type: SolutionContainerManager
-    solutions:
-      organ:
-        reagents:
-        - ReagentId: Ash
-          Quantity: 10
-      food:
-        maxVol: 5
-        reagents:
-        - ReagentId: Ash
-          Quantity: 5
   - type: FlavorProfile
     flavors:
     - flavor-ash-and-undeath
 
 - type: entity
-  parent: OrganHumanStomach
+  parent: BaseVampireOrgan
   id: OrganVampireStomach
   name: stomach
   description: A stomach which reeks of undeath and iron.
@@ -37,8 +26,6 @@
     metabolizerTypes: [ Vampire ] # We can't use bloodsucker because bloodsucker heals
     groups:
     - id: Blood
-    - id: Drink
-    - id: Food
   - type: SolutionContainerManager
     solutions:
       stomach:
@@ -56,7 +43,7 @@
     isSpecialDigestibleExclusive: true
 
 - type: entity
-  parent: OrganHumanHeart
+  parent: BaseVampireOrgan
   id: OrganVampireHeart
   name: heart
   description: "Best with a steak run through it."
@@ -72,10 +59,21 @@
   - type: Item
     size: Small
     heldPrefix: heart
+  - type: SolutionContainerManager
+    solutions:
+      organ:
+        reagents:
+        - ReagentId: Ash
+          Quantity: 10
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: Ash
+          Quantity: 5
 
 - type: entity
-  id: OrganVampireLungs
   parent: BaseVampireOrgan
+  id: OrganVampireLungs
   name: lungs
   description: "Delicate and brittle. Long unused, now they crumble like ash."
   components:

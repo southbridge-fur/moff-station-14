@@ -7,7 +7,10 @@ using Content.Shared.DoAfter;
 using Content.Shared.Popups;
 using Content.Shared._Moffstation.Vampire.Events;
 using Content.Shared.Actions;
+using Content.Shared.Administration.Logs;
+using Content.Shared.Database;
 using Content.Shared.FixedPoint;
+using Robust.Shared.Audio.Systems;
 
 namespace Content.Server._Moffstation.Vampire.Abilities.EntitySystems;
 
@@ -18,6 +21,8 @@ public sealed class AbilityFeedSystem : EntitySystem
     [Dependency] private readonly BloodEssenceUserSystem _bloodEssence = default!;
     [Dependency] private readonly VampireSystem _vampire = default!;
     [Dependency] private readonly SharedActionsSystem _action = default!;
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
 
     public override void Initialize()
     {
@@ -69,6 +74,9 @@ public sealed class AbilityFeedSystem : EntitySystem
         if (!_doAfter.TryStartDoAfter(feedDoAfter))
             return;
 
+        _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(uid):user} started to feed on {ToPrettyString(target):user}.");
+
+        _audio.PlayPvs(component.FeedStartSound, uid);
         _popup.PopupEntity(Loc.GetString("vampire-feeding-on-vampire", ("target", target)), uid, uid, PopupType.Medium);
         _popup.PopupEntity(Loc.GetString("vampire-feeding-on-target", ("vampire", uid)), uid, target, PopupType.LargeCaution);
     }
@@ -92,11 +100,13 @@ public sealed class AbilityFeedSystem : EntitySystem
         var collectedEssence = _bloodEssence.TryExtractBlood(uid, component.BloodPerFeed, target.Value, targetBloodstream);
         if (collectedEssence > 0.0f)
         {
-            // todo: play sound
             _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-vampire", ("target", target)), uid, uid, PopupType.Medium);
             _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-target", ("vampire", uid)), uid, target.Value, PopupType.MediumCaution);
             _vampire.DepositEssence(uid, vampire, collectedEssence);
         }
+
+        _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(uid):user} finished feeding on {ToPrettyString(target):user} and collected {collectedEssence} BloodEssence.");
+        _audio.PlayPvs(component.FeedSuccessSound, uid);
 
         args.Handled = true;
     }

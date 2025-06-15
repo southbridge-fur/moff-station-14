@@ -1,6 +1,8 @@
-﻿using Content.Shared.Body.Organ;
+﻿using System.Collections.Generic;
+using Robust.Shared.GameObjects;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
+using Robust.Shared.Serialization.Manager.Attributes;
 
 namespace Content.Shared._Moffstation.Body.Components;
 
@@ -11,8 +13,9 @@ namespace Content.Shared._Moffstation.Body.Components;
 public sealed partial class OrganSwapComponent : Component
 {
     /// <summary>
-    /// A mapping of <c>container name : organ prototype</c> for the organs to replace in those particular containers/slot.
+    /// A mapping of <c>slot name : organ prototype</c> for the organs to replace in those particular containers/slot.
     /// </summary>
     [DataField]
-    public Dictionary<string, string> OrganSwaps = new();
+    public Dictionary<string, EntProtoId> OrganSwaps = new();
 }
+

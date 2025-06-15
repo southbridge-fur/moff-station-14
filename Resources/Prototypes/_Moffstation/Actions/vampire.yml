@@ -19,40 +19,33 @@
     icon:
       sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
       state: fangs
-    keywords:
-    - bite
-    - feed
-    - drink
     useDelay: 3.0
+    itemIconStyle: BigAction
   - type: TargetAction
     repeat: false
     deselectOnMiss: true
-    checkCanAccess: true
-    range: 0.8
+    range: 1.0
     interactOnMiss: false
   - type: EntityTargetAction
     event: !type:VampireEventFeedAbility
     whitelist:
       components:
-      - HumanoidAppearance
+      - Body
     canTargetSelf: false
 
 - type: entity
   parent: BaseAction
   id: ActionVampireGlare
   name: Glare
-  description: Instill fear and despair in those around you, weakening their resolve, stunning them.
+  description: Instill fear and despair in those around you, weakening their resolve, stunning and silencing them.
   components:
   - type: Action
     checkCanInteract: false
     icon:
       sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
       state: glare
-    keywords:
-    - glare
-    - stare
-    - eye
     useDelay: 1.0
+    itemIconStyle: BigAction
   - type: AutoRecharge
     rechargeDuration: 20
   - type: LimitedCharges
@@ -64,15 +57,13 @@
   parent: BaseAction
   id: ActionVampireRejuvenate
   name: Rejuvenate
-  description: Restore your resolve.
+  description: Removes any and all stuns. Removes 100 stamina damage.
   components:
   - type: Action
     icon:
       sprite: _Moffstation/Interface/Actions/actions_vampire.rsi
       state: rejuvenate
-    keywords:
-    - heal
-    - rejuvenate
     useDelay: 20.0
+    itemIconStyle: BigAction
   - type: InstantAction
     event: !type:VampireEventRejuvenateAbility

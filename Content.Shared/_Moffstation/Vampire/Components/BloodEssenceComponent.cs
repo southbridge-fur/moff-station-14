@@ -19,7 +19,13 @@ public sealed partial class BloodEssenceComponent : Component
     /// </returns>
     public float Withdraw(float withdraw)
     {
-        BloodEssence = Math.Max(0.0f, BloodEssence - withdraw);
-        return BloodEssence;
+        if (BloodEssence < withdraw)
+        {
+            var withdrawn = BloodEssence;
+            BloodEssence = 0.0f;
+            return withdrawn;
+        }
+        BloodEssence -= withdraw;
+        return withdraw;
     }
 }

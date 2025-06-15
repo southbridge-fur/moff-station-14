@@ -1,6 +1,7 @@
 ﻿using Content.Server.Body.Components;
 using Content.Server.Body.Systems;
 using Content.Shared._Moffstation.Vampire.Components;
+using Content.Shared.Damage;
 using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
 using Robust.Shared.Timing;
@@ -12,6 +13,7 @@ public sealed class BloodConsumptionSystem : EntitySystem
     [Dependency] private readonly BloodstreamSystem _bloodstreamSystem = default!;
     [Dependency] private readonly HungerSystem _hungerSystem = default!;
     [Dependency] private readonly ThirstSystem _thirstSystem = default!;
+    [Dependency] private readonly DamageableSystem _damageSystem = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
 
     public override void Initialize()
@@ -32,7 +34,6 @@ public sealed class BloodConsumptionSystem : EntitySystem
             return;
 
         component.PrevBloodPercentage = _bloodstreamSystem.GetBloodLevelPercentage(uid, bloodstream);
-
     }
 
     public override void Update(float frameTime)
@@ -65,6 +66,7 @@ public sealed class BloodConsumptionSystem : EntitySystem
         if (!TryComp<BloodstreamComponent>(uid, out var bloodstream))
             return; // we need at least the blood stream before we can do something.
 
+        UpdateRegeneration(uid, comp, bloodstream);
         UpdateHungerThirst(uid, comp, bloodstream);
     }
 
@@ -80,5 +82,23 @@ public sealed class BloodConsumptionSystem : EntitySystem
         if (TryComp<ThirstComponent>(uid, out var thirst))
             _thirstSystem.ModifyThirst(uid, thirst, modificationPercentage * thirst.ThirstThresholds[ThirstThreshold.OverHydrated]);
         comp.PrevBloodPercentage += modificationPercentage;
+    }
+
+    private void UpdateRegeneration(EntityUid uid, BloodConsumptionComponent comp, BloodstreamComponent bloodstream)
+    {
+        // check damage
+        if (TryComp<DamageableComponent>(uid, out var damage))
+        {
+            if (damage.Damage.AnyPositive()) // Vampires should be able to heal all damage types
+            {
+                // heal according to comp amount
+                _damageSystem.TryChangeDamage(uid, comp.HealPerUpdate, false, false, damage);
+                // subtract blood for healing
+                _bloodstreamSystem.TryModifyBloodLevel(uid, comp.HealingBloodlossPerUpdate, bloodstream);
+                return;
+            }
+        }
+        // else subtract the usual amount of blood
+        _bloodstreamSystem.TryModifyBloodLevel(uid, comp.BaseBloodlossPerUpdate, bloodstream);
     }
 }
