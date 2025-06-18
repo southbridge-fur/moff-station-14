@@ -6,6 +6,8 @@ vampire-feeding-on-target = {CAPITALIZE(THE($vampire))} sinks {POSS-ADJ($vampire
 vampire-feeding-successful-vampire = You drink from {CAPITALIZE(THE($target))}
 vampire-feeding-successful-target = {CAPITALIZE(THE($vampire))} drinks your blood!
 
+vampire-rejuvenate-popup = You feel rejuvenated.
+
 flavor-ash-and-undeath = ash and undeath
 
 vampire-store-name = Vampire Abilities

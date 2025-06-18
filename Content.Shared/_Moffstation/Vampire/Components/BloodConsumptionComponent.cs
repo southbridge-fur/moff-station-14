@@ -40,7 +40,9 @@ public sealed partial class BloodConsumptionComponent : Component
     public DamageSpecifier HealPerUpdate = new();
 
     /// <summary>
-    /// Previous Blood Percentage
+    /// Previous blood percentage, also sets the starting blood percentage.
+    /// This is mostly used to know how much we need to adjust the thirst and hunger values between updates since
+    /// we don't have any other way to track that.
     /// </summary>
     [DataField]
     public float PrevBloodPercentage = 0.5f;

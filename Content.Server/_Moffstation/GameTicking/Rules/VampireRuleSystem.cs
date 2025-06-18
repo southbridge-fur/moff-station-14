@@ -13,10 +13,6 @@ public sealed class VampireRuleSystem : GameRuleSystem<VampireRuleComponent>
     /// <summary>
     /// Appends the round end text for the vampire role.
     /// </summary>
-    /// <param name="uid"></param>
-    /// <param name="component"></param>
-    /// <param name="gameRule"></param>
-    /// <param name="args"></param>
     protected override void AppendRoundEndText(EntityUid uid,
             VampireRuleComponent component,
             GameRuleComponent gameRule,

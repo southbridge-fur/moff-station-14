@@ -14,54 +14,50 @@ namespace Content.Server._Moffstation.Vampire.EntitySystems;
 
 public sealed partial class VampireSystem : SharedVampireSystem
 {
-    [Dependency] private readonly StoreSystem _store = default!;
-    [Dependency] private readonly IEntityManager _entityManager = default!;
     [Dependency] private readonly StoreSystem _storeSystem = default!;
     [Dependency] private readonly SharedActionsSystem _action = default!;
+
     public override void Initialize()
     {
         base.Initialize();
 
         SubscribeLocalEvent<VampireComponent, MapInitEvent>(OnMapInit);
-        SubscribeLocalEvent<VampireComponent, VampireShopEvent>(OnShopOpenAction);
+        SubscribeLocalEvent<StoreComponent, VampireShopEvent>(OnShopOpenAction);
     }
 
-    private void OnMapInit(EntityUid uid, VampireComponent? comp, MapInitEvent args)
+    private void OnMapInit(Entity<VampireComponent> entity, ref MapInitEvent args)
     {
-        if (!Resolve(uid, ref comp))
+        if (!TryComp<VampireComponent>(entity, out var comp))
             return;
 
-        _entityManager.RemoveComponent<RespiratorComponent>(uid); // Don't need them to breath
+        RemComp<RespiratorComponent>(entity); // Don't need them to breath
 
         // give the actions
-        _action.AddAction(uid, ref comp.ShopAction, comp.ActionVampireShopProto, uid);
+        _action.AddAction(entity, ref comp.ShopAction, comp.ActionVampireShopProto, entity);
 
-        EnsureComp<AbilityGlareComponent>(uid);
-        EnsureComp<AbilityFeedComponent>(uid);
-        EnsureComp<AbilityRejuvenateComponent>(uid);
+        EnsureComp<AbilityGlareComponent>(entity);
+        EnsureComp<AbilityFeedComponent>(entity);
+        EnsureComp<AbilityRejuvenateComponent>(entity);
     }
 
-    private void OnShopOpenAction(EntityUid uid, VampireComponent comp, VampireShopEvent args)
+    private void OnShopOpenAction(Entity<StoreComponent> entity, ref VampireShopEvent args)
     {
-        if (!TryComp<StoreComponent>(uid, out var store))
+        if (!TryComp<StoreComponent>(entity, out var store))
             return;
 
-        _storeSystem.ToggleUi(uid, uid, store);
+        _storeSystem.ToggleUi(entity, entity, store);
     }
 
-    public void DepositEssence(EntityUid uid, VampireComponent? comp, float amount)
+    public void DepositEssence(Entity<VampireComponent> entity, float amount)
     {
         if (amount <= 0.0f)
             return;
 
-        if (!Resolve(uid, ref comp))
-            return;
-
-        if (!TryComp<StoreComponent>(uid, out var store))
+        if (!TryComp<VampireComponent>(entity, out var comp))
             return;
 
         _storeSystem.TryAddCurrency(new Dictionary<string, FixedPoint2>
                 { { comp.BloodEssenceCurrencyPrototype, amount } },
-                uid);
+            entity);
     }
 }

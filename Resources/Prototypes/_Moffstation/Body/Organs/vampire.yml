@@ -98,9 +98,6 @@
         reagents:
         - ReagentId: Ash
           Quantity: 10
-      Lung:
-        maxVol: 50.0
-        canReact: true
       food:
         maxVol: 5
         reagents:

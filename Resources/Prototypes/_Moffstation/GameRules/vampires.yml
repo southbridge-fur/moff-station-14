@@ -31,6 +31,10 @@
         damageContainer: BiologicalMetaphysical
         damageModifierSet: Vampire
       - type: BurnedBySun
+        tileBlacklist:
+        - Lattice
+        - TrainLattice
+        - Space
         damage:
           type:
             Heat: 5
@@ -67,6 +71,7 @@
             Toxin: -0.5
             Genetic: -0.5
       - type: Bloodstream
+        bloodReagent: Blood # Make all species use regular blood.
         bleedReductionAmount: 1.0
         maxBleedAmount: 0.0
         bleedPuddleThreshold: 100.0

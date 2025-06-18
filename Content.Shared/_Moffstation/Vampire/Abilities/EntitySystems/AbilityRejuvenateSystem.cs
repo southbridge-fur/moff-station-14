@@ -33,6 +33,7 @@ public sealed class AbilityRejuvenateSystem : EntitySystem
     {
         if (!TryComp<AbilityRejuvenateComponent>(entity, out var comp))
             return;
+
         _action.AddAction(entity, ref comp.Action, comp.ActionProto, entity);
     }
 
@@ -45,7 +46,7 @@ public sealed class AbilityRejuvenateSystem : EntitySystem
             return;
 
         _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(entity):user} used Rejuvenate.");
-        _popup.PopupEntity(Loc.GetString("vampire-rejuvenate-popup"), entity, PopupType.Medium);
+        _popup.PopupEntity(Loc.GetString("vampire-rejuvenate-popup"), entity, entity, PopupType.Medium);
 
         _audio.PlayPvs(rejuvenateComp.Sound, entity);
         _stamina.TakeStaminaDamage(entity, rejuvenateComp.StamHealing);

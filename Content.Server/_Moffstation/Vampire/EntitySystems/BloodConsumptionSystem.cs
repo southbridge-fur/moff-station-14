@@ -1,6 +1,7 @@
 ﻿using Content.Server.Body.Components;
 using Content.Server.Body.Systems;
 using Content.Shared._Moffstation.Vampire.Components;
+using Content.Shared.Chemistry.EntitySystems;
 using Content.Shared.Damage;
 using Content.Shared.Nutrition.Components;
 using Content.Shared.Nutrition.EntitySystems;
@@ -15,6 +16,7 @@ public sealed class BloodConsumptionSystem : EntitySystem
     [Dependency] private readonly ThirstSystem _thirstSystem = default!;
     [Dependency] private readonly DamageableSystem _damageSystem = default!;
     [Dependency] private readonly IGameTiming _timing = default!;
+    [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
 
     public override void Initialize()
     {
@@ -33,6 +35,7 @@ public sealed class BloodConsumptionSystem : EntitySystem
         if (!TryComp<BloodstreamComponent>(entity, out var bloodstream))
             return;
 
+        _bloodstreamSystem.TryModifyBloodLevel(entity, (bloodstream.BloodMaxVolume*component.PrevBloodPercentage) - bloodstream.BloodMaxVolume, bloodstream);
         component.PrevBloodPercentage = _bloodstreamSystem.GetBloodLevelPercentage(entity, bloodstream);
     }
 
@@ -44,7 +47,7 @@ public sealed class BloodConsumptionSystem : EntitySystem
         var enumerator = EntityQueryEnumerator<BloodConsumptionComponent>();
         while (enumerator.MoveNext(out var uid, out var comp))
         {
-            Update(uid, comp, time);
+            UpdateBloodConsumption(uid, comp, time);
         }
     }
 
@@ -56,7 +59,7 @@ public sealed class BloodConsumptionSystem : EntitySystem
     /// <param name="time"></param>
     /// <remarks>
     /// </remarks>
-    private void Update(EntityUid uid, BloodConsumptionComponent comp, TimeSpan time)
+    private void UpdateBloodConsumption(EntityUid uid, BloodConsumptionComponent comp, TimeSpan time)
     {
         if (time < comp.NextUpdate)
             return;
@@ -68,8 +71,17 @@ public sealed class BloodConsumptionSystem : EntitySystem
 
         UpdateRegeneration(uid, comp, bloodstream);
         UpdateHungerThirst(uid, comp, bloodstream);
+        FlushTempSolution(uid, bloodstream);
     }
 
+    /// <summary>
+    /// Updates the vampire's hunger and thirst values periodically based on the current blood level percentage.
+    /// The hunger and thirst values are limited in how fast they can change via the
+    /// <see cref="BloodConsumptionComponent.MaxChange"/> value.
+    /// </summary>
+    /// <param name="uid"></param>
+    /// <param name="comp"></param>
+    /// <param name="bloodstream"></param>
     private void UpdateHungerThirst(EntityUid uid, BloodConsumptionComponent comp, BloodstreamComponent bloodstream)
     {
         var bloodstreamPercentage = _bloodstreamSystem.GetBloodLevelPercentage(uid, bloodstream);
@@ -84,6 +96,12 @@ public sealed class BloodConsumptionSystem : EntitySystem
         comp.PrevBloodPercentage += modificationPercentage;
     }
 
+    /// <summary>
+    /// Updates the vampire's bloodstream according to whether they are healing or not. Also performs their healing.
+    /// </summary>
+    /// <param name="uid"></param>
+    /// <param name="comp"></param>
+    /// <param name="bloodstream"></param>
     private void UpdateRegeneration(EntityUid uid, BloodConsumptionComponent comp, BloodstreamComponent bloodstream)
     {
         // check damage
@@ -100,5 +118,26 @@ public sealed class BloodConsumptionSystem : EntitySystem
         }
         // else subtract the usual amount of blood
         _bloodstreamSystem.TryModifyBloodLevel(uid, comp.BaseBloodlossPerUpdate, bloodstream);
+    }
+
+    /// <summary>
+    /// Clear the temporary solution of the Bloodstream.
+    /// This is an in-elegant method to avoid the vampire spilling their blood all over the floor.
+    /// </summary>
+    /// <param name="uid"></param>
+    /// <param name="comp"></param>
+    /// <param name="bloodstream"></param>
+    /// <remarks>
+    /// todo: Make this a bit more elegant, and maybe introduce a method where vampires will spill reagents that
+    /// their body rejects (food, drinks, basically anything that isn't blood)
+    /// </remarks>
+    private void FlushTempSolution(EntityUid uid, BloodstreamComponent bloodstream)
+    {
+        if (!_solutionContainerSystem.ResolveSolution(uid,
+                bloodstream.BloodTemporarySolutionName,
+                ref bloodstream.TemporarySolution,
+                out var tempSolution))
+            return;
+        tempSolution.RemoveAllSolution();
     }
 }

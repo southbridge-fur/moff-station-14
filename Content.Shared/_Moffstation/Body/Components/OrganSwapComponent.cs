@@ -1,8 +1,5 @@
-﻿using System.Collections.Generic;
-using Robust.Shared.GameObjects;
-using Robust.Shared.GameStates;
+﻿using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
-using Robust.Shared.Serialization.Manager.Attributes;
 
 namespace Content.Shared._Moffstation.Body.Components;
 

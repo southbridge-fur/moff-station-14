@@ -9,6 +9,9 @@ using Robust.Shared.Map;
 
 namespace Content.Server._Moffstation.Vampire.Abilities.EntitySystems;
 
+/// <summary>
+/// The system for the Glare ability component.
+/// </summary>
 public sealed class AbilityGlareSystem : EntitySystem
 {
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
@@ -18,7 +21,6 @@ public sealed class AbilityGlareSystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedActionsSystem _action = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
-    [Dependency] private readonly IEntityManager _entityManager = default!;
 
     public override void Initialize()
     {
@@ -36,38 +38,60 @@ public sealed class AbilityGlareSystem : EntitySystem
         _action.AddAction(entity, ref comp.Action, comp.ActionProto, entity);
     }
 
+    /// <summary>
+    /// Executed when a vampire performs their Glare attack.
+    /// </summary>
+    /// <param name="entity"></param>
+    /// <param name="args"></param>
     public void OnGlare(Entity<AbilityGlareComponent> entity, ref VampireEventGlareAbility args)
     {
         if (!TryComp<AbilityGlareComponent>(entity, out var comp))
             return;
 
-        (var coords, var facing) = _transform.GetMoverCoordinateRotation(entity, Transform(entity));
+        var (coords,facing) = _transform.GetMoverCoordinateRotation(entity, Transform(entity));
 
         _popup.PopupEntity(Loc.GetString("vampire-glare-alert", ("vampire", entity)), entity, PopupType.Medium);
 
         _audio.PlayPvs(comp.Sound, entity);
-        _entityManager.SpawnAttachedTo(comp.FlashEffectProto, new EntityCoordinates(entity, 0, 0));
+        SpawnAttachedTo(comp.FlashEffectProto, coords);
 
-        GlareStun(entity, comp, coords, facing, comp.DamageFront, true, true);
-        GlareStun(entity, comp, coords, facing + Angle.FromDegrees(-90), comp.DamageSides, true);
-        GlareStun(entity, comp, coords, facing + Angle.FromDegrees(90),  comp.DamageSides, true);
-        GlareStun(entity, comp, coords, facing + Angle.FromDegrees(180), comp.DamageRear);
+        // todo: Make it to where when the vampire is on the ground or restrained, all sides count as a side attack.
+        GlareStun(entity, coords, facing, comp.DamageFront, true, true);
+        GlareStun(entity, coords, facing + Angle.FromDegrees(-90), comp.DamageSides, true);
+        GlareStun(entity, coords, facing + Angle.FromDegrees(90),  comp.DamageSides, true);
+        GlareStun(entity, coords, facing + Angle.FromDegrees(180), comp.DamageRear);
 
         args.Handled = true;
     }
 
-    private void GlareStun(EntityUid uid, AbilityGlareComponent comp, EntityCoordinates coords, Angle angle, float damage, bool knockdown = false, bool stun = false)
+    /// <summary>
+    /// Performs a Glare stun on entities in an arc around the user.
+    /// </summary>
+    /// <param name="user">The user of this ability</param>
+    /// <param name="coords">The entity coordinates of the user</param>
+    /// <param name="angle">The center angle of the arc, this angle +- 45 degrees,
+    /// creates the arc which will be scanned for entities to stun.</param>
+    /// <param name="damage">The amount of stamina damage to perform on each valid entity in the arc</param>
+    /// <param name="knockdown">Whether to knockdown each valid entity in the arc</param>
+    /// <param name="stun">Whether to stun each valid entity in the arc</param>
+    /// <remarks>
+    /// todo: Add some interaction with flash protection. Not a full nullification of the ability's effects, but
+    /// some sort of reduction so it's not useless.
+    /// </remarks>
+    private void GlareStun(Entity<AbilityGlareComponent> user, EntityCoordinates coords, Angle angle, float damage, bool knockdown = false, bool stun = false)
     {
+        if (!TryComp<AbilityGlareComponent>(user, out var comp))
+            return;
         var nearbyEntities = _lookup.GetEntitiesInArc(coords, comp.Range, angle, 90, LookupFlags.Uncontained);
-        foreach (var entity in nearbyEntities)
+        foreach (var target in nearbyEntities)
         {
-            if (entity == uid)
+            if (target == user.Owner)
                 continue;
             if (knockdown)
-                _stuns.TryKnockdown(entity, comp.KnockdownTime, false);
+                _stuns.TryKnockdown(target, comp.KnockdownTime, false);
             if (stun)
-                _stuns.TryStun(entity, comp.StunTime, false);
-            _stamina.TakeStaminaDamage(entity, damage);
+                _stuns.TryStun(target, comp.StunTime, false);
+            _stamina.TakeStaminaDamage(target, damage);
         }
     }
 }

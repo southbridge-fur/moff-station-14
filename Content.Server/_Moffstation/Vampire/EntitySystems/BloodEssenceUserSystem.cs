@@ -1,15 +1,10 @@
 using Content.Shared.Chemistry.EntitySystems;
-using Content.Shared.Popups;
-using Content.Shared.FixedPoint;
 using Content.Shared.Body.Components;
 using Content.Server.Body.Systems;
 using Content.Server.Body.Components;
 using Content.Shared._Moffstation.Vampire.Components;
-using Content.Server.Chemistry.EntitySystems;
-using Content.Shared.Body.Organ;
 using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.Components;
-using Content.Shared.Chemistry.Components.SolutionManager;
 using Content.Shared.Chemistry.Reagent;
 using Content.Shared.Humanoid;
 using Content.Shared.Mobs.Components;
@@ -22,7 +17,6 @@ namespace Content.Server._Moffstation.Vampire.EntitySystems;
 /// </summary>
 public sealed partial class BloodEssenceUserSystem : EntitySystem
 {
-    [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly BodySystem _body = default!;
     [Dependency] private readonly StomachSystem _stomach = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
@@ -35,20 +29,18 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
     /// pull essence from the target and put it in the user's BloodEssence pool
     /// </summary>
     /// <param name="uid"></param>
-    /// <param name="quantity"></param>
+    /// <param name="transferAmount"></param>
     /// <param name="target"></param>
-    /// <param name="targetBloodstream"></param>
     /// <returns>The amount of blood essence extracted.</returns>
-    public float TryExtractBlood(Entity<BloodEssenceUserComponent?,BodyComponent?> uid, float quantity, EntityUid target, BloodstreamComponent? targetBloodstream)
+    public float TryExtractBlood(Entity<BloodEssenceUserComponent?,BodyComponent?> uid, float transferAmount, Entity<BloodstreamComponent> target)
     {
-        if (!(quantity > 0.0f))
+        if (transferAmount <= 0.0f) // can't take 0 blood from the target
             return 0.0f;
 
-        var transferAmount = quantity;
         if (!TryComp<BloodEssenceUserComponent>(uid, out var bloodEssenceUser) || !TryComp<BodyComponent>(uid, out var body))
             return 0.0f;
 
-        if (!Resolve(target, ref targetBloodstream))
+        if (!TryComp<BloodstreamComponent>(target, out var targetBloodstream))
             return 0.0f;
 
         if (!_body.TryGetBodyOrganEntityComps<StomachComponent>((uid, body), out var stomachs))
@@ -62,10 +54,12 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
 
         var transferableAmount = _stomach.MaxTransferableSolution(firstStomach.Value, transferAmount);
 
-        var tempSolution = new Solution();
-        tempSolution.MaxVolume = transferableAmount;
+        var tempSolution = new Solution
+        {
+            MaxVolume = transferableAmount
+        };
 
-        if (_solutionContainerSystem.ResolveSolution(target, targetBloodstream.ChemicalSolutionName, ref targetBloodstream.ChemicalSolution, out var targetChemSolution))
+        if (_solutionContainerSystem.ResolveSolution(target.Owner, targetBloodstream.ChemicalSolutionName, ref targetBloodstream.ChemicalSolution, out var targetChemSolution))
         {
             // make a fraction of what we pull come from the chem solution
             // Technically this does allow someone to drink blood in order to then have that blood be taken and
@@ -75,7 +69,7 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
             _solutionContainerSystem.UpdateChemicals(targetBloodstream.ChemicalSolution.Value);
         }
 
-        if (_solutionContainerSystem.ResolveSolution(target, targetBloodstream.BloodSolutionName, ref targetBloodstream.BloodSolution, out var targetBloodSolution))
+        if (_solutionContainerSystem.ResolveSolution(target.Owner, targetBloodstream.BloodSolutionName, ref targetBloodstream.BloodSolution, out var targetBloodSolution))
         {
             tempSolution.AddSolution(targetBloodSolution.SplitSolution(transferableAmount), _proto);
             _solutionContainerSystem.UpdateChemicals(targetBloodstream.BloodSolution.Value);

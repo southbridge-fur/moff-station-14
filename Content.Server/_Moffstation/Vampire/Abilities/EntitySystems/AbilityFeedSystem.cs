@@ -94,12 +94,12 @@ public sealed class AbilityFeedSystem : EntitySystem
         if (target is not { } || !TryComp<BloodstreamComponent>(target, out var targetBloodstream))
             return;
 
-        var collectedEssence = _bloodEssence.TryExtractBlood((entity, bloodEssenceUser), feedComp.BloodPerFeed, target.Value, targetBloodstream);
+        var collectedEssence = _bloodEssence.TryExtractBlood((entity, bloodEssenceUser), feedComp.BloodPerFeed, (target.Value, targetBloodstream));
         if (collectedEssence > 0.0f)
         {
             _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-vampire", ("target", target)), entity, entity, PopupType.Medium);
             _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-target", ("vampire", entity)), entity, target.Value, PopupType.MediumCaution);
-            _vampire.DepositEssence(entity, vampire, collectedEssence);
+            _vampire.DepositEssence((entity, vampire), collectedEssence);
         }
 
         _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(entity):user} finished feeding on {ToPrettyString(target):user} and collected {collectedEssence} BloodEssence.");
