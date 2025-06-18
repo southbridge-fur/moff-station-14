@@ -65,16 +65,31 @@
           types:
             Holy: -0.1
           groups:
-            Brute: -0.5
-            Burn: -0.2
+            Brute: -1.0
+            Burn: -0.5
             Airloss: -1.0
             Toxin: -0.5
             Genetic: -0.5
+      - type: Temperature
+        heatDamageThreshold: 320
+        coldDamageThreshold: 150 # Vampires are undead, cold shouldn't harm them unless it's extreme
+        currentTemperature: 283.15 # 10C, vampires are naturally cold.
+        coldDamage:
+          types:
+            Cold: 0.05 #per second, scales with temperature & other constants
+        heatDamage:
+          types:
+            Heat: 2 #per second, scales with temperature & other constants
+      - type: TemperatureSpeed
+        thresholds:
+          275: 0.8
+          250: 0.6
+          225: 0.4
       - type: Bloodstream
-        bloodReagent: Blood # Make all species use regular blood.
         bleedReductionAmount: 1.0
+        bloodReagent: Blood
         maxBleedAmount: 0.0
-        bleedPuddleThreshold: 100.0
+        bleedPuddleThreshold: 1000.0
         bloodlossThreshold: 0.02
         bloodlossDamage:
           types:

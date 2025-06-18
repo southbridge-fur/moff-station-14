@@ -36,7 +36,7 @@ public sealed partial class BurnedBySunComponent : Component
 
     /// <summary>
     /// Previous time when the entity was lasted burned, this is used to reset <see cref="Accumulation"/> and generally
-    /// shouldn't be modified.
+    /// shouldn't be modified externally.
     /// </summary>
     [DataField]
     public TimeSpan LastBurn = TimeSpan.Zero;

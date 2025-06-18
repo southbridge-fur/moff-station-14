@@ -49,6 +49,7 @@ public sealed class AbilityGlareSystem : EntitySystem
             return;
 
         var (coords,facing) = _transform.GetMoverCoordinateRotation(entity, Transform(entity));
+        facing -= MathHelper.PiOver2; // need to rotate slightly since the arc check uses world angle.
 
         _popup.PopupEntity(Loc.GetString("vampire-glare-alert", ("vampire", entity)), entity, PopupType.Medium);
 

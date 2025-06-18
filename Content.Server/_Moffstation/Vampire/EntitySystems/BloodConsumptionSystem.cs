@@ -46,9 +46,6 @@ public sealed class BloodConsumptionSystem : EntitySystem
 
         if (!TryComp<BloodstreamComponent>(entity, out var bloodstream))
             return;
-
-        // We want to set the blood level to a starting blood level first, rather than let the entity start with a full blood pool.
-        _bloodstreamSystem.TryModifyBloodLevel(entity, (bloodstream.BloodMaxVolume*component.PrevBloodPercentage) - bloodstream.BloodMaxVolume, bloodstream);
     }
 
     public override void Update(float frameTime)
@@ -120,7 +117,7 @@ public sealed class BloodConsumptionSystem : EntitySystem
             if (damage.Damage.AnyPositive()) // Vampires should be able to heal all damage types
             {
                 // heal according to comp amount
-                _damageSystem.TryChangeDamage(uid, comp.HealPerUpdate, false, false, damage);
+                _damageSystem.TryChangeDamage(uid, comp.HealPerUpdate, true, false, damage);
                 // subtract blood for healing
                 _bloodstreamSystem.TryModifyBloodLevel(uid, comp.HealingBloodlossPerUpdate, bloodstream);
                 return;

@@ -78,7 +78,7 @@ public sealed class BurnedBySunSystem : EntitySystem
     private void Damage(EntityUid uid, BurnedBySunComponent comp)
     {
         // Make it ramp up in severity over time.
-        comp.Accumulation = (comp.LastBurn >= comp.NextUpdate - comp.UpdateInterval)
+        comp.Accumulation = (comp.LastBurn >= comp.NextUpdate - comp.UpdateInterval * 2.0)
             ? Math.Clamp(comp.Accumulation + comp.AccumulationPerUpdate, 0.0f, 1.0f)
             : 0.0f;
 

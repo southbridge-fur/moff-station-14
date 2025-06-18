@@ -1,5 +1,7 @@
-﻿using Content.Shared.Damage;
+﻿using Content.Shared.Chemistry.Reagent;
+using Content.Shared.Damage;
 using Robust.Shared.GameStates;
+using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Moffstation.Vampire.Components;
 
@@ -22,6 +24,13 @@ public sealed partial class BloodConsumptionComponent : Component
     /// </summary>
     [DataField]
     public TimeSpan UpdateInterval = TimeSpan.FromSeconds(5);
+
+    /// <summary>
+    /// The reagent prototype to use for this entity's blood.
+    /// This is done to ensure we overwrite the entity's starting bloodstream reagent.
+    /// </summary>
+    [DataField]
+    public ProtoId<ReagentPrototype> BloodReagent = "Blood";
 
     /// <summary>
     /// The amount of blood to lose per update. In standard units (u).

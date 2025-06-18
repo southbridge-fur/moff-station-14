@@ -1,6 +1,5 @@
 using Content.Shared._Moffstation.Vampire.EntitySystems;
 using Content.Shared.Store;
-using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Moffstation.Vampire.Components;
@@ -8,7 +7,7 @@ namespace Content.Shared._Moffstation.Vampire.Components;
 /// <summary>
 /// This component is the top of the cascade which makes someone a vampire.
 /// Responsible for setting up some of the more intricate details of initializing a vampire,
-/// this component and related systems (<see cref="Content.Shared._Moffstation.Vampire.EntitySystems"/> and 
+/// this component and related systems (<see cref="Content.Shared._Moffstation.Vampire.EntitySystems"/> and
 /// </summary>
 [RegisterComponent, Access(typeof(SharedVampireSystem))]
 public sealed partial class VampireComponent : Component

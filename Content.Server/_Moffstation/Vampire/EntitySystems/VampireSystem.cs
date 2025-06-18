@@ -4,11 +4,9 @@ using Content.Shared._Moffstation.Vampire.Components;
 using Content.Server.Store.Systems;
 using Content.Shared._Moffstation.Vampire;
 using Content.Shared._Moffstation.Vampire.EntitySystems;
-using Content.Server.Store.Systems;
 using Content.Shared.Actions;
 using Content.Shared.FixedPoint;
 using Content.Shared.Store.Components;
-using Robust.Shared.Prototypes;
 
 namespace Content.Server._Moffstation.Vampire.EntitySystems;
 
