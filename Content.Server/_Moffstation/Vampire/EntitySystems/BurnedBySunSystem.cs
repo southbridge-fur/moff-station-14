@@ -25,7 +25,7 @@ public sealed class BurnedBySunSystem : EntitySystem
         }
     }
 
-    protected void Update(EntityUid uid, BurnedBySunComponent comp, TimeSpan time)
+    private void Update(EntityUid uid, BurnedBySunComponent comp, TimeSpan time)
     {
         if (time < comp.NextUpdate)
             return;
@@ -65,10 +65,11 @@ public sealed class BurnedBySunSystem : EntitySystem
 
         // Make it ramp up in severity over time.
         if (comp.LastBurn >= comp.NextUpdate - comp.UpdateInterval)
-            comp.Accumulation = Math.Clamp(comp.Accumulation + 0.2f, 0.0f, 1.0f);
+            comp.Accumulation = Math.Clamp(comp.Accumulation + comp.AccumulationPerUpdate, 0.0f, 1.0f);
         else
             comp.Accumulation = 0.0f;
 
+        // todo: give the entity some kind of feedback, like a shader effect
         _damage.TryChangeDamage(uid, comp.Damage * comp.Accumulation);
         comp.LastBurn = _timing.CurTime;
     }

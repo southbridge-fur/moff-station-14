@@ -17,7 +17,7 @@ public sealed partial class OrganSwapSystem : EntitySystem
     public override void Initialize()
     {
         base.Initialize();
-        SubscribeLocalEvent<OrganSwapComponent, MapInitEvent>(OnMapInit);
+        SubscribeLocalEvent<OrganSwapComponent, MapInitEvent>(OnMapInit, after: [typeof(SharedBodySystem)]);
     }
 
     private void OnMapInit(EntityUid uid, OrganSwapComponent? comp, MapInitEvent args)
@@ -56,6 +56,7 @@ public sealed partial class OrganSwapSystem : EntitySystem
     private bool TrySwapOrgan(BaseContainer organContainer, EntProtoId organProto, out EntityUid? organ)
     {
         // remove current organs and delete them
+        // todo: handle issues with Diona causing the nymphs to spawn when the organs get deleted.
         _containerSystem.CleanContainer(organContainer);
         // spawn new organ and insert it
         return _entityManager.TrySpawnInContainer(organProto, organContainer.Owner, organContainer.ID, out organ);

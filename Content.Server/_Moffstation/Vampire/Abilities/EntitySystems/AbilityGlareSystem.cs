@@ -1,6 +1,5 @@
-﻿using Content.Server._Moffstation.Vampire.Abilities.Components;
+﻿using Content.Shared._Moffstation.Vampire.Abilities.Components;
 using Content.Server.Stunnable;
-using Content.Shared._Moffstation.Vampire.Components;
 using Content.Shared._Moffstation.Vampire.Events;
 using Content.Shared.Actions;
 using Content.Shared.Damage.Systems;
@@ -19,6 +18,7 @@ public sealed class AbilityGlareSystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly SharedActionsSystem _action = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly IEntityManager _entityManager = default!;
 
     public override void Initialize()
     {
@@ -28,29 +28,30 @@ public sealed class AbilityGlareSystem : EntitySystem
         SubscribeLocalEvent<AbilityGlareComponent, MapInitEvent>(OnMapInit);
     }
 
-    public void OnMapInit(EntityUid uid, AbilityGlareComponent? comp, MapInitEvent args)
+    public void OnMapInit(Entity<AbilityGlareComponent> entity, ref MapInitEvent args)
     {
-        if (!Resolve(uid, ref comp))
+        if (!TryComp<AbilityGlareComponent>(entity, out var comp))
             return;
 
-        _action.AddAction(uid, ref comp.Action, comp.ActionProto, uid);
+        _action.AddAction(entity, ref comp.Action, comp.ActionProto, entity);
     }
 
-    public void OnGlare(EntityUid uid, AbilityGlareComponent? comp, VampireEventGlareAbility args)
+    public void OnGlare(Entity<AbilityGlareComponent> entity, ref VampireEventGlareAbility args)
     {
-        if (!Resolve(uid, ref comp))
+        if (!TryComp<AbilityGlareComponent>(entity, out var comp))
             return;
 
-        (var coords, var facing) = _transform.GetMoverCoordinateRotation(uid, Transform(uid));
+        (var coords, var facing) = _transform.GetMoverCoordinateRotation(entity, Transform(entity));
 
-        _popup.PopupEntity(Loc.GetString("vampire-glare-alert", ("vampire", uid)), uid, PopupType.Medium);
+        _popup.PopupEntity(Loc.GetString("vampire-glare-alert", ("vampire", entity)), entity, PopupType.Medium);
 
-        _audio.PlayPvs(comp.Sound, uid);
+        _audio.PlayPvs(comp.Sound, entity);
+        _entityManager.SpawnAttachedTo(comp.FlashEffectProto, new EntityCoordinates(entity, 0, 0));
 
-        GlareStun(uid, comp, coords, facing, comp.DamageFront, true, true);
-        GlareStun(uid, comp, coords, facing + Angle.FromDegrees(-90), comp.DamageSides, true);
-        GlareStun(uid, comp, coords, facing + Angle.FromDegrees(90),  comp.DamageSides, true);
-        GlareStun(uid, comp, coords, facing + Angle.FromDegrees(180), comp.DamageRear);
+        GlareStun(entity, comp, coords, facing, comp.DamageFront, true, true);
+        GlareStun(entity, comp, coords, facing + Angle.FromDegrees(-90), comp.DamageSides, true);
+        GlareStun(entity, comp, coords, facing + Angle.FromDegrees(90),  comp.DamageSides, true);
+        GlareStun(entity, comp, coords, facing + Angle.FromDegrees(180), comp.DamageRear);
 
         args.Handled = true;
     }

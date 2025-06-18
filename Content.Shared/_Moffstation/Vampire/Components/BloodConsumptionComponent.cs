@@ -3,6 +3,9 @@ using Robust.Shared.GameStates;
 
 namespace Content.Shared._Moffstation.Vampire.Components;
 
+/// <summary>
+/// This is the component given to
+/// </summary>
 [RegisterComponent, NetworkedComponent]
 public sealed partial class BloodConsumptionComponent : Component
 {

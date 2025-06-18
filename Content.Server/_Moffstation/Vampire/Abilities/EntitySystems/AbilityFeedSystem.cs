@@ -1,7 +1,6 @@
-﻿using Content.Server._Moffstation.Vampire.Abilities.Components;
-using Content.Server._Moffstation.Vampire.EntitySystems;
+﻿using Content.Server._Moffstation.Vampire.EntitySystems;
 using Content.Server.Body.Components;
-using Content.Shared._Moffstation.Vampire;
+using Content.Shared._Moffstation.Vampire.Abilities.Components;
 using Content.Shared._Moffstation.Vampire.Components;
 using Content.Shared.DoAfter;
 using Content.Shared.Popups;
@@ -9,7 +8,6 @@ using Content.Shared._Moffstation.Vampire.Events;
 using Content.Shared.Actions;
 using Content.Shared.Administration.Logs;
 using Content.Shared.Database;
-using Content.Shared.FixedPoint;
 using Robust.Shared.Audio.Systems;
 
 namespace Content.Server._Moffstation.Vampire.Abilities.EntitySystems;
@@ -33,19 +31,19 @@ public sealed class AbilityFeedSystem : EntitySystem
         SubscribeLocalEvent<AbilityFeedComponent, MapInitEvent>(OnMapInit);
     }
 
-    public void OnMapInit(EntityUid uid, AbilityFeedComponent? comp, MapInitEvent args)
+    public void OnMapInit(Entity<AbilityFeedComponent> entity, ref MapInitEvent args)
     {
-        if (!Resolve(uid, ref comp))
+        if (!TryComp<AbilityFeedComponent>(entity, out var comp))
             return;
-        _action.AddAction(uid, ref comp.Action, comp.ActionProto, uid);
+        _action.AddAction(entity, ref comp.Action, comp.ActionProto, entity);
     }
 
-    private void OnFeedStart(EntityUid uid, AbilityFeedComponent? component, VampireEventFeedAbility args)
+    private void OnFeedStart(Entity<AbilityFeedComponent> entity, ref VampireEventFeedAbility args)
     {
         if (args.Handled)
             return;
 
-        if (!Resolve(uid, ref component))
+        if (!TryComp<AbilityFeedComponent>(entity, out var component))
             return;
 
         args.Handled = true;
@@ -58,13 +56,13 @@ public sealed class AbilityFeedSystem : EntitySystem
         if (!HasComp<BloodstreamComponent>(target))
         {
             _popup.PopupEntity(Loc.GetString("vampire-target-has-no-bloodstream", ("target", target)),
-                uid,
-                uid,
+                entity,
+                entity,
                 PopupType.Medium);
             return;
         }
 
-        var feedDoAfter = new DoAfterArgs(EntityManager, uid, component.FeedDuration, new VampireEventFeedAbilityDoAfter(), uid, target: target)
+        var feedDoAfter = new DoAfterArgs(EntityManager, entity, component.FeedDuration, new VampireEventFeedAbilityDoAfter(), entity, target: target)
         {
             BreakOnMove = true,
             BreakOnWeightlessMove = false,
@@ -74,39 +72,38 @@ public sealed class AbilityFeedSystem : EntitySystem
         if (!_doAfter.TryStartDoAfter(feedDoAfter))
             return;
 
-        _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(uid):user} started to feed on {ToPrettyString(target):user}.");
+        _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(entity):user} started to feed on {ToPrettyString(target):user}.");
 
-        _audio.PlayPvs(component.FeedStartSound, uid);
-        _popup.PopupEntity(Loc.GetString("vampire-feeding-on-vampire", ("target", target)), uid, uid, PopupType.Medium);
-        _popup.PopupEntity(Loc.GetString("vampire-feeding-on-target", ("vampire", uid)), uid, target, PopupType.LargeCaution);
+        _audio.PlayPvs(component.FeedStartSound, entity);
+        _popup.PopupEntity(Loc.GetString("vampire-feeding-on-vampire", ("target", target)), entity, entity, PopupType.Medium);
+        _popup.PopupEntity(Loc.GetString("vampire-feeding-on-target", ("vampire", entity)), entity, target, PopupType.LargeCaution);
     }
 
-    private void OnFeedEnd(EntityUid uid, AbilityFeedComponent? component, VampireEventFeedAbilityDoAfter args)
+    private void OnFeedEnd(Entity<AbilityFeedComponent> entity, ref VampireEventFeedAbilityDoAfter args)
     {
         // if canceled return (maybe spray blood?)
         if (args.Handled || args.Cancelled)
             return;
 
-        if (!Resolve(uid, ref component) || !TryComp<VampireComponent>(uid, out var vampire))
+        if (!TryComp<AbilityFeedComponent>(entity, out var feedComp)
+            || !TryComp<VampireComponent>(entity, out var vampire)
+            || !TryComp<BloodEssenceUserComponent>(entity, out var bloodEssenceUser))
             return;
 
         var target = args.Args.Target;
         if (target is not { } || !TryComp<BloodstreamComponent>(target, out var targetBloodstream))
             return;
 
-        if (!TryComp<BloodEssenceUserComponent>(uid, out var bloodEssenceUser))
-            return;
-
-        var collectedEssence = _bloodEssence.TryExtractBlood(uid, component.BloodPerFeed, target.Value, targetBloodstream);
+        var collectedEssence = _bloodEssence.TryExtractBlood((entity, bloodEssenceUser), feedComp.BloodPerFeed, target.Value, targetBloodstream);
         if (collectedEssence > 0.0f)
         {
-            _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-vampire", ("target", target)), uid, uid, PopupType.Medium);
-            _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-target", ("vampire", uid)), uid, target.Value, PopupType.MediumCaution);
-            _vampire.DepositEssence(uid, vampire, collectedEssence);
+            _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-vampire", ("target", target)), entity, entity, PopupType.Medium);
+            _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-target", ("vampire", entity)), entity, target.Value, PopupType.MediumCaution);
+            _vampire.DepositEssence(entity, vampire, collectedEssence);
         }
 
-        _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(uid):user} finished feeding on {ToPrettyString(target):user} and collected {collectedEssence} BloodEssence.");
-        _audio.PlayPvs(component.FeedSuccessSound, uid);
+        _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(entity):user} finished feeding on {ToPrettyString(target):user} and collected {collectedEssence} BloodEssence.");
+        _audio.PlayPvs(feedComp.FeedSuccessSound, entity);
 
         args.Handled = true;
     }

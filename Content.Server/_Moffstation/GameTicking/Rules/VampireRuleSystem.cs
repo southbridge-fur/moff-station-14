@@ -1,9 +1,7 @@
 ﻿using Content.Server._Moffstation.GameTicking.Rules.Components;
-using Content.Server._Moffstation.Roles;
 using Content.Server.Antag;
 using Content.Server.GameTicking;
 using Content.Server.GameTicking.Rules;
-using Content.Server.Roles;
 using Content.Shared.GameTicking.Components;
 
 namespace Content.Server._Moffstation.GameTicking.Rules;
@@ -12,11 +10,13 @@ public sealed class VampireRuleSystem : GameRuleSystem<VampireRuleComponent>
 {
     [Dependency] private readonly AntagSelectionSystem _antag = default!;
 
-    public override void Initialize()
-    {
-        base.Initialize();
-    }
-
+    /// <summary>
+    /// Appends the round end text for the vampire role.
+    /// </summary>
+    /// <param name="uid"></param>
+    /// <param name="component"></param>
+    /// <param name="gameRule"></param>
+    /// <param name="args"></param>
     protected override void AppendRoundEndText(EntityUid uid,
             VampireRuleComponent component,
             GameRuleComponent gameRule,
@@ -32,6 +32,7 @@ public sealed class VampireRuleSystem : GameRuleSystem<VampireRuleComponent>
         foreach (var (_, sessionData, name) in antags)
         {
             args.AddLine(Loc.GetString("vampire-list-name-user", ("name", name), ("user", sessionData.UserName)));
+            // todo: Add a count of how many people the vampire stole essence from.
         }
     }
 }

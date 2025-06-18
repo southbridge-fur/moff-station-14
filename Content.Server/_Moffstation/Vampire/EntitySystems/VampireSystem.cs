@@ -1,4 +1,4 @@
-using Content.Server._Moffstation.Vampire.Abilities.Components;
+using Content.Shared._Moffstation.Vampire.Abilities.Components;
 using Content.Server.Body.Components;
 using Content.Shared._Moffstation.Vampire.Components;
 using Content.Server.Store.Systems;

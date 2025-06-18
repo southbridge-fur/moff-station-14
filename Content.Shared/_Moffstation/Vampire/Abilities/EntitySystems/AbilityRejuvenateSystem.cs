@@ -1,14 +1,12 @@
-﻿using Content.Server._Moffstation.Vampire.Abilities.Components;
+﻿using Content.Shared._Moffstation.Vampire.Abilities.Components;
 using Content.Shared._Moffstation.Vampire.Events;
 using Content.Shared.Actions;
 using Content.Shared.Administration.Logs;
-using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
 using Content.Shared.Drunk;
 using Content.Shared.Popups;
 using Content.Shared.Speech.EntitySystems;
-using Content.Shared.Stunnable;
 using Robust.Shared.Audio.Systems;
 
 namespace Content.Server._Moffstation.Vampire.Abilities.EntitySystems;
@@ -31,31 +29,28 @@ public sealed class AbilityRejuvenateSystem : EntitySystem
         SubscribeLocalEvent<AbilityRejuvenateComponent, MapInitEvent>(OnMapInit);
     }
 
-    public void OnMapInit(EntityUid uid, AbilityRejuvenateComponent? comp, MapInitEvent args)
+    public void OnMapInit(Entity<AbilityRejuvenateComponent> entity, ref MapInitEvent args)
     {
-        if (!Resolve(uid, ref comp))
+        if (!TryComp<AbilityRejuvenateComponent>(entity, out var comp))
             return;
-        _action.AddAction(uid, ref comp.Action, comp.ActionProto, uid);
+        _action.AddAction(entity, ref comp.Action, comp.ActionProto, entity);
     }
 
-    private void OnRejuvenate(EntityUid uid, AbilityRejuvenateComponent? comp, VampireEventRejuvenateAbility args)
+    private void OnRejuvenate(Entity<AbilityRejuvenateComponent> entity, ref VampireEventRejuvenateAbility args)
     {
         if (args.Handled)
             return;
 
-        if (!Resolve(uid, ref comp))
+        if (!TryComp<AbilityRejuvenateComponent>(entity, out var rejuvenateComp))
             return;
 
-        if (!TryComp<StaminaComponent>(uid, out var stamina))
-            return;
+        _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(entity):user} used Rejuvenate.");
+        _popup.PopupEntity(Loc.GetString("vampire-rejuvenate-popup"), entity, PopupType.Medium);
 
-        _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(uid):user} used Rejuvenate.");
-        _popup.PopupEntity(Loc.GetString("vampire-rejuvenate-popup"), uid, PopupType.Medium);
-
-        _audio.PlayPvs(comp.Sound, uid);
-        _stamina.TakeStaminaDamage(uid, comp.StamHealing);
-        _drunkSystem.TryRemoveDrunkenessTime(uid, comp.StatusEffectReductionTime.TotalSeconds);
-        _stuttering.DoRemoveStutterTime(uid, comp.StatusEffectReductionTime.TotalSeconds);
+        _audio.PlayPvs(rejuvenateComp.Sound, entity);
+        _stamina.TakeStaminaDamage(entity, rejuvenateComp.StamHealing);
+        _drunkSystem.TryRemoveDrunkenessTime(entity, rejuvenateComp.StatusEffectReductionTime.TotalSeconds);
+        _stuttering.DoRemoveStutterTime(entity, rejuvenateComp.StatusEffectReductionTime.TotalSeconds);
 
         args.Handled = true;
     }

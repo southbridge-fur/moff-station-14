@@ -23,17 +23,17 @@ public sealed class BloodConsumptionSystem : EntitySystem
         SubscribeLocalEvent<BloodConsumptionComponent, MapInitEvent>(OnMapInit);
     }
 
-    private void OnMapInit(EntityUid uid, BloodConsumptionComponent? component, MapInitEvent args)
+    private void OnMapInit(Entity<BloodConsumptionComponent> entity, ref MapInitEvent args)
     {
-        if (!Resolve(uid, ref component))
+        if (!TryComp<BloodConsumptionComponent>(entity, out var component))
             return;
 
         component.NextUpdate = _timing.CurTime + component.UpdateInterval;
 
-        if (!TryComp<BloodstreamComponent>(uid, out var bloodstream))
+        if (!TryComp<BloodstreamComponent>(entity, out var bloodstream))
             return;
 
-        component.PrevBloodPercentage = _bloodstreamSystem.GetBloodLevelPercentage(uid, bloodstream);
+        component.PrevBloodPercentage = _bloodstreamSystem.GetBloodLevelPercentage(entity, bloodstream);
     }
 
     public override void Update(float frameTime)
