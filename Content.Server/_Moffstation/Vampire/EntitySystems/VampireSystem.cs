@@ -12,6 +12,10 @@ using Robust.Shared.Prototypes;
 
 namespace Content.Server._Moffstation.Vampire.EntitySystems;
 
+/// <summary>
+/// This system is the central place which manages vampires.
+/// It's largely responsible for handing their shop and initializing the basic vampire abilities.
+/// </summary>
 public sealed partial class VampireSystem : SharedVampireSystem
 {
     [Dependency] private readonly StoreSystem _storeSystem = default!;
@@ -32,14 +36,18 @@ public sealed partial class VampireSystem : SharedVampireSystem
 
         RemComp<RespiratorComponent>(entity); // Don't need them to breath
 
-        // give the actions
+        // Give the shop action
         _action.AddAction(entity, ref comp.ShopAction, comp.ActionVampireShopProto, entity);
 
+        // These components all add actions on map init.
         EnsureComp<AbilityGlareComponent>(entity);
         EnsureComp<AbilityFeedComponent>(entity);
         EnsureComp<AbilityRejuvenateComponent>(entity);
     }
 
+    /// <summary>
+    /// Opens or closes the shop for the user.
+    /// </summary>
     private void OnShopOpenAction(Entity<StoreComponent> entity, ref VampireShopEvent args)
     {
         if (!TryComp<StoreComponent>(entity, out var store))
@@ -48,6 +56,11 @@ public sealed partial class VampireSystem : SharedVampireSystem
         _storeSystem.ToggleUi(entity, entity, store);
     }
 
+    /// <summary>
+    /// Handles depositing blood essence into the shop. This is intended to be used by other systems to deposit.
+    /// </summary>
+    /// <param name="entity">The entity with the Vampire component to deposit Blood Essence into</param>
+    /// <param name="amount">The amount of Blood Essence to deposit</param>
     public void DepositEssence(Entity<VampireComponent> entity, float amount)
     {
         if (amount <= 0.0f)

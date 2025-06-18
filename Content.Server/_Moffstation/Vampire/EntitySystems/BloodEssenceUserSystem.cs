@@ -3,6 +3,7 @@ using Content.Shared.Body.Components;
 using Content.Server.Body.Systems;
 using Content.Server.Body.Components;
 using Content.Shared._Moffstation.Vampire.Components;
+using Content.Shared._Moffstation.Vampire.EntitySystems;
 using Content.Shared.Body.Systems;
 using Content.Shared.Chemistry.Components;
 using Content.Shared.Chemistry.Reagent;
@@ -12,15 +13,24 @@ using Robust.Shared.Prototypes;
 using Robust.Shared.Utility;
 
 namespace Content.Server._Moffstation.Vampire.EntitySystems;
+
 /// <summary>
-/// An adapter for handing blood interactions
+/// An adapter for handing bloodstream and stomach interactions for specifically vampires but could be used by other
+/// creatures which utilize BloodEssence or just drink blood.
 /// </summary>
+/// <remarks>
+/// Eventually a lot of this functionality could be adapted to instead use the
+/// <see cref="Content.Server.Chemistry.EntitySystems.InjectorSystem.DrawFromBlood"/> method, however that will
+/// require some disparate changes to that system which will be merge-conflict bait for the time being.
+/// If this ever gets upstreamed though it would be best to do it that way.
+/// </remarks>
 public sealed partial class BloodEssenceUserSystem : EntitySystem
 {
     [Dependency] private readonly BodySystem _body = default!;
     [Dependency] private readonly StomachSystem _stomach = default!;
     [Dependency] private readonly SharedSolutionContainerSystem _solutionContainerSystem = default!;
     [Dependency] private readonly IPrototypeManager _proto = default!;
+    [Dependency] private readonly BloodEssenceSystem _bloodEssenceSystem = default!;
 
 
     /// <summary>
@@ -32,7 +42,7 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
     /// <param name="transferAmount"></param>
     /// <param name="target"></param>
     /// <returns>The amount of blood essence extracted.</returns>
-    public float TryExtractBlood(Entity<BloodEssenceUserComponent?,BodyComponent?> uid, float transferAmount, Entity<BloodstreamComponent> target)
+    public float TryExtractBlood(Entity<BloodEssenceUserComponent?,BodyComponent?> uid, float transferAmount, Entity<BloodstreamComponent?> target)
     {
         if (transferAmount <= 0.0f) // can't take 0 blood from the target
             return 0.0f;
@@ -88,7 +98,7 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
             {
                 if (!TryGetReagentQuantityByProto(tempSolution, reagentProto, out var volume))
                     continue;
-                essenceCollected += bloodEssence.Withdraw((float) volume);
+                essenceCollected += _bloodEssenceSystem.Withdraw((target, bloodEssence), volume);
             }
         }
 
@@ -105,12 +115,12 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
     }
 
     /// <summary>
-    /// Pretty much a copy of Solution:TryGetReagentQuantity but compares by prototype instead.
+    /// Pretty much a copy of <see cref="Content.Shared.Chemistry.Components.Solution.TryGetReagentQuantity"/>
+    /// but compares by prototype instead.
     /// </summary>
-    /// <param name="solution"></param>
-    /// <param name="proto"></param>
-    /// <param name="volume"></param>
-    /// <returns></returns>
+    /// <remarks>
+    /// todo: Move this to Solutions.
+    /// </remarks>
     private bool TryGetReagentQuantityByProto(Solution solution, ProtoId<ReagentPrototype> proto, out float volume)
     {
         foreach (var tuple in solution.Contents)

@@ -4,7 +4,9 @@ using Robust.Shared.GameStates;
 namespace Content.Shared._Moffstation.Vampire.Components;
 
 /// <summary>
-/// This is the component given to
+/// This is the component given to vampires and other creatures which utilize blood as their main form of sustenance.
+/// Interfacing largely with the entity's bloodstream, this component treats their bloodstream as their hunger value, and
+/// main form of healing.
 /// </summary>
 [RegisterComponent, NetworkedComponent]
 public sealed partial class BloodConsumptionComponent : Component
@@ -52,4 +54,6 @@ public sealed partial class BloodConsumptionComponent : Component
     /// </summary>
     [DataField]
     public float MaxChange = 0.1f;
+
+    public override bool SendOnlyToOwner => true;
 }

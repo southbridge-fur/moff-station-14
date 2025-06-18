@@ -9,6 +9,18 @@ using Robust.Shared.Timing;
 
 namespace Content.Server._Moffstation.Vampire.EntitySystems;
 
+/// <summary>
+/// This system handles entities with the
+/// <see cref="Content.Shared._Moffstation.Vampire.Components.BloodConsumptionComponent"/>
+/// and effectively manages their bloodstream.
+/// The intention behind this is for vampire-like creatures to be able to use their bloodstream as
+/// their reservoir for blood.
+/// Blood in this case being their resource for spellcasting, healing, and is intended to be replenishable
+/// by drinking the blood of other creatures (or eating blood packs).
+/// </summary>
+/// <remarks>
+/// todo: set up proper adapter methods to interface with the bloodstream, for other systems to use.
+/// </remarks>
 public sealed class BloodConsumptionSystem : EntitySystem
 {
     [Dependency] private readonly BloodstreamSystem _bloodstreamSystem = default!;
@@ -35,8 +47,8 @@ public sealed class BloodConsumptionSystem : EntitySystem
         if (!TryComp<BloodstreamComponent>(entity, out var bloodstream))
             return;
 
+        // We want to set the blood level to a starting blood level first, rather than let the entity start with a full blood pool.
         _bloodstreamSystem.TryModifyBloodLevel(entity, (bloodstream.BloodMaxVolume*component.PrevBloodPercentage) - bloodstream.BloodMaxVolume, bloodstream);
-        component.PrevBloodPercentage = _bloodstreamSystem.GetBloodLevelPercentage(entity, bloodstream);
     }
 
     public override void Update(float frameTime)
@@ -52,13 +64,11 @@ public sealed class BloodConsumptionSystem : EntitySystem
     }
 
     /// <summary>
-    /// Sets the percentage values of hunger and thirst to a percentage of the bloodstream.
+    /// This method does a couple things on update:
+    ///     - Calls <see cref="UpdateRegeneration"/> to drain the bloodstream slightly and heal if needed.
+    ///     - Calls <see cref="UpdateHungerThirst"/> To set the percentage values of hunger and thirst to a percentage of the bloodstream.
+    ///     - Calls <see cref="FlushTempSolution"/> Which flushes the temporary solution, preventing them from spilling blood on the ground.
     /// </summary>
-    /// <param name="uid"></param>
-    /// <param name="comp"></param>
-    /// <param name="time"></param>
-    /// <remarks>
-    /// </remarks>
     private void UpdateBloodConsumption(EntityUid uid, BloodConsumptionComponent comp, TimeSpan time)
     {
         if (time < comp.NextUpdate)
@@ -129,7 +139,9 @@ public sealed class BloodConsumptionSystem : EntitySystem
     /// <param name="bloodstream"></param>
     /// <remarks>
     /// todo: Make this a bit more elegant, and maybe introduce a method where vampires will spill reagents that
-    /// their body rejects (food, drinks, basically anything that isn't blood)
+    /// their body rejects (food, drinks, basically anything that isn't blood). The problem is that the bloodstream
+    /// will fail to properly initialize if we nullify the temporary solution, so this may require some changes
+    /// to bloodstreams themselves to accept the ability to not have a temporary solution.
     /// </remarks>
     private void FlushTempSolution(EntityUid uid, BloodstreamComponent bloodstream)
     {

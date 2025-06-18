@@ -80,14 +80,11 @@ namespace Content.Shared.Chemistry.Components
         /// <summary>
         ///     Gets the maximum amount of solution that can be transferred from the solution up to the quantity.
         /// </summary>
-        public float MaxTransferableSolution(Solution solution, float quantity)
+        public float MaxTransferableSolution(float quantity, Solution? solution = null)
         {
+            if (solution is not { })
+                return Math.Min((float) AvailableVolume, quantity);
             return Math.Min((float) solution.Volume, Math.Min((float) AvailableVolume, quantity));
-        }
-
-        public float MaxTransferableSolution(float quantity)
-        {
-            return Math.Min((float) AvailableVolume, quantity);
         }
         // Moffstation - End
 

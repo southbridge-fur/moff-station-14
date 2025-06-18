@@ -9,8 +9,15 @@ using Content.Shared.Popups;
 using Content.Shared.Speech.EntitySystems;
 using Robust.Shared.Audio.Systems;
 
-namespace Content.Server._Moffstation.Vampire.Abilities.EntitySystems;
+namespace Content.Shared._Moffstation.Vampire.Abilities.EntitySystems;
 
+/// <summary>
+/// This system handles the <see cref="Content.Shared._Moffstation.Vampire.Abilities.Components.AbilityRejuvenateComponent"/>
+/// which on initialization here gives the entity the Rejuvenate ability. This also handles that ability's events.
+/// </summary>
+/// <remarks>
+/// todo: Add upgrades
+/// </remarks>
 public sealed class AbilityRejuvenateSystem : EntitySystem
 {
     [Dependency] private readonly SharedStaminaSystem  _stamina = default!;
@@ -37,6 +44,20 @@ public sealed class AbilityRejuvenateSystem : EntitySystem
         _action.AddAction(entity, ref comp.Action, comp.ActionProto, entity);
     }
 
+    /// <summary>
+    /// When the Rejuvenate ability is used this method triggers.
+    /// It handles:
+    ///     - Admin Logging
+    ///     - Generating a Popup to the user
+    ///     - Playing the sound specified in the component.
+    ///     - Reducing stamina damage on the entity. This also handles stuns and knockdown.
+    ///     - Reducing drunkenness on the entity.
+    ///     - Reducing stutter time on the entity.
+    /// </summary>
+    /// <remarks>
+    /// todo: Add upgrades
+    /// todo: Add some kind of visual feedback, perhaps a brief animation or a dim red light effect?
+    /// </remarks>
     private void OnRejuvenate(Entity<AbilityRejuvenateComponent> entity, ref VampireEventRejuvenateAbility args)
     {
         if (args.Handled)

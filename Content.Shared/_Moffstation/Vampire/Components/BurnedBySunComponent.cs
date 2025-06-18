@@ -35,7 +35,8 @@ public sealed partial class BurnedBySunComponent : Component
     public TimeSpan UpdateInterval = TimeSpan.FromSeconds(0.5);
 
     /// <summary>
-    /// Previous time when the entity was lasted burned, this is used to reset <see cref="Accumulation"/>.
+    /// Previous time when the entity was lasted burned, this is used to reset <see cref="Accumulation"/> and generally
+    /// shouldn't be modified.
     /// </summary>
     [DataField]
     public TimeSpan LastBurn = TimeSpan.Zero;
@@ -49,7 +50,7 @@ public sealed partial class BurnedBySunComponent : Component
     /// This is largely to give the entity some time to return to safety before they start taking full damage from the sun.
     /// </remarks>
     [DataField]
-    public float Accumulation = 0.0f;
+    public float Accumulation;
 
     /// <summary>
     /// The amount to increase <see cref="Accumulation"/> per update.
@@ -58,8 +59,10 @@ public sealed partial class BurnedBySunComponent : Component
     public float AccumulationPerUpdate = 0.2f;
 
     /// <summary>
-    /// The damage to take per update. Note that this value is reduced via <see cref="Accumulation"/>.
+    /// The damage to take per update. Note that this value is multiplied with the current <see cref="Accumulation"/>.
     /// </summary>
     [DataField]
     public DamageSpecifier Damage = new();
+
+    public override bool SendOnlyToOwner => true;
 }

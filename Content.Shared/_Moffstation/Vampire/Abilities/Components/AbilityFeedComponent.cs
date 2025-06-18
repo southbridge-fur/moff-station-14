@@ -1,6 +1,4 @@
-﻿using Content.Shared.FixedPoint;
-using Robust.Shared.Audio;
-using Robust.Shared.GameStates;
+﻿using Robust.Shared.Audio;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Moffstation.Vampire.Abilities.Components;
@@ -47,4 +45,6 @@ public sealed partial class AbilityFeedComponent : Component
     /// </summary>
     [DataField]
     public EntityUid? Action;
+
+    public override bool SendOnlyToOwner => true;
 }

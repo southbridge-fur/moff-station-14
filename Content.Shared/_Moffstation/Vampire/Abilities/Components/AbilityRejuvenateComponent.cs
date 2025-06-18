@@ -42,4 +42,6 @@ public sealed partial class AbilityRejuvenateComponent : Component
     /// </summary>
     [DataField]
     public EntityUid? Action;
+
+    public override bool SendOnlyToOwner => true;
 }

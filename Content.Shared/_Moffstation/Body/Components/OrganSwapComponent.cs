@@ -14,5 +14,7 @@ public sealed partial class OrganSwapComponent : Component
     /// </summary>
     [DataField]
     public Dictionary<string, EntProtoId> OrganSwaps = new();
+
+    public override bool SendOnlyToOwner => true;
 }
 

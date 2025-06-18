@@ -17,7 +17,7 @@ public sealed partial class BloodEssenceUserComponent : Component
     /// The vampire's current amount of blood essence collected.
     /// </summary>
     [DataField]
-    public float BloodEssenceTotal = 0.0f;
+    public float BloodEssenceTotal;
 
     /// <summary>
     /// The reagent prototype whitelist to use when determining which types of blood are valid for

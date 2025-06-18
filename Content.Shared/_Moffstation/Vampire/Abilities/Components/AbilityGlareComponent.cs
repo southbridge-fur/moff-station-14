@@ -77,4 +77,6 @@ public sealed partial class AbilityGlareComponent : Component
     /// </summary>
     [DataField]
     public EntityUid? Action;
+
+    public override bool SendOnlyToOwner => true;
 }

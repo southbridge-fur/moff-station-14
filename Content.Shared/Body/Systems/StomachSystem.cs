@@ -100,8 +100,8 @@ namespace Content.Shared.Body.Systems
         // Moffstation - Start - Helper functions for the StomachSystem
         public float MaxTransferableSolution(
             EntityUid uid,
-            Solution solution,
             float quantity,
+            Solution? solution = null,
             StomachComponent? stomach = null,
             SolutionContainerManagerComponent? solutions = null)
         {
@@ -110,22 +110,7 @@ namespace Content.Shared.Body.Systems
                        DefaultSolutionName,
                        ref stomach.Solution,
                        out var stomachSolution)
-                ? (float) stomachSolution.MaxTransferableSolution(solution, quantity)
-                : 0.0f;
-        }
-
-        public float MaxTransferableSolution(
-            EntityUid uid,
-            float quantity,
-            StomachComponent? stomach = null,
-            SolutionContainerManagerComponent? solutions = null)
-        {
-            return Resolve(uid, ref stomach, ref solutions, logMissing: false)
-                   && _solutionContainerSystem.ResolveSolution((uid, solutions),
-                       DefaultSolutionName,
-                       ref stomach.Solution,
-                       out var stomachSolution)
-                ? (float) stomachSolution.MaxTransferableSolution(quantity)
+                ? stomachSolution.MaxTransferableSolution(quantity, solution)
                 : 0.0f;
         }
         // Moffstation - End
