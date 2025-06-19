@@ -100,6 +100,8 @@ public sealed class AbilityFeedSystem : EntitySystem
         if (args.Handled || args.Cancelled)
             return;
 
+        args.Handled = true;
+
         if (!TryComp<AbilityFeedComponent>(entity, out var feedComp)
             || !TryComp<VampireComponent>(entity, out var vampire)
             || !TryComp<BloodEssenceUserComponent>(entity, out var bloodEssenceUser))
@@ -119,7 +121,5 @@ public sealed class AbilityFeedSystem : EntitySystem
 
         _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(entity):user} finished feeding on {ToPrettyString(target):user} and collected {collectedEssence} BloodEssence.");
         _audio.PlayPvs(feedComp.FeedSuccessSound, entity);
-
-        args.Handled = true;
     }
 }

@@ -37,7 +37,7 @@
         - Space
         damage:
           type:
-            Heat: 5
+            Heat: 10
       - type: OrganSwap
         organSwaps:
           heart: OrganVampireHeart
@@ -65,9 +65,9 @@
           types:
             Holy: -0.1
           groups:
-            Brute: -1.0
-            Burn: -0.5
-            Airloss: -1.0
+            Brute: -3.0
+            Burn: -1.0
+            Airloss: -2.0
             Toxin: -0.5
             Genetic: -0.5
       - type: Temperature

@@ -108,6 +108,7 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
             bloodEssenceUser.FedFrom.Add(target,essenceCollected);
 
         bloodEssenceUser.BloodEssenceTotal += essenceCollected;
+
         _stomach.TryTransferSolution(firstStomach.Value, tempSolution);
         Dirty<StomachComponent>(firstStomach.Value);
 

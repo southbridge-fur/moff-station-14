@@ -43,9 +43,6 @@ public sealed class BloodConsumptionSystem : EntitySystem
             return;
 
         component.NextUpdate = _timing.CurTime + component.UpdateInterval;
-
-        if (!TryComp<BloodstreamComponent>(entity, out var bloodstream))
-            return;
     }
 
     public override void Update(float frameTime)
