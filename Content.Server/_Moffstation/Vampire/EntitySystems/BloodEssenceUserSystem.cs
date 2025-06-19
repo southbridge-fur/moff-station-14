@@ -44,7 +44,7 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
     /// <returns>The amount of blood essence extracted.</returns>
     public float TryExtractBlood(Entity<BloodEssenceUserComponent?,BodyComponent?> uid, float transferAmount, Entity<BloodstreamComponent?> target)
     {
-        if (transferAmount <= 0.0f) // can't take 0 blood from the target
+        if (!(transferAmount > 0.0f)) // can't take 0 blood from the target
             return 0.0f;
 
         if (!TryComp<BloodEssenceUserComponent>(uid, out var bloodEssenceUser) || !TryComp<BodyComponent>(uid, out var body))

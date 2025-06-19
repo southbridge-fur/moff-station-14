@@ -36,13 +36,13 @@ public sealed partial class BloodConsumptionComponent : Component
     /// The amount of blood to lose per update. In standard units (u).
     /// </summary>
     [DataField]
-    public float BaseBloodlossPerUpdate = -0.01f;
+    public float BaseBloodlossPerUpdate = -0.5f;
 
     /// <summary>
     /// The amount of blood to lose per update while restoring health naturally. In standard units (u).
     /// </summary>
     [DataField]
-    public float HealingBloodlossPerUpdate = -1.0f;
+    public float HealingBloodlossPerUpdate = -5.0f;
 
     /// <summary>
     /// Damage to deal per update (use negative values to specify healing)
@@ -51,7 +51,7 @@ public sealed partial class BloodConsumptionComponent : Component
     public DamageSpecifier HealPerUpdate = new();
 
     /// <summary>
-    /// Previous blood percentage, also sets the starting blood percentage.
+    /// Previous blood percentage.
     /// This is mostly used to know how much we need to adjust the thirst and hunger values between updates since
     /// we don't have any other way to track that.
     /// </summary>
@@ -59,7 +59,7 @@ public sealed partial class BloodConsumptionComponent : Component
     public float PrevBloodPercentage = 0.5f;
 
     /// <summary>
-    /// The maximum percentage (0.0-1.0) of change per update.
+    /// The maximum percentage (0.0-1.0) of change of hunger and thirst per update.
     /// </summary>
     [DataField]
     public float MaxChange = 0.1f;

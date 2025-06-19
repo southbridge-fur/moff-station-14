@@ -2,11 +2,15 @@
 using Content.Shared._Moffstation.Vampire.Events;
 using Content.Shared.Actions;
 using Content.Shared.Administration.Logs;
+using Content.Shared.Damage.Components;
 using Content.Shared.Damage.Systems;
 using Content.Shared.Database;
 using Content.Shared.Drunk;
 using Content.Shared.Popups;
 using Content.Shared.Speech.EntitySystems;
+using Content.Shared.Standing;
+using Content.Shared.StatusEffect;
+using Content.Shared.Stunnable;
 using Robust.Shared.Audio.Systems;
 
 namespace Content.Shared._Moffstation.Vampire.Abilities.EntitySystems;
@@ -27,6 +31,7 @@ public sealed class AbilityRejuvenateSystem : EntitySystem
     [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly StandingStateSystem  _standingSystem = default!;
 
     public override void Initialize()
     {
@@ -47,12 +52,13 @@ public sealed class AbilityRejuvenateSystem : EntitySystem
     /// <summary>
     /// When the Rejuvenate ability is used this method triggers.
     /// It handles:
+    ///     - Removing the KnockedDown and Stunned components.
+    ///     - Reducing stamina damage on the entity.
+    ///     - Reducing drunkenness on the entity.
+    ///     - Reducing stutter time on the entity.
     ///     - Admin Logging
     ///     - Generating a Popup to the user
     ///     - Playing the sound specified in the component.
-    ///     - Reducing stamina damage on the entity. This also handles stuns and knockdown.
-    ///     - Reducing drunkenness on the entity.
-    ///     - Reducing stutter time on the entity.
     /// </summary>
     /// <remarks>
     /// todo: Add upgrades
@@ -66,13 +72,23 @@ public sealed class AbilityRejuvenateSystem : EntitySystem
         if (!TryComp<AbilityRejuvenateComponent>(entity, out var rejuvenateComp))
             return;
 
-        _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(entity):user} used Rejuvenate.");
-        _popup.PopupEntity(Loc.GetString("vampire-rejuvenate-popup"), entity, entity, PopupType.Medium);
+        RemComp<KnockedDownComponent>(entity);
+        RemComp<StunnedComponent>(entity);
 
-        _audio.PlayPvs(rejuvenateComp.Sound, entity);
-        _stamina.TakeStaminaDamage(entity, rejuvenateComp.StamHealing);
+        if (TryComp<StaminaComponent>(entity, out var stamina))
+        {
+            stamina.Critical = false; // Takes us out of stam crit immediately.
+            // Notably, we don't get any stamina resistance after this from after stam-crit effects.
+            // So it is easy to stam-crit the vampire again.
+            _stamina.TakeStaminaDamage(entity, rejuvenateComp.StamHealing, stamina);
+        }
+
         _drunkSystem.TryRemoveDrunkenessTime(entity, rejuvenateComp.StatusEffectReductionTime.TotalSeconds);
         _stuttering.DoRemoveStutterTime(entity, rejuvenateComp.StatusEffectReductionTime.TotalSeconds);
+
+        _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(entity):user} used Rejuvenate.");
+        _popup.PopupEntity(Loc.GetString("vampire-rejuvenate-popup"), entity, entity, PopupType.Medium);
+        _audio.PlayPvs(rejuvenateComp.Sound, entity);
 
         args.Handled = true;
     }

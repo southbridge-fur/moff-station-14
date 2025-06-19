@@ -26,6 +26,20 @@
     metabolizerTypes: [ Vampire ] # We can't use bloodsucker because bloodsucker heals
     groups:
     - id: Blood
+  - type: SolutionContainerManager
+    solutions:
+      organ:
+        maxVol: 10
+        reagents:
+        - ReagentId: Ash
+          Quantity: 10
+      stomach:
+        maxVol: 100
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: Ash
+          Quantity: 5
   - type: Stomach
     specialDigestible:
       tags:
@@ -50,6 +64,18 @@
   - type: Item
     size: Small
     heldPrefix: heart
+  - type: SolutionContainerManager
+    solutions:
+      organ:
+        maxVol: 10
+        reagents:
+        - ReagentId: Ash
+          Quantity: 10
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: Ash
+          Quantity: 5
 
 - type: entity
   parent: BaseVampireOrgan
@@ -66,7 +92,24 @@
     heldPrefix: lungs
   - type: Lung
   - type: Metabolizer
-    removeEmpty: true
+    removeEmpty: false
+    solutionOnBody: false
+    solution: "Lung"
     metabolizerTypes: [ Vampire ]
     groups:
     - id: Blood
+  - type: SolutionContainerManager
+    solutions:
+      organ:
+        maxVol: 10
+        reagents:
+        - ReagentId: Ash
+          Quantity: 10
+      Lung:
+        maxVol: 100.0
+        canReact: false
+      food:
+        maxVol: 5
+        reagents:
+        - ReagentId: Ash
+          Quantity: 5
