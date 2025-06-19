@@ -1,5 +1,6 @@
 ﻿using Content.Shared.Damage;
 using Content.Shared.Maps;
+using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
 using Robust.Shared.Prototypes;
 
@@ -56,13 +57,19 @@ public sealed partial class BurnedBySunComponent : Component
     /// The amount to increase <see cref="Accumulation"/> per update.
     /// </summary>
     [DataField]
-    public float AccumulationPerUpdate = 0.2f;
+    public float AccumulationPerUpdate = 0.05f;
 
     /// <summary>
     /// The damage to take per update. Note that this value is multiplied with the current <see cref="Accumulation"/>.
     /// </summary>
     [DataField]
     public DamageSpecifier Damage = new();
+
+    /// <summary>
+    /// The sound that plays when the vampire is getting burned in the sun
+    /// </summary>
+    [DataField]
+    public SoundSpecifier BurnSound = new SoundPathSpecifier("/Audio/Effects/lightburn.ogg");
 
     public override bool SendOnlyToOwner => true;
 }

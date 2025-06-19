@@ -1,8 +1,11 @@
 ﻿using Content.Shared._Moffstation.Vampire.Components;
 using Content.Shared.Damage;
+using Content.Shared.Popups;
+using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
 using Robust.Shared.Timing;
+using Robust.Shared.Random;
 
 namespace Content.Server._Moffstation.Vampire.EntitySystems;
 
@@ -16,6 +19,9 @@ public sealed class BurnedBySunSystem : EntitySystem
     [Dependency] private readonly IGameTiming _timing = default!;
     [Dependency] private readonly ITileDefinitionManager _tileDefs = default!;
     [Dependency] private readonly DamageableSystem _damage = default!;
+    [Dependency] private readonly SharedPopupSystem _popup = default!;
+    [Dependency] private readonly IRobustRandom _random = default!;
+    [Dependency] private readonly SharedAudioSystem _audio = default!;
 
     public override void Update(float frameTime)
     {
@@ -82,9 +88,15 @@ public sealed class BurnedBySunSystem : EntitySystem
             ? Math.Clamp(comp.Accumulation + comp.AccumulationPerUpdate, 0.0f, 1.0f)
             : 0.0f;
 
+        if (comp.Accumulation > 0.2 && _random.NextFloat() < comp.Accumulation * 0.9)
+        {
+            _popup.PopupEntity(Loc.GetString("vampire-in-sunlight"), uid, uid, PopupType.MediumCaution);
+            _audio.PlayPvs(comp.BurnSound, uid);
+        }
+
         // todo: give the entity some kind of feedback, like a shader effect
         // todo: Consider bursting into flames
-        _damage.TryChangeDamage(uid, comp.Damage * comp.Accumulation);
+        _damage.TryChangeDamage(uid, comp.Damage * comp.Accumulation, true);
         comp.LastBurn = _timing.CurTime;
     }
 }

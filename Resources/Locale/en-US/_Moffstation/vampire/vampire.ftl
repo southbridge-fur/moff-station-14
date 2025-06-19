@@ -16,3 +16,5 @@ admin-verb-make-vampire = Make the target into a vampire.
 admin-verb-text-make-vampire = Make Vampire
 
 vampire-glare-alert = {CAPITALIZE(THE($vampire))} glares at those around {OBJECT($vampire)}!
+
+vampire-in-sunlight = Your skin burns in the sunlight!

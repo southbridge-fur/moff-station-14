@@ -37,7 +37,7 @@
         - Space
         damage:
           type:
-            Heat: 10
+            Heat: 30
       - type: OrganSwap
         organSwaps:
           heart: OrganVampireHeart
@@ -63,13 +63,13 @@
       - type: BloodConsumption
         healPerUpdate:
           types:
-            Holy: -0.1
+            Holy: -0.5
           groups:
             Brute: -3.0
             Burn: -1.0
             Airloss: -2.0
-            Toxin: -0.5
-            Genetic: -0.5
+            Toxin: -1.0
+            Genetic: -1.0
       - type: Temperature
         heatDamageThreshold: 320
         coldDamageThreshold: 150 # Vampires are undead, cold shouldn't harm them unless it's extreme
