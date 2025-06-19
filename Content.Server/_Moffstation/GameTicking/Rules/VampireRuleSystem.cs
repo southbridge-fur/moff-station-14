@@ -20,10 +20,9 @@ public sealed class VampireRuleSystem : GameRuleSystem<VampireRuleComponent>
     {
         var antags =_antag.GetAntagIdentifiers(uid);
 
-        if (antags.Count == 1)
-            args.AddLine(Loc.GetString("vampire-existing"));
-        else
-            args.AddLine(Loc.GetString("vampires-existing", ("total", antags.Count)));
+        args.AddLine(antags.Count == 1
+                     ? args.AddLine(Loc.GetString("vampire-existing"))
+                     : args.AddLine(Loc.GetString("vampires-existing", ("total", antags.Count))));
 
         foreach (var (_, sessionData, name) in antags)
         {

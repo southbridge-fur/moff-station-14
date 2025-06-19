@@ -44,16 +44,11 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
     /// <returns>The amount of blood essence extracted.</returns>
     public float TryExtractBlood(Entity<BloodEssenceUserComponent?,BodyComponent?> uid, float transferAmount, Entity<BloodstreamComponent?> target)
     {
-        if (!(transferAmount > 0.0f)) // can't take 0 blood from the target
-            return 0.0f;
-
-        if (!TryComp<BloodEssenceUserComponent>(uid, out var bloodEssenceUser) || !TryComp<BodyComponent>(uid, out var body))
-            return 0.0f;
-
-        if (!TryComp<BloodstreamComponent>(target, out var targetBloodstream))
-            return 0.0f;
-
-        if (!_body.TryGetBodyOrganEntityComps<StomachComponent>((uid, body), out var stomachs))
+        if (!(transferAmount > 0.0f) // can't take 0 blood from the target
+            || !TryComp<BloodEssenceUserComponent>(uid, out var bloodEssenceUser)
+            || !TryComp<BodyComponent>(uid, out var body)
+            || !TryComp<BloodstreamComponent>(target, out var targetBloodstream)
+            || !_body.TryGetBodyOrganEntityComps<StomachComponent>((uid, body), out var stomachs))
             return 0.0f;
 
         var firstStomach = stomachs.FirstOrNull(stomach => _stomach.MaxTransferableSolution(stomach, transferAmount) > 0.0f);
