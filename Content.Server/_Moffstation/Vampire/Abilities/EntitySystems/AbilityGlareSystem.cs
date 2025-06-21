@@ -24,6 +24,8 @@ public sealed class AbilityGlareSystem : EntitySystem
 
     public override void Initialize()
     {
+        base.Initialize();
+
         SubscribeLocalEvent<AbilityGlareComponent, VampireEventGlareAbility>(OnGlare);
         SubscribeLocalEvent<AbilityGlareComponent, MapInitEvent>(OnMapInit);
     }
@@ -36,8 +38,6 @@ public sealed class AbilityGlareSystem : EntitySystem
     /// <summary>
     /// Executed when a vampire performs their Glare attack.
     /// </summary>
-    /// <param name="entity"></param>
-    /// <param name="args"></param>
     public void OnGlare(Entity<AbilityGlareComponent> entity, ref VampireEventGlareAbility args)
     {
         var (coords,facing) = _transform.GetMoverCoordinateRotation(entity, Transform(entity));

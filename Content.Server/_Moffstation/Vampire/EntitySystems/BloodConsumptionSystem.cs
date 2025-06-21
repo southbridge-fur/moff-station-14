@@ -32,6 +32,8 @@ public sealed class BloodConsumptionSystem : EntitySystem
 
     public override void Initialize()
     {
+        base.Initialize();
+
         SubscribeLocalEvent<BloodConsumptionComponent, MapInitEvent>(OnMapInit);
     }
 

@@ -32,6 +32,8 @@ public sealed class AbilityRejuvenateSystem : EntitySystem
 
     public override void Initialize()
     {
+        base.Initialize();
+
         SubscribeLocalEvent<AbilityRejuvenateComponent, VampireEventRejuvenateAbility>(OnRejuvenate);
         SubscribeLocalEvent<AbilityRejuvenateComponent, MapInitEvent>(OnMapInit);
     }

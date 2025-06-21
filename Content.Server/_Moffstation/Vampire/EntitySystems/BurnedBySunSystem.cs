@@ -27,6 +27,8 @@ public sealed class BurnedBySunSystem : EntitySystem
 
     public override void Initialize()
     {
+        base.Initialize();
+
         SubscribeLocalEvent<BurnedBySunComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<BurnedBySunComponent, TileChangedEvent>(OnTileChanged);
     }
@@ -38,8 +40,6 @@ public sealed class BurnedBySunSystem : EntitySystem
 
     public override void Update(float frameTime)
     {
-        base.Update(frameTime);
-
         var time = _timing.CurTime;
         var enumerator = EntityQueryEnumerator<BurnedBySunComponent>();
         while (enumerator.MoveNext(out var uid, out var comp))

@@ -32,6 +32,8 @@ public sealed class AbilityFeedSystem : EntitySystem
 
     public override void Initialize()
     {
+        base.Initialize();
+
         SubscribeLocalEvent<AbilityFeedComponent, VampireEventFeedAbility>(OnFeedStart);
         SubscribeLocalEvent<AbilityFeedComponent, VampireEventFeedAbilityDoAfter>(OnFeedEnd);
         SubscribeLocalEvent<AbilityFeedComponent, MapInitEvent>(OnMapInit);

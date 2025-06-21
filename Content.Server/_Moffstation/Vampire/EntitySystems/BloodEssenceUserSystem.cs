@@ -32,7 +32,6 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
     [Dependency] private readonly IPrototypeManager _proto = default!;
     [Dependency] private readonly BloodEssenceSystem _bloodEssenceSystem = default!;
 
-
     /// <summary>
     /// Extracts blood from the target creature and places it in the user's stomach.
     /// This also handles giving the target the BloodEssenceComponent and interacts with it to
