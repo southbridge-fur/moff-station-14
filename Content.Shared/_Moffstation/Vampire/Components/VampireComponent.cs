@@ -9,7 +9,7 @@ namespace Content.Shared._Moffstation.Vampire.Components;
 /// Responsible for setting up some of the more intricate details of initializing a vampire,
 /// this component and related systems (<see cref="Content.Shared._Moffstation.Vampire.EntitySystems"/> and
 /// </summary>
-[RegisterComponent, Access(typeof(SharedVampireSystem))]
+[RegisterComponent]
 public sealed partial class VampireComponent : Component
 {
     /// <summary>

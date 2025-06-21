@@ -8,7 +8,3 @@ namespace Content.Shared._Moffstation.Vampire;
 /// We shopping
 /// </summary>
 public sealed partial class VampireShopEvent : InstantActionEvent;
-
-
-
-

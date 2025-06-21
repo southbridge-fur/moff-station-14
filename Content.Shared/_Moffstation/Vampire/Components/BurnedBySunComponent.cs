@@ -2,6 +2,7 @@
 using Content.Shared.Maps;
 using Robust.Shared.Audio;
 using Robust.Shared.GameStates;
+using Robust.Shared.Map;
 using Robust.Shared.Prototypes;
 
 namespace Content.Shared._Moffstation.Vampire.Components;
@@ -28,7 +29,7 @@ public sealed partial class BurnedBySunComponent : Component
     /// </summary>
     [DataField]
     public List<ITileDefinition> TileBlacklistCache = new();
-    
+
     /// <summary>
     /// The field which keeps track of when the next tick of damage will occur.
     /// </summary>
@@ -47,14 +48,7 @@ public sealed partial class BurnedBySunComponent : Component
     /// </summary>
     [DataField]
     public TimeSpan LastBurn = TimeSpan.Zero;
-    
-    /// <summary>
-    /// Amount of firestacks to give the entity while they're in sunlight.
-    /// This value is multiplied by <see cref="Accumulation"/>.
-    /// </summary>
-    [DataField]
-    public float FireStacksPerUpdate = 1.0;
-    
+
     /// <summary>
     /// The percentage of <see cref="Damage"/> to perform per update.
     /// This value is always clamped between 0.0 and 1.0, and increases by <see cref="AccumulationPerUpdate"/> per update until it hits 1.0 (100%).
@@ -77,6 +71,13 @@ public sealed partial class BurnedBySunComponent : Component
     /// </summary>
     [DataField]
     public DamageSpecifier Damage = new();
+
+    /// <summary>
+    /// Amount of firestacks to give the entity while they're in sunlight.
+    /// This value is multiplied by <see cref="Accumulation"/>.
+    /// </summary>
+    [DataField]
+    public float FireStacksPerUpdate = 1.0f;
 
     /// <summary>
     /// The sound that plays when the vampire is getting burned in the sun

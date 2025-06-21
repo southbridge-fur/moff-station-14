@@ -32,8 +32,6 @@ public sealed class BloodConsumptionSystem : EntitySystem
 
     public override void Initialize()
     {
-        base.Initialize();
-
         SubscribeLocalEvent<BloodConsumptionComponent, MapInitEvent>(OnMapInit);
     }
 
@@ -50,7 +48,9 @@ public sealed class BloodConsumptionSystem : EntitySystem
         var enumerator = EntityQueryEnumerator<BloodConsumptionComponent>();
         while (enumerator.MoveNext(out var uid, out var comp))
         {
-            UpdateBloodConsumption(uid, comp, time);
+            if (!Resolve(uid, ref comp))
+                continue;
+            UpdateBloodConsumption((uid, comp), time);
         }
     }
 
@@ -67,12 +67,12 @@ public sealed class BloodConsumptionSystem : EntitySystem
 
         entity.Comp.NextUpdate += entity.Comp.UpdateInterval;
 
-        if (!TryComp<BloodstreamComponent>(uid, out var bloodstream))
+        if (!TryComp<BloodstreamComponent>(entity, out var bloodstream))
             return; // we need at least the blood stream before we can do something.
 
-        UpdateRegeneration(uid, bloodstream);
-        UpdateHungerThirst(uid, bloodstream);
-        FlushTempSolution((uid, bloodstream));
+        UpdateRegeneration(entity, bloodstream);
+        UpdateHungerThirst(entity, bloodstream);
+        FlushTempSolution((entity, bloodstream));
     }
 
     /// <summary>
@@ -80,59 +80,50 @@ public sealed class BloodConsumptionSystem : EntitySystem
     /// The hunger and thirst values are limited in how fast they can change via the
     /// <see cref="BloodConsumptionComponent.MaxChange"/> value.
     /// </summary>
-    /// <param name="uid"></param>
-    /// <param name="comp"></param>
-    /// <param name="bloodstream"></param>
     private void UpdateHungerThirst(Entity<BloodConsumptionComponent> entity, BloodstreamComponent bloodstream)
     {
-        var bloodstreamPercentage = _bloodstreamSystem.GetBloodLevelPercentage(uid, bloodstream);
+        var bloodstreamPercentage = _bloodstreamSystem.GetBloodLevelPercentage(entity, bloodstream);
         var modificationPercentage = Math.Clamp(
-            bloodstreamPercentage - comp.PrevBloodPercentage,
-            -comp.MaxChange,
-            comp.MaxChange);
-        if (TryComp<HungerComponent>(uid, out var hunger))
-            _hungerSystem.ModifyHunger(uid, modificationPercentage * hunger.Thresholds[HungerThreshold.Overfed], hunger);
-        if (TryComp<ThirstComponent>(uid, out var thirst))
-            _thirstSystem.ModifyThirst(uid, thirst, modificationPercentage * thirst.ThirstThresholds[ThirstThreshold.OverHydrated]);
-        comp.PrevBloodPercentage += modificationPercentage;
+            bloodstreamPercentage - entity.Comp.PrevBloodPercentage,
+            -entity.Comp.MaxChange,
+            entity.Comp.MaxChange);
+        if (TryComp<HungerComponent>(entity, out var hunger))
+            _hungerSystem.ModifyHunger(entity, modificationPercentage * hunger.Thresholds[HungerThreshold.Overfed], hunger);
+        if (TryComp<ThirstComponent>(entity, out var thirst))
+            _thirstSystem.ModifyThirst(entity, thirst, modificationPercentage * thirst.ThirstThresholds[ThirstThreshold.OverHydrated]);
+        entity.Comp.PrevBloodPercentage += modificationPercentage;
     }
 
     /// <summary>
     /// Updates the vampire's bloodstream according to whether they are healing or not. Also performs their healing.
     /// </summary>
-    /// <param name="uid"></param>
-    /// <param name="comp"></param>
-    /// <param name="bloodstream"></param>
     private void UpdateRegeneration(Entity<BloodConsumptionComponent> entity, BloodstreamComponent bloodstream)
     {
         // check damage
-        if (TryComp<DamageableComponent>(uid, out var damage)
+        if (TryComp<DamageableComponent>(entity.Owner, out var damage)
 	    && damage.Damage.AnyPositive()) // Vampires should be able to heal all damage types
         {
 	    // heal according to comp amount
-	    _damageSystem.TryChangeDamage(uid, entity.Comp.HealPerUpdate, true, false, damage);
+	    _damageSystem.TryChangeDamage(entity.Owner, entity.Comp.HealPerUpdate, true, false, damage);
 	    // subtract blood for healing
-	    _bloodstreamSystem.TryModifyBloodLevel(uid, entity.Comp.HealingBloodlossPerUpdate, bloodstream);
+	    _bloodstreamSystem.TryModifyBloodLevel(entity.Owner, entity.Comp.HealingBloodlossPerUpdate, bloodstream);
 	    return;
         }
         // else subtract the usual amount of blood
-        _bloodstreamSystem.TryModifyBloodLevel(uid, entity.Comp.BaseBloodlossPerUpdate, bloodstream);
+        _bloodstreamSystem.TryModifyBloodLevel(entity.Owner, entity.Comp.BaseBloodlossPerUpdate, bloodstream);
     }
 
     /// <summary>
     /// Clear the temporary solution of the Bloodstream.
     /// This is an in-elegant method to avoid the vampire spilling their blood all over the floor.
     /// </summary>
-    /// <param name="uid"></param>
-    /// <param name="comp"></param>
-    /// <param name="bloodstream"></param>
     /// <remarks>
     /// todo: Make this a bit more elegant, and maybe introduce a method where vampires will spill reagents that
     /// their body rejects (food, drinks, basically anything that isn't blood). The problem is that the bloodstream
     /// will fail to properly initialize if we nullify the temporary solution, so this may require some changes
     /// to bloodstreams themselves to accept the ability to not have a temporary solution.
     /// </remarks>
-    private void FlushTempSolution(Entity<BloodStreamComponent> entity)
+    private void FlushTempSolution(Entity<BloodstreamComponent> entity)
     {
         if (!_solutionContainerSystem.ResolveSolution(entity.Owner,
                 entity.Comp.BloodTemporarySolutionName,

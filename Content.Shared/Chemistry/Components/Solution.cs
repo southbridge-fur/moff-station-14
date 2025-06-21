@@ -82,9 +82,9 @@ namespace Content.Shared.Chemistry.Components
         /// </summary>
         public float MaxTransferableSolution(float quantity, Solution? solution = null)
         {
-            if (solution is not { })
-                return Math.Min((float) AvailableVolume, quantity);
-            return Math.Min((float) solution.Volume, Math.Min((float) AvailableVolume, quantity));
+            return solution is null
+                ? Math.Min((float) AvailableVolume, quantity)
+                : Math.Min((float) solution.Volume, Math.Min((float) AvailableVolume, quantity));
         }
         // Moffstation - End
 

@@ -24,8 +24,6 @@ public sealed class AbilityGlareSystem : EntitySystem
 
     public override void Initialize()
     {
-        base.Initialize();
-
         SubscribeLocalEvent<AbilityGlareComponent, VampireEventGlareAbility>(OnGlare);
         SubscribeLocalEvent<AbilityGlareComponent, MapInitEvent>(OnMapInit);
     }

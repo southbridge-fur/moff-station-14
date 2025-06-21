@@ -7,7 +7,9 @@ using Content.Shared.Popups;
 using Content.Shared._Moffstation.Vampire.Events;
 using Content.Shared.Actions;
 using Content.Shared.Administration.Logs;
+using Content.Shared.Body.Components;
 using Content.Shared.Database;
+using NetCord;
 using Robust.Shared.Audio.Systems;
 
 namespace Content.Server._Moffstation.Vampire.Abilities.EntitySystems;
@@ -30,8 +32,6 @@ public sealed class AbilityFeedSystem : EntitySystem
 
     public override void Initialize()
     {
-        base.Initialize();
-
         SubscribeLocalEvent<AbilityFeedComponent, VampireEventFeedAbility>(OnFeedStart);
         SubscribeLocalEvent<AbilityFeedComponent, VampireEventFeedAbilityDoAfter>(OnFeedEnd);
         SubscribeLocalEvent<AbilityFeedComponent, MapInitEvent>(OnMapInit);
@@ -98,18 +98,19 @@ public sealed class AbilityFeedSystem : EntitySystem
         args.Handled = true;
 
         if (!TryComp<VampireComponent>(entity, out var vampire)
-            || !TryComp<BloodEssenceUserComponent>(entity, out var bloodEssenceUser))
+            || !TryComp<BloodEssenceUserComponent>(entity, out var bloodEssenceUser)
+            || !TryComp<BodyComponent>(entity, out var body))
             return;
 
         var target = args.Args.Target;
         if (target is not { } || !TryComp<BloodstreamComponent>(target, out var targetBloodstream))
             return;
 
-        var collectedEssence = _bloodEssence.TryExtractBlood((entity, bloodEssenceUser), entity.Comp.BloodPerFeed, (target.Value, targetBloodstream));
+        var collectedEssence = _bloodEssence.TryExtractBlood((entity.Owner, bloodEssenceUser, body), entity.Comp.BloodPerFeed, (target.Value, targetBloodstream));
         if (collectedEssence > 0.0f)
         {
             _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-vampire", ("target", target)), entity, entity, PopupType.Medium);
-            _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-target", ("vampire", entity)), entity, target.Value, PopupType.MediumCaution);
+            _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-target", ("vampire", entity.Owner)), entity.Owner, target.Value, PopupType.MediumCaution);
             _vampire.DepositEssence((entity, vampire), collectedEssence);
         }
 

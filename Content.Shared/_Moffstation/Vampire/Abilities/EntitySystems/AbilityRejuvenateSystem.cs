@@ -8,8 +8,6 @@ using Content.Shared.Database;
 using Content.Shared.Drunk;
 using Content.Shared.Popups;
 using Content.Shared.Speech.EntitySystems;
-using Content.Shared.Standing;
-using Content.Shared.StatusEffect;
 using Content.Shared.Stunnable;
 using Robust.Shared.Audio.Systems;
 
@@ -31,12 +29,9 @@ public sealed class AbilityRejuvenateSystem : EntitySystem
     [Dependency] private readonly ISharedAdminLogManager _adminLogger = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
     [Dependency] private readonly SharedPopupSystem _popup = default!;
-    [Dependency] private readonly StandingStateSystem  _standingSystem = default!;
 
     public override void Initialize()
     {
-        base.Initialize();
-
         SubscribeLocalEvent<AbilityRejuvenateComponent, VampireEventRejuvenateAbility>(OnRejuvenate);
         SubscribeLocalEvent<AbilityRejuvenateComponent, MapInitEvent>(OnMapInit);
     }

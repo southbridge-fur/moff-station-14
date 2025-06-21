@@ -1,12 +1,11 @@
 using Content.Shared._Moffstation.Vampire.Abilities.Components;
-using Content.Server.Body.Components;
 using Content.Shared._Moffstation.Vampire.Components;
-using Content.Server.Store.Systems;
 using Content.Shared._Moffstation.Vampire;
-using Content.Shared._Moffstation.Vampire.EntitySystems;
+using Content.Server.Body.Components;
+using Content.Server.Store.Systems;
+using Content.Shared.Store.Components;
 using Content.Shared.Actions;
 using Content.Shared.FixedPoint;
-using Content.Shared.Store.Components;
 
 namespace Content.Server._Moffstation.Vampire.EntitySystems;
 
@@ -14,7 +13,7 @@ namespace Content.Server._Moffstation.Vampire.EntitySystems;
 /// This system is the central place which manages vampires.
 /// It's largely responsible for handing their shop and initializing the basic vampire abilities.
 /// </summary>
-public sealed partial class VampireSystem : SharedVampireSystem
+public sealed partial class VampireSystem : EntitySystem
 {
     [Dependency] private readonly StoreSystem _storeSystem = default!;
     [Dependency] private readonly SharedActionsSystem _action = default!;

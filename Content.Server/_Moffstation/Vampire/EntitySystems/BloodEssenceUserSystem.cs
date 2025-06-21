@@ -38,11 +38,8 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
     /// This also handles giving the target the BloodEssenceComponent and interacts with it to
     /// pull essence from the target and put it in the user's BloodEssence pool
     /// </summary>
-    /// <param name="uid"></param>
-    /// <param name="transferAmount"></param>
-    /// <param name="target"></param>
     /// <returns>The amount of blood essence extracted.</returns>
-    public float TryExtractBlood(Entity<BloodEssenceUserComponent,BodyComponent> entity, float transferAmount, Entity<BloodstreamComponent> target)
+    public float TryExtractBlood(Entity<BloodEssenceUserComponent, BodyComponent> entity, float transferAmount, Entity<BloodstreamComponent> target)
     {
         if (transferAmount <= 0.0f) // can't take 0 blood from the target
             return 0.0f;
@@ -99,8 +96,9 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
             }
         }
 
-	    bloodEssenceUser.FedFrom[target] += essenceCollected;
-            bloodEssenceUser.BloodEssenceTotal += essenceCollected;
+        if (!bloodEssenceUser.FedFrom.TryAdd(target,essenceCollected))
+            bloodEssenceUser.FedFrom[target] += essenceCollected;
+        bloodEssenceUser.BloodEssenceTotal += essenceCollected;
 
         _stomach.TryTransferSolution(firstStomach.Value, tempSolution);
         Dirty<StomachComponent>(firstStomach.Value);
@@ -115,7 +113,7 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
     /// <remarks>
     /// todo: Move this to Solutions.
     /// </remarks>
-    private bool TryGetReagentQuantityByProto(Solution solution, ProtoId<ReagentPrototype> proto, out float volume)
+    private static bool TryGetReagentQuantityByProto(Solution solution, ProtoId<ReagentPrototype> proto, out float volume)
     {
         foreach (var reagentId in solution.Contents)
         {
