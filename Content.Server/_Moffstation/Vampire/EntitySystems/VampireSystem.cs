@@ -29,9 +29,6 @@ public sealed partial class VampireSystem : SharedVampireSystem
 
     private void OnMapInit(Entity<VampireComponent> entity, ref MapInitEvent args)
     {
-        if (!TryComp<VampireComponent>(entity, out var comp))
-            return;
-
         RemComp<RespiratorComponent>(entity); // Don't need them to breath
 
         // Give the shop action
@@ -48,10 +45,7 @@ public sealed partial class VampireSystem : SharedVampireSystem
     /// </summary>
     private void OnShopOpenAction(Entity<StoreComponent> entity, ref VampireShopEvent args)
     {
-        if (!TryComp<StoreComponent>(entity, out var store))
-            return;
-
-        _storeSystem.ToggleUi(entity, entity, store);
+        _storeSystem.ToggleUi(entity.Owner, entity.Owner, entity.Comp);
     }
 
     /// <summary>
@@ -59,7 +53,7 @@ public sealed partial class VampireSystem : SharedVampireSystem
     /// </summary>
     /// <param name="entity">The entity with the Vampire component to deposit Blood Essence into</param>
     /// <param name="amount">The amount of Blood Essence to deposit</param>
-    public void DepositEssence(Entity<VampireComponent> entity, float amount)
+    public static void DepositEssence(Entity<VampireComponent> entity, float amount)
     {
         if (amount <= 0.0f)
             return;

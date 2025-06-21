@@ -39,10 +39,7 @@ public sealed class BloodConsumptionSystem : EntitySystem
 
     private void OnMapInit(Entity<BloodConsumptionComponent> entity, ref MapInitEvent args)
     {
-        if (!TryComp<BloodConsumptionComponent>(entity, out var component))
-            return;
-
-        component.NextUpdate = _timing.CurTime + component.UpdateInterval;
+        entity.Comp.NextUpdate = _timing.CurTime + entity.Comp.UpdateInterval;
     }
 
     public override void Update(float frameTime)
@@ -63,19 +60,19 @@ public sealed class BloodConsumptionSystem : EntitySystem
     ///     - Calls <see cref="UpdateHungerThirst"/> To set the percentage values of hunger and thirst to a percentage of the bloodstream.
     ///     - Calls <see cref="FlushTempSolution"/> Which flushes the temporary solution, preventing them from spilling blood on the ground.
     /// </summary>
-    private void UpdateBloodConsumption(EntityUid uid, BloodConsumptionComponent comp, TimeSpan time)
+    private void UpdateBloodConsumption(Entity<BloodConsumptionComponent> entity, TimeSpan time)
     {
-        if (time < comp.NextUpdate)
+        if (time < entity.Comp.NextUpdate)
             return;
 
-        comp.NextUpdate += comp.UpdateInterval;
+        entity.Comp.NextUpdate += entity.Comp.UpdateInterval;
 
         if (!TryComp<BloodstreamComponent>(uid, out var bloodstream))
             return; // we need at least the blood stream before we can do something.
 
-        UpdateRegeneration(uid, comp, bloodstream);
-        UpdateHungerThirst(uid, comp, bloodstream);
-        FlushTempSolution(uid, bloodstream);
+        UpdateRegeneration(uid, bloodstream);
+        UpdateHungerThirst(uid, bloodstream);
+        FlushTempSolution((uid, bloodstream));
     }
 
     /// <summary>
@@ -86,7 +83,7 @@ public sealed class BloodConsumptionSystem : EntitySystem
     /// <param name="uid"></param>
     /// <param name="comp"></param>
     /// <param name="bloodstream"></param>
-    private void UpdateHungerThirst(EntityUid uid, BloodConsumptionComponent comp, BloodstreamComponent bloodstream)
+    private void UpdateHungerThirst(Entity<BloodConsumptionComponent> entity, BloodstreamComponent bloodstream)
     {
         var bloodstreamPercentage = _bloodstreamSystem.GetBloodLevelPercentage(uid, bloodstream);
         var modificationPercentage = Math.Clamp(
@@ -106,22 +103,20 @@ public sealed class BloodConsumptionSystem : EntitySystem
     /// <param name="uid"></param>
     /// <param name="comp"></param>
     /// <param name="bloodstream"></param>
-    private void UpdateRegeneration(EntityUid uid, BloodConsumptionComponent comp, BloodstreamComponent bloodstream)
+    private void UpdateRegeneration(Entity<BloodConsumptionComponent> entity, BloodstreamComponent bloodstream)
     {
         // check damage
-        if (TryComp<DamageableComponent>(uid, out var damage))
+        if (TryComp<DamageableComponent>(uid, out var damage)
+	    && damage.Damage.AnyPositive()) // Vampires should be able to heal all damage types
         {
-            if (damage.Damage.AnyPositive()) // Vampires should be able to heal all damage types
-            {
-                // heal according to comp amount
-                _damageSystem.TryChangeDamage(uid, comp.HealPerUpdate, true, false, damage);
-                // subtract blood for healing
-                _bloodstreamSystem.TryModifyBloodLevel(uid, comp.HealingBloodlossPerUpdate, bloodstream);
-                return;
-            }
+	    // heal according to comp amount
+	    _damageSystem.TryChangeDamage(uid, entity.Comp.HealPerUpdate, true, false, damage);
+	    // subtract blood for healing
+	    _bloodstreamSystem.TryModifyBloodLevel(uid, entity.Comp.HealingBloodlossPerUpdate, bloodstream);
+	    return;
         }
         // else subtract the usual amount of blood
-        _bloodstreamSystem.TryModifyBloodLevel(uid, comp.BaseBloodlossPerUpdate, bloodstream);
+        _bloodstreamSystem.TryModifyBloodLevel(uid, entity.Comp.BaseBloodlossPerUpdate, bloodstream);
     }
 
     /// <summary>
@@ -137,11 +132,11 @@ public sealed class BloodConsumptionSystem : EntitySystem
     /// will fail to properly initialize if we nullify the temporary solution, so this may require some changes
     /// to bloodstreams themselves to accept the ability to not have a temporary solution.
     /// </remarks>
-    private void FlushTempSolution(EntityUid uid, BloodstreamComponent bloodstream)
+    private void FlushTempSolution(Entity<BloodStreamComponent> entity)
     {
-        if (!_solutionContainerSystem.ResolveSolution(uid,
-                bloodstream.BloodTemporarySolutionName,
-                ref bloodstream.TemporarySolution,
+        if (!_solutionContainerSystem.ResolveSolution(entity.Owner,
+                entity.Comp.BloodTemporarySolutionName,
+                ref entity.Comp.TemporarySolution,
                 out var tempSolution))
             return;
         tempSolution.RemoveAllSolution();

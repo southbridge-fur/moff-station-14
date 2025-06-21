@@ -1,6 +1,7 @@
 ﻿using Content.Shared._Moffstation.Vampire.Components;
 using Content.Shared.Damage;
 using Content.Shared.Popups;
+using Content.Server.Atmos.EntitySystems
 using Robust.Shared.Audio.Systems;
 using Robust.Shared.Map;
 using Robust.Shared.Map.Components;
@@ -22,7 +23,21 @@ public sealed class BurnedBySunSystem : EntitySystem
     [Dependency] private readonly SharedPopupSystem _popup = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly SharedAudioSystem _audio = default!;
+    [Dependency] private readonly FlammableSystem _flammable = default!;
+    
+    public override void Initialize()
+    {
+        base.Initialize();
 
+        SubscribeLocalEvent<BurnedBySunComponent, MapInitEvent>(OnMapInit);
+        SubscribeLocalEvent<BurnedBySunComponent, TileChangedEvent>(OnTileChanged);	
+    }
+
+    private void OnMapInit(Entity<BurnedBySunComponent> entity, ref MapInitEvent args)
+    {
+	UpdateTileset(entity);
+    }
+    
     public override void Update(float frameTime)
     {
         base.Update(frameTime);
@@ -47,56 +62,71 @@ public sealed class BurnedBySunSystem : EntitySystem
     /// it would be hard for the user to know they are in the sun. Especially since we don't have sunlight streaming
     /// through windows or anything (although that would be cool to implement :3)
     /// </remarks>
-    private bool IsInTheSun(EntityUid uid, BurnedBySunComponent comp, TimeSpan time)
+    private bool IsInTheSun(Entity<BurnedBySunComponent> entity, TimeSpan time)
     {
-        if (time < comp.NextUpdate)
+        if (time < entity.Comp.NextUpdate)
             return false;
 
-        comp.NextUpdate += comp.UpdateInterval;
+        entity.Comp.NextUpdate += entity.Comp.UpdateInterval;
 
         var xform = Transform(uid);
         if (!TryComp<MapGridComponent>(xform.GridUid, out var grid))
             return true; // we aren't on a grid, time to burn
 
-        if (comp.TileBlacklist.Count == 0)
+        if (entity.Comp.TileBlacklistCache.Count == 0)
             return false;
-
-        // This could be cached but then if the tile definitions ever change during a round, it will be obsolete.
-        var tileBlacklist = new List<ITileDefinition>();
-        foreach (var tileProto in comp.TileBlacklist)
-        {
-            if (_tileDefs.TryGetDefinition(tileProto, out var tileDef))
-                tileBlacklist.Add(tileDef);
-        }
 
         var tileRef = _map.GetTileRef(xform.GridUid.Value,
             grid,
             new EntityCoordinates(uid, 0.0f, 0.0f));
 
         _tileDefs.TryGetDefinition(tileRef.Tile.TypeId, out var currTileDef);
-        return currTileDef is null || tileBlacklist.Contains(currTileDef);
+        return currTileDef is null || entity.Comp.TileBlacklistCache.Contains(currTileDef);
     }
 
+    /// <summary>
+    /// This catches the event for any tile changes in the map. 
+    /// </summary>
+    private void OnTileChanged(Entity<BurnedBySunComponent> entity, ref TileChangedEvent args)
+    {
+	UpdateTileset(entity);
+    }
+
+    /// <summary>
+    /// Updates the tileset cache.
+    /// </summary>
+    private void UpdateTileset(Entity<BurnedBySunComponent> entity)
+    {
+        foreach (var tileProto in entity.Comp.TileBlacklist)
+        {
+            if (_tileDefs.TryGetDefinition(tileProto, out var tileDef)
+		&& !(tileDef in entity.Comp.tileBlacklistCache))
+		entity.Comp.tileBlacklistCache.Add(tileDef);              
+        }
+    }
     /// <summary>
     /// Causes damage to the entity according to the component's specified damage.
     /// The damage does ramp up to the full amount based upon the Accumulation and the AccumulationPerUpdate
     /// </summary>
-    private void Damage(EntityUid uid, BurnedBySunComponent comp)
+    private void Damage(Entity<BurnedBySunComponent> entity)
     {
         // Make it ramp up in severity over time.
-        comp.Accumulation = (comp.LastBurn >= comp.NextUpdate - comp.UpdateInterval * 2.0)
-            ? Math.Clamp(comp.Accumulation + comp.AccumulationPerUpdate, 0.0f, 1.0f)
+        entity.Comp.Accumulation = (entity.Comp.LastBurn >= entity.Comp.NextUpdate - entity.Comp.UpdateInterval * 2.0)
+            ? Math.Clamp(entity.Comp.Accumulation + entity.Comp.AccumulationPerUpdate, 0.0f, 1.0f)
             : 0.0f;
 
-        if (comp.Accumulation > 0.2 && _random.NextFloat() < comp.Accumulation * 0.9)
+        if (_random.NextFloat() < entity.Comp.Accumulation * 0.5)
         {
-            _popup.PopupEntity(Loc.GetString("vampire-in-sunlight"), uid, uid, PopupType.MediumCaution);
-            _audio.PlayPvs(comp.BurnSound, uid);
+            _popup.PopupEntity(Loc.GetString("vampire-in-sunlight"),
+			       entity.Owner, entity.Owner,
+			       (entity.Comp.Accumulation < 0.5)
+			       ? PopupType.SmallCaution
+			       : PopupType.MediumCaution));
+            _audio.PlayPvs(entity.Comp.BurnSound.WithVolume(-4*entity.Comp.Accumulation), entity);
         }
-
-        // todo: give the entity some kind of feedback, like a shader effect
-        // todo: Consider bursting into flames
-        _damage.TryChangeDamage(uid, comp.Damage * comp.Accumulation, true);
-        comp.LastBurn = _timing.CurTime;
+	
+	_flammable.AdjustFireStacks(entity.Owner, entity.Comp.FireStacksPerUpdate * entity.Comp.Accumulation);
+	_damage.TryChangeDamage(entity.Owner, entity.Comp.Damage * entity.Comp.Accumulation, true);
+        entity.Comp.LastBurn = _timing.CurTime;
     }
 }

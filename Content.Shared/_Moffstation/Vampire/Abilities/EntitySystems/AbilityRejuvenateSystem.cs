@@ -41,12 +41,9 @@ public sealed class AbilityRejuvenateSystem : EntitySystem
         SubscribeLocalEvent<AbilityRejuvenateComponent, MapInitEvent>(OnMapInit);
     }
 
-    public void OnMapInit(Entity<AbilityRejuvenateComponent> entity, ref MapInitEvent args)
+    private void OnMapInit(Entity<AbilityRejuvenateComponent> entity, ref MapInitEvent args)
     {
-        if (!TryComp<AbilityRejuvenateComponent>(entity, out var comp))
-            return;
-
-        _action.AddAction(entity, ref comp.Action, comp.ActionProto, entity);
+        _action.AddAction(entity.Owner, ref entity.Comp.Action,  entity.Comp.ActionProto, entity.Owner);
     }
 
     /// <summary>
@@ -69,7 +66,7 @@ public sealed class AbilityRejuvenateSystem : EntitySystem
         if (args.Handled)
             return;
 
-        if (!TryComp<AbilityRejuvenateComponent>(entity, out var rejuvenateComp))
+        if (!TryComp<AbilityRejuvenateComponent>(entity.Owner, out var rejuvenateComp))
             return;
 
         RemComp<KnockedDownComponent>(entity);

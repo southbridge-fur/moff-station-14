@@ -42,19 +42,16 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
     /// <param name="transferAmount"></param>
     /// <param name="target"></param>
     /// <returns>The amount of blood essence extracted.</returns>
-    public float TryExtractBlood(Entity<BloodEssenceUserComponent?,BodyComponent?> uid, float transferAmount, Entity<BloodstreamComponent?> target)
+    public float TryExtractBlood(Entity<BloodEssenceUserComponent,BodyComponent> entity, float transferAmount, Entity<BloodstreamComponent> target)
     {
-        if (!(transferAmount > 0.0f)) // can't take 0 blood from the target
+        if (transferAmount <= 0.0f) // can't take 0 blood from the target
             return 0.0f;
 
-        if (!TryComp<BloodEssenceUserComponent>(uid, out var bloodEssenceUser) || !TryComp<BodyComponent>(uid, out var body))
-            return 0.0f;
-
-        if (!TryComp<BloodstreamComponent>(target, out var targetBloodstream))
-            return 0.0f;
-
-        if (!_body.TryGetBodyOrganEntityComps<StomachComponent>((uid, body), out var stomachs))
-            return 0.0f;
+	entity.Deconstruct(out var uid, out var bloodEssenceUser, out var body);
+	var targetBloodstream = target.Comp;
+	
+	if (!_body.TryGetBodyOrganEntityComps<StomachComponent>((uid, body), out var stomachs))
+	    return 0.0f;
 
         var firstStomach = stomachs.FirstOrNull(stomach => _stomach.MaxTransferableSolution(stomach, transferAmount) > 0.0f);
 
@@ -102,11 +99,7 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
             }
         }
 
-        if (bloodEssenceUser.FedFrom.TryGetValue(target, out var _))
-            bloodEssenceUser.FedFrom[target] += essenceCollected;
-        else
-            bloodEssenceUser.FedFrom.Add(target,essenceCollected);
-
+	bloodEssenceUser.FedFrom[target] += essenceCollected;
         bloodEssenceUser.BloodEssenceTotal += essenceCollected;
 
         _stomach.TryTransferSolution(firstStomach.Value, tempSolution);
@@ -124,11 +117,11 @@ public sealed partial class BloodEssenceUserSystem : EntitySystem
     /// </remarks>
     private bool TryGetReagentQuantityByProto(Solution solution, ProtoId<ReagentPrototype> proto, out float volume)
     {
-        foreach (var tuple in solution.Contents)
+        foreach (var reagentId in solution.Contents)
         {
-            if (tuple.Reagent.Prototype != proto)
+            if (reagentId.Reagent.Prototype != proto)
                 continue;
-            volume = (float) tuple.Quantity;
+            volume = (float) reagentId.Quantity;
             return true;
         }
 
