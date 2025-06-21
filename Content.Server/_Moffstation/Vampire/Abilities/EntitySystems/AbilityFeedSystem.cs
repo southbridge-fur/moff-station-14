@@ -37,11 +37,9 @@ public sealed class AbilityFeedSystem : EntitySystem
         SubscribeLocalEvent<AbilityFeedComponent, MapInitEvent>(OnMapInit);
     }
 
-    public void OnMapInit(Entity<AbilityFeedComponent> entity, ref MapInitEvent args)
+    private void OnMapInit(Entity<AbilityFeedComponent> entity, ref MapInitEvent args)
     {
-        if (!TryComp<AbilityFeedComponent>(entity, out var comp))
-            return;
-        _action.AddAction(entity, ref comp.Action, comp.ActionProto, entity);
+        _action.AddAction(entity, ref entity.Comp.Action, entity.Comp.ActionProto, entity);
     }
 
     /// <summary>
@@ -52,9 +50,6 @@ public sealed class AbilityFeedSystem : EntitySystem
     private void OnFeedStart(Entity<AbilityFeedComponent> entity, ref VampireEventFeedAbility args)
     {
         if (args.Handled)
-            return;
-
-        if (!TryComp<AbilityFeedComponent>(entity, out var component))
             return;
 
         args.Handled = true;
@@ -73,7 +68,7 @@ public sealed class AbilityFeedSystem : EntitySystem
             return;
         }
 
-        var feedDoAfter = new DoAfterArgs(EntityManager, entity, component.FeedDuration, new VampireEventFeedAbilityDoAfter(), entity, target: target)
+        var feedDoAfter = new DoAfterArgs(EntityManager, entity, entity.Comp.FeedDuration, new VampireEventFeedAbilityDoAfter(), entity, target: target)
         {
             BreakOnMove = true,
             BreakOnWeightlessMove = false,
@@ -85,7 +80,7 @@ public sealed class AbilityFeedSystem : EntitySystem
 
         _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(entity):user} started to feed on {ToPrettyString(target):user}.");
 
-        _audio.PlayPvs(component.FeedStartSound, entity);
+        _audio.PlayPvs(entity.Comp.FeedStartSound, entity);
         _popup.PopupEntity(Loc.GetString("vampire-feeding-on-vampire", ("target", target)), entity, entity, PopupType.Medium);
         _popup.PopupEntity(Loc.GetString("vampire-feeding-on-target", ("vampire", entity)), entity, target, PopupType.LargeCaution);
     }
@@ -102,8 +97,7 @@ public sealed class AbilityFeedSystem : EntitySystem
 
         args.Handled = true;
 
-        if (!TryComp<AbilityFeedComponent>(entity, out var feedComp)
-            || !TryComp<VampireComponent>(entity, out var vampire)
+        if (!TryComp<VampireComponent>(entity, out var vampire)
             || !TryComp<BloodEssenceUserComponent>(entity, out var bloodEssenceUser))
             return;
 
@@ -111,7 +105,7 @@ public sealed class AbilityFeedSystem : EntitySystem
         if (target is not { } || !TryComp<BloodstreamComponent>(target, out var targetBloodstream))
             return;
 
-        var collectedEssence = _bloodEssence.TryExtractBlood((entity, bloodEssenceUser), feedComp.BloodPerFeed, (target.Value, targetBloodstream));
+        var collectedEssence = _bloodEssence.TryExtractBlood((entity, bloodEssenceUser), entity.Comp.BloodPerFeed, (target.Value, targetBloodstream));
         if (collectedEssence > 0.0f)
         {
             _popup.PopupEntity(Loc.GetString("vampire-feeding-successful-vampire", ("target", target)), entity, entity, PopupType.Medium);
@@ -120,6 +114,6 @@ public sealed class AbilityFeedSystem : EntitySystem
         }
 
         _adminLogger.Add(LogType.Action, LogImpact.Medium, $"{ToPrettyString(entity):user} finished feeding on {ToPrettyString(target):user} and collected {collectedEssence} BloodEssence.");
-        _audio.PlayPvs(feedComp.FeedSuccessSound, entity);
+        _audio.PlayPvs(entity.Comp.FeedSuccessSound, entity);
     }
 }

@@ -24,6 +24,12 @@ public sealed partial class BurnedBySunComponent : Component
     public List<ProtoId<ContentTileDefinition>> TileBlacklist = new();
 
     /// <summary>
+    /// The current cache of the tile blacklist so we're not updating it every update cycle.
+    /// </summary>
+    [DataField]
+    public List<ITileDefinition> TileBlacklistCache = new();
+    
+    /// <summary>
     /// The field which keeps track of when the next tick of damage will occur.
     /// </summary>
     [DataField]
@@ -41,7 +47,14 @@ public sealed partial class BurnedBySunComponent : Component
     /// </summary>
     [DataField]
     public TimeSpan LastBurn = TimeSpan.Zero;
-
+    
+    /// <summary>
+    /// Amount of firestacks to give the entity while they're in sunlight.
+    /// This value is multiplied by <see cref="Accumulation"/>.
+    /// </summary>
+    [DataField]
+    public float FireStacksPerUpdate = 1.0;
+    
     /// <summary>
     /// The percentage of <see cref="Damage"/> to perform per update.
     /// This value is always clamped between 0.0 and 1.0, and increases by <see cref="AccumulationPerUpdate"/> per update until it hits 1.0 (100%).

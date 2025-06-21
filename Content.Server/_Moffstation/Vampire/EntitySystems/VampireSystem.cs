@@ -21,8 +21,6 @@ public sealed partial class VampireSystem : SharedVampireSystem
 
     public override void Initialize()
     {
-        base.Initialize();
-
         SubscribeLocalEvent<VampireComponent, MapInitEvent>(OnMapInit);
         SubscribeLocalEvent<StoreComponent, VampireShopEvent>(OnShopOpenAction);
     }
@@ -45,7 +43,7 @@ public sealed partial class VampireSystem : SharedVampireSystem
     /// </summary>
     private void OnShopOpenAction(Entity<StoreComponent> entity, ref VampireShopEvent args)
     {
-        _storeSystem.ToggleUi(entity, entity, entity.Comp);
+        _storeSystem.ToggleUi(entity.Owner, entity.Owner, entity.Comp);
     }
 
     /// <summary>
@@ -53,16 +51,13 @@ public sealed partial class VampireSystem : SharedVampireSystem
     /// </summary>
     /// <param name="entity">The entity with the Vampire component to deposit Blood Essence into</param>
     /// <param name="amount">The amount of Blood Essence to deposit</param>
-    public static void DepositEssence(Entity<VampireComponent> entity, float amount)
+    public void DepositEssence(Entity<VampireComponent> entity, float amount)
     {
         if (amount <= 0.0f)
             return;
 
-        if (!TryComp<VampireComponent>(entity, out var comp))
-            return;
-
         _storeSystem.TryAddCurrency(new Dictionary<string, FixedPoint2>
-                { { comp.BloodEssenceCurrencyPrototype, amount } },
+                { { entity.Comp.BloodEssenceCurrencyPrototype, amount } },
             entity);
     }
 }
