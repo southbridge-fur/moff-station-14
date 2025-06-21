@@ -1,6 +1,5 @@
 using Content.Server._Moffstation.GameTicking.Rules.Components; // Moffstation - Added Vampires
 using Content.Server._Harmony.GameTicking.Rules.Components; // Harmony
-
 using Content.Server.Administration.Commands;
 using Content.Server.Antag;
 using Content.Server.GameTicking;
@@ -139,7 +138,7 @@ public sealed partial class AdminVerbSystem
             Act = () =>
             {
                 // pirates just get an outfit because they don't really have logic associated with them
-                SetOutfitCommand.SetOutfit(args.Target, PirateGearId, EntityManager);
+                _outfit.SetOutfit(args.Target, PirateGearId);
             },
             Impact = LogImpact.High,
             Message = string.Join(": ", pirateName, Loc.GetString("admin-verb-make-pirate")),
@@ -235,6 +234,5 @@ public sealed partial class AdminVerbSystem
         };
         args.Verbs.Add(bloodBrother);
         // Harmony end
-
     }
 }
