@@ -8,7 +8,7 @@
     },
     "states": [
         {
-            "name": "ai-alien",
+            "name": "ai_alien",
             "delays": [
                 [
                     0.1,
@@ -34,10 +34,10 @@
             ]
         },
         {
-            "name": "ai-angryface"
+            "name": "ai_angryface"
         },
         {
-            "name": "ai-bloodylove",
+            "name": "ai_bloodylove",
             "delays": [
                 [
                     0.1,
@@ -83,7 +83,7 @@
             ]
         },
         {
-            "name": "ai-boxfort",
+            "name": "ai_boxfort",
             "delays": [
                 [
                     1,
@@ -106,7 +106,7 @@
             ]
         },
         {
-            "name": "ai-cheerful",
+            "name": "ai_cheerful",
             "delays": [
                 [
                     4,
@@ -491,7 +491,7 @@
             ]
         },
         {
-            "name": "ai-hades",
+            "name": "ai_hades",
             "delays": [
                 [
                     0.2,
@@ -513,7 +513,7 @@
             ]
         },
         {
-            "name": "ai-helios",
+            "name": "ai_helios",
             "delays": [
                 [
                     0.1,
@@ -555,7 +555,7 @@
             ]
         },
         {
-            "name": "ai-honeycomb",
+            "name": "ai_honeycomb",
             "delays": [
                 [
                     0.1,
@@ -578,7 +578,7 @@
             ]
         },
         {
-            "name": "ai-hourglass",
+            "name": "ai_hourglass",
             "delays": [
                 [
                     0.2,
@@ -601,7 +601,7 @@
             ]
         },
         {
-            "name": "ai-magma",
+            "name": "ai_magma",
             "delays": [
                 [
                     0.2,
@@ -620,7 +620,7 @@
             ]
         },
         {
-            "name": "ai-matrix",
+            "name": "ai_matrix",
             "delays": [
                 [
                     0.1,
@@ -660,7 +660,7 @@
         },
 
         {
-            "name": "ai-mono",
+            "name": "ai_mono",
             "delays": [
                 [
                     0.2,
@@ -682,7 +682,7 @@
             ]
         },
         {
-            "name": "ai-nanotrasen",
+            "name": "ai_nanotrasen",
             "delays": [
                 [
                     0.3,
@@ -691,7 +691,7 @@
             ]
         },
         {
-            "name": "ai-president",
+            "name": "ai_president",
             "delays": [
                 [
                     0.1,
@@ -716,7 +716,7 @@
         },
 
         {
-            "name": "ai-ravensdale",
+            "name": "ai_ravensdale",
             "delays": [
                 [
                     0.1,
@@ -739,10 +739,10 @@
             ]
         },
         {
-            "name": "ai-royal"
+            "name": "ai_royal"
         },
         {
-            "name": "ai-sheltered",
+            "name": "ai_sheltered",
             "delays": [
                 [
                     0.5,
@@ -774,7 +774,7 @@
             ]
         },
         {
-            "name": "ai-terminal",
+            "name": "ai_terminal",
             "delays": [
                 [
                     0.2,
@@ -807,7 +807,7 @@
             ]
         },
         {
-            "name": "ai-text",
+            "name": "ai_text",
             "delays": [
                 [
                     0.1,
@@ -976,7 +976,7 @@
             ]
         },
         {
-            "name": "ai-u",
+            "name": "ai_u",
             "delays": [
                 [
                     0.2,
