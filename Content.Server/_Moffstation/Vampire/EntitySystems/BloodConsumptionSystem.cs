@@ -50,8 +50,6 @@ public sealed class BloodConsumptionSystem : EntitySystem
         var enumerator = EntityQueryEnumerator<BloodConsumptionComponent>();
         while (enumerator.MoveNext(out var uid, out var comp))
         {
-            if (!Resolve(uid, ref comp))
-                continue;
             UpdateBloodConsumption((uid, comp), time);
         }
     }
@@ -105,11 +103,11 @@ public sealed class BloodConsumptionSystem : EntitySystem
         if (TryComp<DamageableComponent>(entity.Owner, out var damage)
 	    && damage.Damage.AnyPositive()) // Vampires should be able to heal all damage types
         {
-	    // heal according to comp amount
-	    _damageSystem.TryChangeDamage(entity.Owner, entity.Comp.HealPerUpdate, true, false, damage);
-	    // subtract blood for healing
-	    _bloodstreamSystem.TryModifyBloodLevel(entity.Owner, entity.Comp.HealingBloodlossPerUpdate, bloodstream);
-	    return;
+	        // heal according to comp amount
+	        _damageSystem.TryChangeDamage(entity.Owner, entity.Comp.HealPerUpdate, true, false, damage);
+	        // subtract blood for healing
+	        _bloodstreamSystem.TryModifyBloodLevel(entity.Owner, entity.Comp.HealingBloodlossPerUpdate, bloodstream);
+	        return;
         }
         // else subtract the usual amount of blood
         _bloodstreamSystem.TryModifyBloodLevel(entity.Owner, entity.Comp.BaseBloodlossPerUpdate, bloodstream);
