@@ -1,0 +1,55 @@
+﻿- type: entity
+  id: GunGame
+  parent: BaseGameRule
+  components:
+  - type: GunGameRule
+    rewardSpawnsQueue:
+    - Mjollnir
+    - WeaponPulseCarbine
+    - WeaponSniperHristov
+    - WeaponRifleAk
+    - WeaponPistolN1984
+    - WeaponLightMachineGunL6
+    - WeaponEnergyShotgun
+    - WeaponSubMachineGunAtreides
+    - WeaponRevolverMateba
+    - WeaponShotgunBulldog
+    - WeaponAntiqueLaser
+    - WeaponSubMachineGunWt550
+    - WeaponTemperatureGun
+    - WeaponRifleLecter
+    - WeaponRevolverDeckard
+    - WeaponXrayCannon
+    - WeaponShotgunEnforcer
+    - WeaponRevolverInspector
+    - WeaponPulsePistol
+    - WeaponSubMachineGunC20r
+    - WeaponSubMachineGunDrozd
+    - WeaponRevolverPython
+    - WeaponShotgunKammerer
+    - WeaponLaserSvalinn
+    - WeaponShotgunDoubleBarreled
+    - WeaponProtoKineticAccelerator
+    - WeaponPistolCHIMPUpgraded
+    - WeaponShotgunImprovised
+    - WeaponRevolverPirate
+    - WeaponSniperMosin
+    - WeaponFlareGunSecurity
+    - HyperEutacticBlade
+    - EnergySword
+    - CaptainSabre
+    - FireAxe
+    - Claymore
+    - Machete
+    - Spear
+    - BowImprovised
+    - BaseBallBat
+    - KitchenKnife
+    - Crowbar
+    - Wrench
+    - PenCentcom
+    - ToolboxGolden
+  - type: KillCalloutRule
+  - type: RespawnDeadRule
+  - type: RespawnTracker
+    respawnDelay: 5
