@@ -115,10 +115,10 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
     {
         if (component.Victor != null && _player.TryGetPlayerData(component.Victor.Value, out var data))
         {
-            args.AddLine(Loc.GetString("gungame-scoreboard-winner", ("player", data.UserName)));
+            args.AddLine(Loc.GetString("gun-game-scoreboard-winner", ("player", data.UserName)));
             args.AddLine("");
         }
-        args.AddLine(Loc.GetString("gungame-scoreboard-header"));
+        args.AddLine(Loc.GetString("gun-game-scoreboard-header"));
         args.AddLine(GetScoreboard(uid, component).ToMarkup());
     }
 
@@ -214,7 +214,7 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
             if (!_player.TryGetPlayerData(id, out var data))
                 continue;
 
-            msg.AddMarkupOrThrow(Loc.GetString("gungame-scoreboard-list-entry",
+            msg.AddMarkupOrThrow(Loc.GetString("gun-game-scoreboard-list-entry",
                 ("place", place++),
                 ("name", data.UserName),
                 ("weaponsLeft", playerQueue.Count -1),
