@@ -4,11 +4,11 @@
   components:
   - type: GunGameRule
     rewardSpawnsQueue:
-    - Mjollnir
     - WeaponPulseCarbine
     - WeaponSniperHristov
     - WeaponRifleAk
     - WeaponPistolN1984
+    - WeaponPulsePistol
     - WeaponLightMachineGunL6
     - WeaponEnergyShotgun
     - WeaponSubMachineGunAtreides
@@ -22,7 +22,6 @@
     - WeaponXrayCannon
     - WeaponShotgunEnforcer
     - WeaponRevolverInspector
-    - WeaponPulsePistol
     - WeaponSubMachineGunC20r
     - WeaponSubMachineGunDrozd
     - WeaponRevolverPython
@@ -31,10 +30,9 @@
     - WeaponShotgunDoubleBarreled
     - WeaponProtoKineticAccelerator
     - WeaponPistolCHIMPUpgraded
-    - WeaponShotgunImprovised
     - WeaponRevolverPirate
     - WeaponSniperMosin
-    - WeaponFlareGunSecurity
+    - Mjollnir
     - HyperEutacticBlade
     - EnergySword
     - CaptainSabre
@@ -42,7 +40,6 @@
     - Claymore
     - Machete
     - Spear
-    - BowImprovised
     - BaseBallBat
     - KitchenKnife
     - Crowbar
