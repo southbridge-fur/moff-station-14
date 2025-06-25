@@ -1,7 +1,5 @@
-﻿using Content.Server.Antag;
-using Content.Shared._Moffstation.Body.Components;
+﻿using Content.Shared._Moffstation.Body.Components;
 using Content.Shared.Body.Components;
-using Content.Shared.Body.Organ;
 using Content.Shared.Body.Systems;
 using Robust.Shared.Containers;
 using Robust.Shared.Prototypes;
