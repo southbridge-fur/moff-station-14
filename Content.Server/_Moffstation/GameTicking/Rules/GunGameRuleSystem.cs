@@ -93,7 +93,7 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
     }
 
     /// <summary>
-    /// Activates when a kill is reported, ev.Entity corresponds to the person who was killed.
+    /// Activates when a kill is reported. ev.Entity corresponds to the person who was killed.
     /// </summary>
     private void OnKillReported(ref KillReportedEvent ev)
     {
@@ -104,18 +104,18 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
         var query = EntityQueryEnumerator<GunGameRuleComponent, GameRuleComponent>();
         while (query.MoveNext(out var uid, out var gunGame, out var rule))
         {
-            if (!GameTicker.IsGameRuleActive(uid, rule))
+            if (!GameTicker.IsGameRuleActive(uid, rule)
+                || ev.Primary is not KillPlayerSource player)
                 continue;
 
-            // died to something other than a player
-            if (ev.Primary is not KillPlayerSource player)
+            // Only allow the player to receive their next weapon after they get enough kills
+            gunGame.PlayerKills.TryAdd(player.PlayerId, 0);
+            if (++gunGame.PlayerKills[player.PlayerId] < gunGame.KillsPerWeapon)
                 continue;
 
-            if (IncreaseKillsAndCheck(player.PlayerId, gunGame))
-            {
-                ProgressPlayerReward(player.PlayerId, gunGame);
-                SpawnCurrentWeapon(player.PlayerId, gunGame);
-            }
+            gunGame.PlayerKills[player.PlayerId] = 0;
+            ProgressPlayerReward(player.PlayerId, gunGame);
+            SpawnCurrentWeapon(player.PlayerId, gunGame);
         }
     }
 
@@ -137,18 +137,6 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
         args.AddLine(GetScoreboard((uid, component)).ToMarkup());
     }
 
-    private bool IncreaseKillsAndCheck(NetUserId userId, GunGameRuleComponent rule)
-    {
-        if (!rule.PlayerKills.TryGetValue(userId, out var killCount))
-        {
-            rule.PlayerKills.Add(userId, 0);
-            return false;
-        }
-
-        if (killCount++ < rule.KillsPerWeapon)
-            return false;
-        
-    }
     /// <summary>
     /// Deletes a GunGameRewardTrackerComponent's gear.
     /// </summary>
@@ -177,6 +165,8 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
         if (!rule.PlayerRewards.TryGetValue(userId, out var rewardQueue))
             return;
 
+        // We stop at 1 rather than 0 since we want to have the last value in the queue available for printing
+        // to the round end screen.
         if (rewardQueue.Count > 1)
         {
             rewardQueue.Dequeue();
@@ -237,7 +227,7 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
         player.Comp.CurrentRewards.Add(itemEnt);
         while (slotTryOrder.TryDequeue(out var slot))
         {
-            if ((slot == "hand" && _hands.TryForcePickupAnyHand(player, itemEnt))
+            if (slot == "hand" && _hands.TryForcePickupAnyHand(player, itemEnt)
                 || _inventory.TryEquip(player, player, itemEnt, slot, true, true))
                 return;
         }
@@ -250,7 +240,7 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
         _transform.SetLocalRotation(itemEnt, _random.NextAngle());
     }
 
-/// <summary>
+    /// <summary>
     /// Formats the scoreboard for the end of round screen.
     /// </summary>
     /// <returns>
