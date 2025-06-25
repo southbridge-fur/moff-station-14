@@ -136,9 +136,6 @@
     - id: Claymore
     - id: Machete
     - id: PenCentcom
-    - id: Spear
-    - id: BaseBallBat
-    - id: KitchenKnife
     - !type:GroupSelector # Random Crowbar
       children:
       - id: Crowbar
