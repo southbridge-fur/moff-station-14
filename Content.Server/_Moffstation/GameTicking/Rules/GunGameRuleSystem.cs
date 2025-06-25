@@ -253,7 +253,7 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
                 continue;
 
             msg.AddMarkupOrThrow(Loc.GetString("gun-game-scoreboard-list-entry",
-                ("place", idx),
+                ("place", idx + 1),
                 ("name", data.UserName),
                 ("weaponsLeft", playerQueue.Count),
                 ("weapon",
