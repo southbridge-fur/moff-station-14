@@ -1,15 +1,13 @@
-﻿using Robust.Shared.Prototypes;
-
-namespace Content.Server._Moffstation.GameTicking.Rules.Components;
+﻿namespace Content.Server._Moffstation.GameTicking.Rules.Components;
 
 /// <summary>
 /// This component is given to players at the start of the GunGame gamemode.
-/// It is used to track a players current position in their reward queue
+/// It is used to keep track of a player's currently spawned weapons.
 /// <see cref="Content.Server._Moffstation.GameTicking.Rules.Components.GunGameRuleComponent.RewardSpawnsQueue"/>
 /// </summary>
 
 [RegisterComponent]
-public sealed partial class GunGameRewardTrackerComponent : Component
+public sealed partial class GunGameTrackerComponent : Component
 {
     /// <summary>
     /// The list of current rewards given to the player.
