@@ -165,13 +165,8 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
         if (!rule.PlayerRewards.TryGetValue(userId, out var rewardQueue))
             return;
 
-        // We stop at 1 rather than 0 since we want to have the last value in the queue available for printing
-        // to the round end screen.
-        if (rewardQueue.Count > 1)
-        {
-            rewardQueue.Dequeue();
+        if (rewardQueue.TryDequeue(out _))
             return;
-        }
 
         rule.Victor = userId;
         _roundEnd.EndRound(rule.RestartDelay);
@@ -214,11 +209,9 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
     }
 
     /// <summary>
-    /// Attempts to spawn an item on a player in the next
+    /// Attempts to spawn an item on a player in either their hands or the next available equipment slot according to
+    /// <see cref="Components.GunGameRuleComponent.SlotTryOrder"/>.
     /// </summary>
-    /// <param name="player"></param>
-    /// <param name="itemProto"></param>
-    /// <param name="slotTryOrder"></param>
     private void SpawnItemAndEquip(Entity<GunGameTrackerComponent> player,
         EntProtoId itemProto,
         Queue<string> slotTryOrder)
@@ -254,22 +247,21 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
         if (!Resolve(entity, ref entity.Comp))
             return msg;
 
-        var rewardsList = entity.Comp.PlayerRewards.ToList(); // LINQ my beloved
-        var orderedPlayers = rewardsList.OrderBy(p => p.Value.Count).ToList();
-        var place = 1;
-        foreach (var (id, playerQueue) in orderedPlayers)
+        foreach (var (idx, (id, playerQueue)) in entity.Comp.PlayerRewards.OrderBy(p => p.Value.Count).Index())
         {
             if (!_player.TryGetPlayerData(id, out var data))
                 continue;
 
-            // We assume the first item in the entity table is the player's weapon.
-            var item = _entityTables.GetSpawns(playerQueue.Peek()).First();
-
             msg.AddMarkupOrThrow(Loc.GetString("gun-game-scoreboard-list-entry",
-                ("place", place++),
+                ("place", idx),
                 ("name", data.UserName),
-                ("weaponsLeft", playerQueue.Count - 1),
-                ("weapon", playerQueue.Count == 1 || !_proto.TryIndex(item, out var proto)
+                ("weaponsLeft", playerQueue.Count),
+                ("weapon",
+                    !playerQueue.TryPeek(out var itemList)
+                       || !_proto.TryIndex(
+                           _entityTables.GetSpawns(itemList)
+                               .First(), // We assume the first item in the entity table is the player's weapon.
+                           out var proto)
                     ? "None"
                     : proto.Name)));
             msg.PushNewline();
