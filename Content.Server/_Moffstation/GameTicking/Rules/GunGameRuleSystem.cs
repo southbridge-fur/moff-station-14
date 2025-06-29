@@ -12,6 +12,7 @@ using Content.Shared.EntityTable;
 using Content.Shared.EntityTable.EntitySelectors;
 using Content.Shared.GameTicking;
 using Content.Shared.GameTicking.Components;
+using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
 using Content.Shared.Mind;
@@ -150,7 +151,7 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
     private void DeleteCurrentWeapons(Entity<GunGameTrackerComponent> playerEntity, GunGameRuleComponent rule)
     {
         // drop whatever is in their hands
-        _hands.TryDrop(playerEntity, null, false, false);
+        _hands.TryDrop(playerEntity.Owner, null, false, false);
 
         // delete all their rewards
         foreach (var entity in playerEntity.Comp.CurrentRewards)
@@ -163,7 +164,7 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
 
         // delete nearby shell casings
         foreach (var entity in _lookup.GetEntitiesInRange<CartridgeAmmoComponent>(
-                     new EntityCoordinates(playerEntity, 0.0f, 0.0f),
+                     new EntityCoordinates(playerEntity.Owner, 0.0f, 0.0f),
                      rule.CasingDeletionRange))
         {
             if (entity.Comp.Spent && _random.Prob(rule.CasingDeletionProb))
