@@ -1,6 +1,6 @@
 ﻿- type: gameMap
   id: MW-Dock
-  mapName: MW Dock
+  mapName: MW-Dock
   mapPath: /Maps/_Moffstation/Nonstations/Dock.yml
   minPlayers: 0
   stations:
@@ -15,7 +15,7 @@
 
 - type: gameMap
   id: CS-Dust2
-  mapName: CS Dust 2
+  mapName: CS-Dust2
   mapPath: /Maps/_Moffstation/Nonstations/Dust2.yml
   minPlayers: 0
   stations:
