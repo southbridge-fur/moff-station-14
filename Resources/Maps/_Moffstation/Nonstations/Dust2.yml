@@ -39,7 +39,9 @@ entities:
   - uid: 2
     components:
     - type: MetaData
-      name: grid
+      name: Dust
+    - type: BecomesStation
+      id: CS-Dust2
     - type: Transform
       pos: -0.93250656,-0.45833334
       parent: 1

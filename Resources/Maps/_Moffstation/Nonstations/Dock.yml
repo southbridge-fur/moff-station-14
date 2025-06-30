@@ -37,7 +37,7 @@ entities:
   - uid: 2
     components:
     - type: MetaData
-      name: grid
+      name: Dock
     - type: Transform
       pos: -0.45434856,-0.5227957
       parent: 1
@@ -82,6 +82,8 @@ entities:
       dampingModifier: 0.25
     - type: ImplicitRoof
     - type: GridPathfinding
+    - type: BecomesStation
+      id: MW-Dock
     - type: Gravity
       gravityShakeSound: !type:SoundPathSpecifier
         path: /Audio/Effects/alert.ogg
