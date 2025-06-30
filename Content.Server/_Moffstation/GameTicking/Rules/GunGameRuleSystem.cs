@@ -6,8 +6,10 @@ using Content.Server.GameTicking.Rules;
 using Content.Server.GameTicking.Rules.Components;
 using Content.Server.KillTracking;
 using Content.Server.Mind;
+using Content.Server.Power.Components;
 using Content.Server.RoundEnd;
 using Content.Server.Station.Systems;
+using Content.Shared.Containers.ItemSlots;
 using Content.Shared.EntityTable;
 using Content.Shared.EntityTable.EntitySelectors;
 using Content.Shared.GameTicking;
@@ -17,6 +19,7 @@ using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
 using Content.Shared.Mind;
 using Content.Shared.Mind.Components;
+using Content.Shared.PowerCell.Components;
 using Content.Shared.Weapons.Ranged.Components;
 using Robust.Server.Player;
 using Robust.Shared.Map;
@@ -48,6 +51,7 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
     [Dependency] private readonly SharedTransformSystem _transform = default!;
     [Dependency] private readonly IRobustRandom _random = default!;
     [Dependency] private readonly EntityLookupSystem _lookup = default!;
+    [Dependency] private readonly ItemSlotsSystem _itemSlots = default!;
 
     public override void Initialize()
     {
@@ -215,7 +219,8 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
             SpawnItemAndEquip(
                 (playerEntity, gear),
                 item,
-                slotTryOrder);
+                slotTryOrder,
+                rule);
         }
     }
 
@@ -225,9 +230,12 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
     /// </summary>
     private void SpawnItemAndEquip(Entity<GunGameTrackerComponent> player,
         EntProtoId itemProto,
-        Queue<string> slotTryOrder)
+        Queue<string> slotTryOrder,
+        GunGameRuleComponent rule)
     {
         var itemEnt = Spawn(itemProto);
+        UpgradeEnergyWeapon(itemEnt, rule);
+
         player.Comp.CurrentRewards.Add(itemEnt);
         while (slotTryOrder.TryDequeue(out var slot))
         {
@@ -279,5 +287,29 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
         }
 
         return msg;
+    }
+
+    /// <summary>
+    /// Upgrades an energy weapon to have a rechargable battery.
+    /// This does account for weather the weapon contains a battery itself,
+    /// at which point it grabs that battery and upgrades it instead.
+    /// Also, this will set the recharge rate to only increase up to
+    /// <see cref="GunGameRuleComponent.DefaultEnergyWeaponRechargeRate"/>.
+    /// If the weapon already has a recharge rate higher than this, it uses that instead.
+    /// </summary>
+    private void UpgradeEnergyWeapon(EntityUid uid, GunGameRuleComponent rule )
+    {
+        var upgradeEnt = HasComp<BatteryComponent>(uid)
+            ? uid
+            : TryComp<PowerCellSlotComponent>(uid, out var cellSlot)
+                ? _itemSlots.GetItemOrNull(uid, cellSlot.CellSlotId)
+                : null;
+
+        if (upgradeEnt is not { } upgradable)
+            return;
+
+        var batteryRecharge = EnsureComp<BatterySelfRechargerComponent>(upgradable);
+        batteryRecharge.AutoRecharge = true;
+        batteryRecharge.AutoRechargeRate = Math.Max(rule.DefaultEnergyWeaponRechargeRate, batteryRecharge.AutoRechargeRate);
     }
 }

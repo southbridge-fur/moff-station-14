@@ -80,6 +80,13 @@ public sealed partial class GunGameRuleComponent : Robust.Shared.GameObjects.Com
     [DataField]
     public float CasingDeletionProb = 0.8f;
 
+    /// <summary>
+    /// When this gamerule spawns an energy weapon, it will try to
+    /// upgrade it to have at least this weapon recharge rate.
+    /// </summary>
+    [DataField]
+    public float DefaultEnergyWeaponRechargeRate = 30.0f;
+
 }
 
 /// <summary>
