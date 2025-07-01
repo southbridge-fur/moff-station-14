@@ -40,7 +40,7 @@ public sealed partial class GunGameRuleComponent : Robust.Shared.GameObjects.Com
     /// <summary>
     /// Player info that needs to be stored between their individual lives.
     /// </summary>
-    [DataField, ]
+    [ViewVariables]
     public Dictionary<NetUserId, GunGamePlayerTrackingInfo> PlayerInfo = new();
 
     /// <summary>
@@ -86,23 +86,15 @@ public sealed partial class GunGameRuleComponent : Robust.Shared.GameObjects.Com
     /// </summary>
     [DataField]
     public float DefaultEnergyWeaponRechargeRate = 30.0f;
-
 }
 
 /// <summary>
 /// The info for every player we're tracking during the round.
 /// </summary>
 [Serializable]
-public struct GunGamePlayerTrackingInfo
+public struct GunGamePlayerTrackingInfo(NetUserId userId, Queue<EntityTableSelector> rewardQueue)
 {
-    public Queue<EntityTableSelector> RewardQueue;
-    public int Kills;
-    public NetUserId UserId; // we store this just so it's easy to pass it around
-
-    public GunGamePlayerTrackingInfo(NetUserId userId, Queue<EntityTableSelector> rewardQueue)
-    {
-        RewardQueue = rewardQueue;
-        Kills = 0;
-        UserId = userId;
-    }
+    public Queue<EntityTableSelector> RewardQueue = rewardQueue;
+    public int Kills = 0;
+    public NetUserId UserId = userId; // we store this just so it's easy to pass it around
 }

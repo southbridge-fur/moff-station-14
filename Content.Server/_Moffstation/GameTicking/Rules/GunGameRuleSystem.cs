@@ -14,16 +14,12 @@ using Content.Shared.EntityTable;
 using Content.Shared.EntityTable.EntitySelectors;
 using Content.Shared.GameTicking;
 using Content.Shared.GameTicking.Components;
-using Content.Shared.Hands.Components;
 using Content.Shared.Hands.EntitySystems;
 using Content.Shared.Inventory;
-using Content.Shared.Mind;
-using Content.Shared.Mind.Components;
 using Content.Shared.PowerCell.Components;
 using Content.Shared.Weapons.Ranged.Components;
 using Robust.Server.Player;
 using Robust.Shared.Map;
-using Robust.Shared.Network;
 using Robust.Shared.Player;
 using Robust.Shared.Prototypes;
 using Robust.Shared.Random;
@@ -199,7 +195,7 @@ public sealed class GunGameRuleSystem : GameRuleSystem<GunGameRuleComponent>
     /// <param name="rule">The GunGameRuleComponent for this gamerule</param>
     private void SpawnCurrentWeapon(GunGamePlayerTrackingInfo playerInfo, GunGameRuleComponent rule)
     {
-        if (!_mind.TryGetMind(playerInfo.UserId, out var _, out var mind))
+        if (!_mind.TryGetMind(playerInfo.UserId, out _, out var mind))
             return;
 
         if (mind.OwnedEntity is not { } playerEntity)
