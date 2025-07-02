@@ -27,7 +27,7 @@ entities:
   - uid: 1
     components:
     - type: MetaData
-      name: Map Entity
+      name: MW-Dock
     - type: Transform
     - type: Map
       mapPaused: True
@@ -37,9 +37,11 @@ entities:
   - uid: 2
     components:
     - type: MetaData
-      name: Dock
+      name: grid
+    - type: BecomesStation
+      id: MW-Dock
     - type: Transform
-      pos: -0.45434856,-0.5227957
+      pos: 0.0,0.0
       parent: 1
     - type: MapGrid
       chunks:
@@ -82,8 +84,6 @@ entities:
       dampingModifier: 0.25
     - type: ImplicitRoof
     - type: GridPathfinding
-    - type: BecomesStation
-      id: MW-Dock
     - type: Gravity
       gravityShakeSound: !type:SoundPathSpecifier
         path: /Audio/Effects/alert.ogg
