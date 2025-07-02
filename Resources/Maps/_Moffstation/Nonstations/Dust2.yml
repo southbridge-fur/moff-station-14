@@ -4,8 +4,8 @@ meta:
   engineVersion: 264.0.0
   forkId: ""
   forkVersion: ""
-  time: 07/02/2025 17:02:34
-  entityCount: 2513
+  time: 07/02/2025 22:13:40
+  entityCount: 2561
 maps:
 - 1
 grids:
@@ -40,11 +40,11 @@ entities:
     components:
     - type: MetaData
       name: grid
-    - type: BecomesStation
-      id: CS-Dust2
     - type: Transform
       pos: -0.93250656,-0.45833334
       parent: 1
+    - type: BecomesStation
+      id: CS-Dust2
     - type: MapGrid
       chunks:
         0,0:
@@ -7002,249 +7002,249 @@ entities:
     - type: Transform
       pos: 3.5,20.5
       parent: 2
-- proto: SpawnPointPassenger
+- proto: SpawnPointLatejoin
   entities:
-  - uid: 2466
+  - uid: 2514
     components:
     - type: Transform
       pos: -5.5,1.5
       parent: 2
-  - uid: 2467
+  - uid: 2515
     components:
     - type: Transform
       pos: -5.5,-0.5
       parent: 2
-  - uid: 2468
+  - uid: 2516
     components:
     - type: Transform
       pos: 7.5,-2.5
       parent: 2
-  - uid: 2469
+  - uid: 2517
     components:
     - type: Transform
       pos: 12.5,-5.5
       parent: 2
-  - uid: 2470
+  - uid: 2518
     components:
     - type: Transform
       pos: 9.5,-14.5
       parent: 2
-  - uid: 2471
+  - uid: 2519
     components:
     - type: Transform
       pos: 1.5,-15.5
       parent: 2
-  - uid: 2472
+  - uid: 2520
     components:
     - type: Transform
       pos: -8.5,-10.5
       parent: 2
-  - uid: 2473
+  - uid: 2521
     components:
     - type: Transform
       pos: -6.5,-11.5
       parent: 2
-  - uid: 2474
+  - uid: 2522
     components:
     - type: Transform
       pos: -24.5,-11.5
       parent: 2
-  - uid: 2475
+  - uid: 2523
     components:
     - type: Transform
       pos: -23.5,0.5
       parent: 2
-  - uid: 2476
+  - uid: 2524
     components:
     - type: Transform
       pos: -22.5,1.5
       parent: 2
-  - uid: 2477
+  - uid: 2525
     components:
     - type: Transform
       pos: -23.5,12.5
       parent: 2
-  - uid: 2478
+  - uid: 2526
     components:
     - type: Transform
       pos: -7.5,14.5
       parent: 2
-  - uid: 2479
+  - uid: 2527
     components:
     - type: Transform
       pos: 1.5,17.5
       parent: 2
-  - uid: 2480
+  - uid: 2528
     components:
     - type: Transform
       pos: 3.5,17.5
       parent: 2
-  - uid: 2481
+  - uid: 2529
     components:
     - type: Transform
       pos: 9.5,13.5
       parent: 2
-  - uid: 2482
+  - uid: 2530
     components:
     - type: Transform
       pos: 11.5,16.5
       parent: 2
-  - uid: 2483
+  - uid: 2531
     components:
     - type: Transform
       pos: 10.5,20.5
       parent: 2
-  - uid: 2484
+  - uid: 2532
     components:
     - type: Transform
       pos: 17.5,30.5
       parent: 2
-  - uid: 2485
+  - uid: 2533
     components:
     - type: Transform
       pos: 19.5,29.5
       parent: 2
-  - uid: 2486
+  - uid: 2534
     components:
     - type: Transform
       pos: 21.5,34.5
       parent: 2
-  - uid: 2487
+  - uid: 2535
     components:
     - type: Transform
       pos: 18.5,34.5
       parent: 2
-  - uid: 2488
+  - uid: 2536
     components:
     - type: Transform
       pos: 9.5,32.5
       parent: 2
-  - uid: 2489
+  - uid: 2537
     components:
     - type: Transform
       pos: 23.5,22.5
       parent: 2
-  - uid: 2490
+  - uid: 2538
     components:
     - type: Transform
       pos: 20.5,15.5
       parent: 2
-  - uid: 2491
+  - uid: 2539
     components:
     - type: Transform
       pos: 18.5,10.5
       parent: 2
-  - uid: 2492
+  - uid: 2540
     components:
     - type: Transform
       pos: 22.5,5.5
       parent: 2
-  - uid: 2493
+  - uid: 2541
     components:
     - type: Transform
       pos: 26.5,3.5
       parent: 2
-  - uid: 2494
+  - uid: 2542
     components:
     - type: Transform
       pos: 18.5,3.5
       parent: 2
-  - uid: 2495
+  - uid: 2543
     components:
     - type: Transform
       pos: 25.5,8.5
       parent: 2
-  - uid: 2496
+  - uid: 2544
     components:
     - type: Transform
       pos: 13.5,3.5
       parent: 2
-  - uid: 2497
+  - uid: 2545
     components:
     - type: Transform
       pos: -3.5,-7.5
       parent: 2
-  - uid: 2498
+  - uid: 2546
     components:
     - type: Transform
       pos: -16.5,-0.5
       parent: 2
-  - uid: 2499
+  - uid: 2547
     components:
     - type: Transform
       pos: -23.5,25.5
       parent: 2
-  - uid: 2500
+  - uid: 2548
     components:
     - type: Transform
       pos: -23.5,35.5
       parent: 2
-  - uid: 2501
+  - uid: 2549
     components:
     - type: Transform
       pos: -21.5,35.5
       parent: 2
-  - uid: 2502
+  - uid: 2550
     components:
     - type: Transform
       pos: -18.5,32.5
       parent: 2
-  - uid: 2503
+  - uid: 2551
     components:
     - type: Transform
       pos: -8.5,32.5
       parent: 2
-  - uid: 2504
+  - uid: 2552
     components:
     - type: Transform
       pos: -8.5,28.5
       parent: 2
-  - uid: 2505
+  - uid: 2553
     components:
     - type: Transform
       pos: -13.5,27.5
       parent: 2
-  - uid: 2506
+  - uid: 2554
     components:
     - type: Transform
       pos: -17.5,19.5
       parent: 2
-  - uid: 2507
+  - uid: 2555
     components:
     - type: Transform
       pos: -3.5,29.5
       parent: 2
-  - uid: 2508
+  - uid: 2556
     components:
     - type: Transform
       pos: 0.5,24.5
       parent: 2
-  - uid: 2509
+  - uid: 2557
     components:
     - type: Transform
       pos: -1.5,20.5
       parent: 2
-  - uid: 2510
+  - uid: 2558
     components:
     - type: Transform
       pos: 5.5,31.5
       parent: 2
-  - uid: 2511
+  - uid: 2559
     components:
     - type: Transform
       pos: -5.5,8.5
       parent: 2
-  - uid: 2512
+  - uid: 2560
     components:
     - type: Transform
       pos: -15.5,13.5
       parent: 2
-  - uid: 2513
+  - uid: 2561
     components:
     - type: Transform
       pos: -10.5,10.5
       parent: 2
-- proto: SpawnPointLatejoin
+- proto: SpawnPointPassenger
   entities:
   - uid: 2466
     components:
