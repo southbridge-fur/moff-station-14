@@ -50,7 +50,7 @@
 
 - type: entity
   parent: [BaseBloodBrotherObjective, KillRandomHeadObjective]
-  id: BloodbrotherKillRandomHeadObjective
+  id: BloodBrotherKillRandomHeadObjective
 
 # Moffstation - Start - We don't have Harmony's Teach a lesson objective
 # - type: entity
