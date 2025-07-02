@@ -4,7 +4,7 @@
   mapPath: /Maps/_Moffstation/Nonstations/Dock.yml
   minPlayers: 0
   stations:
-    dm01-entryway:
+    MW-Dock:
       stationProto: StandardStationArena
       components:
       - type: StationNameSetup
@@ -19,7 +19,7 @@
   mapPath: /Maps/_Moffstation/Nonstations/Dust2.yml
   minPlayers: 0
   stations:
-    dm01-entryway:
+    CS-Dust2:
       stationProto: StandardStationArena
       components:
       - type: StationNameSetup
