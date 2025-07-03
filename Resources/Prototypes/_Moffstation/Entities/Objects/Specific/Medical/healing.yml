@@ -11,11 +11,5 @@
   - type: Stack
     stackType: PoulticePack
     count: 10
-  - type: Healing
-    damageContainers:
-    - Biological
-    damage:
-      groups:
-        Brute: -9 # 3 for each type in the group
   - type: Item
     heldPrefix: poultice
