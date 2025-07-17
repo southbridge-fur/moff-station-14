@@ -16,7 +16,6 @@
     uiWindowPos: 0,2
     strippingWindowPos: 0,1
     displayName: Neck
-    offset: 0.015625, 0.0
 # Moffstation - End
 
 - type: inventoryTemplate
@@ -36,7 +35,6 @@
     uiWindowPos: 0,2
     strippingWindowPos: 0,1
     displayName: Neck
-    offset: 0.015625, 0.0
 # Moffstation - End
 
 - type: inventoryTemplate
