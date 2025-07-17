@@ -19,19 +19,19 @@ public sealed partial class InventoryComponent : Component
     public SlotDefinition[] Slots = Array.Empty<SlotDefinition>();
     public ContainerSlot[] Containers = Array.Empty<ContainerSlot>();
 
-    [DataField, AutoNetworkedField]
+    [DataField, AutoNetworkedField] // Moffstation - Made AutoNetworked
     public Dictionary<string, DisplacementData> Displacements = new();
 
     /// <summary>
     /// Alternate displacement maps, which if available, will be selected for the player of the appropriate gender.
     /// </summary>
-    [DataField, AutoNetworkedField]
+    [DataField, AutoNetworkedField] // Moffstation - Made AutoNetworked
     public Dictionary<string, DisplacementData> FemaleDisplacements = new();
 
     /// <summary>
     /// Alternate displacement maps, which if available, will be selected for the player of the appropriate gender.
     /// </summary>
-    [DataField, AutoNetworkedField]
+    [DataField, AutoNetworkedField] // Moffstation - Made AutoNetworked
     public Dictionary<string, DisplacementData> MaleDisplacements = new();
 }
 
