@@ -1,0 +1,16 @@
+﻿<BoxContainer xmlns="https://spacestation14.io"
+              Margin="5">
+    <Button Name="Button" StyleClasses="OpenLeft" MinSize="200 50" Margin="5" Access="Public">
+        <BoxContainer Orientation="Vertical">
+            <BoxContainer Orientation="Horizontal" Margin="5">
+                <Label Name="Title" StyleClasses="LabelKeyText" Align="Left"/>
+                <Control HorizontalExpand="True"/>
+            </BoxContainer>
+            <BoxContainer Orientation="Horizontal" VerticalExpand="True" Margin="5">
+                <TextureRect Name="Icon" Margin="10" Stretch="KeepAspectCentered"
+                             VerticalAlignment="Center" HorizontalAlignment="Center" SetSize="64 64"/>
+                <Label Name="Description" StyleClasses="LabelSecondaryColor" Align="Left"/>
+            </BoxContainer>
+        </BoxContainer>
+    </Button>
+</BoxContainer>
