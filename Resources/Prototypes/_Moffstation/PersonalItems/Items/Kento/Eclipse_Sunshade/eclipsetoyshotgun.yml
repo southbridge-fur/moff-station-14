@@ -35,10 +35,10 @@
 
 - type: loadout
   id: PersonalItemEclipseSunshadeGun
+  dummyEntity: PersonalItemEclipseSunshadeGun
   storage:
     back:
     - PersonalItemEclipseSunshadeGun
-    pocket1:
     - MagazineFoamBox
   effects:
   - !type:PersonalItemLoadoutEffect
