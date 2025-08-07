@@ -18,17 +18,13 @@ public sealed class HighValueTargetSelectionSystem : EntitySystem
     /// Selects a target from the list of possible targets with a priority on those with
     /// the High Value Target role selected.
     /// </summary>
-    public bool SelectTarget(
-        EntityUid rule,
-        HighValueTargetSelectionComponent? component,
-        List<Entity<MindComponent>> allPossibleTargets,
-        out Entity<MindComponent> target)
+    public Entity<MindComponent> SelectTarget(
+        Entity<HighValueTargetSelectionComponent?> rule,
+        IEnumerable<Entity<MindComponent>> targets)
     {
-        if (!Resolve(rule, ref component))
-        {
-            target = _random.Pick(allPossibleTargets);
-            return true;
-        }
+        var allPossibleTargets = new List<Entity<MindComponent>>(targets);
+        if (!Resolve(rule.Owner, ref rule.Comp))
+            return _random.Pick(allPossibleTargets);
 
         _random.Shuffle(allPossibleTargets);
         var targetQueue = new Queue<Entity<MindComponent>>(allPossibleTargets);
@@ -40,15 +36,11 @@ public sealed class HighValueTargetSelectionSystem : EntitySystem
                 continue;
 
             var pref = (HumanoidCharacterProfile) _pref.GetPreferences(userId).SelectedCharacter;
-            if (!pref.AntagPreferences.Contains(component.HighValueTargetPrototype)
-                && _random.Prob(component.RerollProbability))
-                continue;
-
-            target = mind;
-            return true;
+            if (pref.AntagPreferences.Contains(rule.Comp.HighValueTargetPrototype)
+                || _random.Prob(rule.Comp.NonTargetSelectionProbability))
+                return mind;
         }
 
-        target = targetQueue.Peek();
-        return true;
+        return targetQueue.Peek();
     }
 }

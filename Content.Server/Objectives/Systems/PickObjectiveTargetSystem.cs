@@ -5,6 +5,7 @@ using Content.Server.GameTicking.Rules;
 using Content.Server.Revolutionary.Components;
 using Robust.Shared.Random;
 using System.Linq;
+using Content.Server._Moffstation.Objectives.Components;
 using Content.Server._Moffstation.Objectives.Systems; // Moffstation - Adding high value targets
 
 namespace Content.Server.Objectives.Systems;
@@ -94,7 +95,9 @@ public sealed class PickObjectiveTargetSystem : EntitySystem
         }
 
         // Moffstation - Start - Added high-value target
-        _hvtSystem.SelectTarget(ent.Owner, null, allHumans.ToList(), out var selectedHuman);
+        var selectedHuman = _random.Pick(allHumans);
+        if (TryComp<HighValueTargetSelectionComponent>(ent.Owner, out var hvt))
+            selectedHuman = _hvtSystem.SelectTarget((ent.Owner, hvt), allHumans);
 
         _target.SetTarget(ent.Owner, selectedHuman, target);
         // Moffstation - End
@@ -132,7 +135,9 @@ public sealed class PickObjectiveTargetSystem : EntitySystem
             allHeads = allHumans; // fallback to non-head target
 
         // Moffstation - Start - Adding high-value targets
-        _hvtSystem.SelectTarget(ent.Owner, null, allHumans.ToList(), out var selectedHuman);
+        var selectedHuman = _random.Pick(allHeads);
+        if (TryComp<HighValueTargetSelectionComponent>(ent.Owner, out var hvt))
+            selectedHuman = _hvtSystem.SelectTarget((ent.Owner, hvt), allHeads);
 
         _target.SetTarget(ent.Owner, selectedHuman, target);
         // Moffstation - end

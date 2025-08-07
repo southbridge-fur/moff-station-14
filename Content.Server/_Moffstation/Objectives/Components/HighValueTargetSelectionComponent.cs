@@ -17,8 +17,8 @@ public sealed partial class HighValueTargetSelectionComponent : Component
     public ProtoId<AntagPrototype> HighValueTargetPrototype = "HighValueTarget";
 
     /// <summary>
-    /// If the selected individual is not a high value target, how likely are they to be re-rolled?
+    /// If the selected individual is not a high value target, how likely are they to be selected anyway?
     /// </summary>
     [DataField]
-    public float RerollProbability = 0.8f;
+    public float NonTargetSelectionProbability = 0.5f;
 }
