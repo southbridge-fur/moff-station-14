@@ -20,5 +20,5 @@ public sealed partial class HighValueTargetSelectionComponent : Component
     /// If the selected individual is not a high value target, how likely are they to be selected anyway?
     /// </summary>
     [DataField]
-    public float NonTargetSelectionProbability = 0.5f;
+    public float NonTargetSelectionProbability = 0.3f;
 }
