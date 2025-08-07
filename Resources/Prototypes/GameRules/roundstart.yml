@@ -128,7 +128,7 @@
   id: Nukeops
   components:
   - type: GameRule
-    minPlayers: 35 # Moffstation - Bumped up the min players for nukeops.
+    minPlayers: 30 # Moffstation - Bumped up the min players for nukeops.
   - type: LoadMapRule
     mapPath: /Maps/Nonstations/nukieplanet.yml
   - type: AntagSelection
