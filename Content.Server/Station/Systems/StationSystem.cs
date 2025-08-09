@@ -75,6 +75,7 @@ public sealed partial class StationSystem : SharedStationSystem
             return;
 
         stationData.Grids.Remove(uid);
+        Dirty(uid, component);
     }
 
     public override void Shutdown()
@@ -342,6 +343,8 @@ public sealed partial class StationSystem : SharedStationSystem
         var stationMember = EnsureComp<StationMemberComponent>(mapGrid);
         stationMember.Station = station;
         stationData.Grids.Add(mapGrid);
+        Dirty(station, stationData);
+        Dirty(mapGrid, stationMember);
 
         RaiseLocalEvent(station, new StationGridAddedEvent(mapGrid, station, false), true);
 
@@ -365,6 +368,7 @@ public sealed partial class StationSystem : SharedStationSystem
 
         RemComp<StationMemberComponent>(mapGrid);
         stationData.Grids.Remove(mapGrid);
+        Dirty(station, stationData);
 
         RaiseLocalEvent(station, new StationGridRemovedEvent(mapGrid, station), true);
         _sawmill.Info($"Removing grid {mapGrid} from station {Name(station)} ({station})");
