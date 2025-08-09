@@ -244,8 +244,10 @@ public abstract class SharedStorageSystem : EntitySystem
             SavedLocations = component.SavedLocations,
             Whitelist = component.Whitelist,
             Blacklist = component.Blacklist,
+            /* Moffstation - Start - These methods are in a separate component
             QuickInsert = component.QuickInsert,
             AreaInsert = component.AreaInsert,
+            */ // Moffstation - End
             StorageInsertSound = component.StorageInsertSound,
             StorageRemoveSound = component.StorageRemoveSound,
             StorageOpenSound = component.StorageOpenSound,
@@ -378,13 +380,17 @@ public abstract class SharedStorageSystem : EntitySystem
         var targetComp = EnsureComp<StorageComponent>(target);
         targetComp.Grid = new List<Box2i>(source.Comp.Grid);
         targetComp.MaxItemSize = source.Comp.MaxItemSize;
+        /* Moffstation - Start - These methods are in a separate component
         targetComp.QuickInsert = source.Comp.QuickInsert;
         targetComp.QuickInsertCooldown = source.Comp.QuickInsertCooldown;
+        */ // Moffstation - End
         targetComp.OpenUiCooldown = source.Comp.OpenUiCooldown;
         targetComp.ClickInsert = source.Comp.ClickInsert;
         targetComp.OpenOnActivate = source.Comp.OpenOnActivate;
+        /* Moffstation - Start - These methods are in a separate component
         targetComp.AreaInsert = source.Comp.AreaInsert;
         targetComp.AreaInsertRadius = source.Comp.AreaInsertRadius;
+        */ // Moffstation - End
         targetComp.Whitelist = source.Comp.Whitelist;
         targetComp.Blacklist = source.Comp.Blacklist;
         targetComp.StorageInsertSound = source.Comp.StorageInsertSound;
