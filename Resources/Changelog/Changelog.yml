@@ -1,19 +1,4 @@
 ﻿Entries:
-- author: metalgearsloth
-  changes:
-  - message: Tweak mob collision values in line with RMC14.
-    type: Tweak
-  id: 8367
-  time: '2025-04-27T14:47:18.0000000+00:00'
-  url: https://github.com/space-wizards/space-station-14/pull/36851
-- author: Fildrance
-  changes:
-  - message: node scanner now dislplays live artifact info (while in range) after
-      linking to artifact
-    type: Tweak
-  id: 8368
-  time: '2025-04-27T15:11:13.0000000+00:00'
-  url: https://github.com/space-wizards/space-station-14/pull/36635
 - author: ArtisticRoomba
   changes:
   - message: A new Mapping changelog has been added. You can find it in a different
@@ -3948,3 +3933,18 @@
   id: 8879
   time: '2025-08-22T22:26:48.0000000+00:00'
   url: https://github.com/space-wizards/space-station-14/pull/39834
+- author: _miket, RedBookcase
+  changes:
+  - message: Added new Derelict Cyborg ghost roles, including the Derelict Engineer,
+      Janitor, Salvage, Medical, and Assault Cyborg!
+    type: Add
+  id: 8880
+  time: '2025-08-23T20:32:15.0000000+00:00'
+  url: https://github.com/space-wizards/space-station-14/pull/38159
+- author: FungiFellow
+  changes:
+  - message: Added the Inflatable Module for borgs.
+    type: Add
+  id: 8881
+  time: '2025-08-23T22:15:28.0000000+00:00'
+  url: https://github.com/space-wizards/space-station-14/pull/35100
