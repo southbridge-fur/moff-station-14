@@ -127,7 +127,10 @@ public sealed class BurnedBySunSystem : EntitySystem
             _audio.PlayPvs(entity.Comp.BurnSound, entity);
         }
 
-        _flammable.AdjustFireStacks(entity.Owner, entity.Comp.FireStacksPerUpdate * entity.Comp.Accumulation);
+        _flammable.AdjustFireStacks(
+            entity.Owner,
+            entity.Comp.FireStacksPerUpdate * entity.Comp.Accumulation,
+            ignite: entity.Comp.AccumulationIgnitionThreshold <= entity.Comp.Accumulation);
 	    _damage.TryChangeDamage(entity.Owner, entity.Comp.Damage * entity.Comp.Accumulation, true);
         entity.Comp.LastBurn = _timing.CurTime;
     }

@@ -1,0 +1,103 @@
+<Document>
+  # Vampires
+
+  <Box>
+    [italic]You awaken, your post life a blur. All you know is you must [color=crimson][bold][italic]feed[/italic][/bold][/color]
+  </Box>
+  <Box>
+    <GuideEntityEmbed Entity="OrganSkeletonPersonHead"/>
+  </Box>
+
+  You are a [color=crimson]Vampire[/color]. A creature of the night. One which must feed on blood to survive.
+
+  ## Blood Hunger
+
+  Your bloodstream is your source of life.
+  Hunger, thirst, and natural healing are all affected by the amount of blood in your body.
+
+  ### Feeding
+
+  Blood may be collected in a couple ways, but the most important one is by [bold]Feeding[/bold].
+  <Box>
+    <GuideEntityEmbed Entity="ActionVampireFeed" Caption="Feed"/>
+  </Box>
+  To feed, activate the [bold]Feed[/bold] action, then click on the mortal you wish to feed from.
+  This action is very obvious to the victum and anyone nearby, [italic]use it with caution[/italic].
+
+  All mortals may be fed from, regardless of their type of blood.
+  <Box>
+    <GuideEntityEmbed Entity="MobHuman" />
+    <GuideEntityEmbed Entity="MobReptilian" />
+    <GuideEntityEmbed Entity="MobVulpkanin" />
+    <GuideEntityEmbed Entity="MobVox" />
+    <GuideEntityEmbed Entity="MobDiona" />
+  </Box>
+  [color=crimson]Red Blood[/color], [color=#7a8bf2]Ammonia Blood[/color], [color=#cd7314]Sap[/color], and even the blood of other undead may be consumed.
+
+  Not all your blood must originate from the crew however, you may also feed on [italic]lesser beings[/italic].
+  <Box>
+    <GuideEntityEmbed Entity="Mouse" Caption="Mice" />
+    <GuideEntityEmbed Entity="MobCorgiIan" Caption="Pets" />
+  </Box>
+  Doing so is often a last resort, as lesser beings do not have [bold][color=crimson]Blood Essence[/color][/bold].
+  Also, they just smell bad and taste yucky.
+
+  You may also drink blood that has been removed from a body and deposited onto the floor, or some kind of container.
+  <Box>
+    <GuideEntityEmbed Entity="PuddleBlood" Caption="On the floor" />
+    <GuideEntityEmbed Entity="DrinkBloodGlass" Caption="In a glass" />
+    <GuideEntityEmbed Entity="Bloodpack" Caption="Packaged neatly" />
+  </Box>
+  Again, this method of drinking blood will not provide you with any [bold][color=crimson]Blood Essence[/color][/bold].
+  You must [bold]Feed[/bold] in order to accumulate [bold][color=crimson]Blood Essence[/color][/bold].
+
+  ### Blood Essence
+
+  [bold][color=crimson]Blood Essence[/color][/bold] is what makes a vampire, a vampire.
+  It is the magical life essence you pull out of every mortal when you [bold]Feed[/bold].
+  While not necessary for survival, [bold][color=crimson]Blood Essence[/color][/bold] is what allows you to buy skills and bolster yourself as a creature of the night.
+  <Box>
+    <GuideEntityEmbed Entity="ActionVampireShop" Caption="Blood Essence Shop" />
+  </Box>
+
+  The [bold][color=crimson]Blood Essence[/color][/bold] shop provides you with a variety of skills and abilities to augment your body.
+  As you accumulate [bold][color=crimson]Blood Essence[/color][/bold], you will unlock more powerful items in the shop.
+
+  ### Blood Level
+
+  There is no way to know how much blood is currently within your body without using a tool such as a medial scanner.
+  <Box>
+    <GuideEntityEmbed Entity="MedicalScanner" Caption="Medical Scanner"/>
+  </Box>
+  Although, your hunger and thirst indicators will show up if you start to get dangerously low.
+
+  ### Natural Healing
+
+  Vampires naturally heal from most kinds of damage over time.
+  Given that they are undead creatures, this of course comes at the cost of the blood within their bodies.
+  While naturally healing, your body will drain blood much faster than usual.
+  After a fight, it's often best to chow down on a source of blood, to help refill your reserves.
+
+  You may also boost your natural healing with abilities.
+  <Box>
+    <GuideEntityEmbed Entity="ActionVampireRejuvenate" Caption="Rejuvenate"/>
+  </Box>
+
+  Regular medical methods of healing will have zero affect on your body, and will certainly raise eyebrows if you are ever treated by a doctor.
+
+  ## The Sun
+
+  The sun, the incomprehensibly large ball outside the station, direct exposure to it will [bold]burn[/bold] you.
+  Windows throughout the station are [bold]safe[/bold] - as they have protective coating - but step outside and you will feel the burn.
+
+  <box>
+    <GuideEntityEmbed Entity="Bonfire"/>
+  </box>
+
+  There is a brief grace period before you catch fire, get back inside as soon as possible.
+  Wearing protective gear will not protect you from the sun.
+
+  ## Resistances
+
+
+</Document>

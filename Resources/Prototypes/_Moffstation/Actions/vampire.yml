@@ -13,7 +13,7 @@
   parent: BaseAction
   id: ActionVampireFeed
   name: Feed
-  description: Drink blood from a creature.
+  description: Drink blood from a mortal.
   components:
   - type: Action
     icon:

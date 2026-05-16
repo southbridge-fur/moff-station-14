@@ -55,7 +55,7 @@
         currencyWhitelist:
         - BloodEssence
         balance:
-          BloodEssence: 0
+          BloodEssence: 10
       - type: UserInterface
         interfaces:
           enum.StoreUiKey.Key:

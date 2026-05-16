@@ -40,7 +40,7 @@ public sealed partial class BurnedBySunComponent : Component
     /// Time between updates
     /// </summary>
     [DataField]
-    public TimeSpan UpdateInterval = TimeSpan.FromSeconds(0.5);
+    public TimeSpan UpdateInterval = TimeSpan.FromSeconds(1.0);
 
     /// <summary>
     /// Previous time when the entity was lasted burned, this is used to reset <see cref="Accumulation"/> and generally
@@ -64,7 +64,13 @@ public sealed partial class BurnedBySunComponent : Component
     /// The amount to increase <see cref="Accumulation"/> per update.
     /// </summary>
     [DataField]
-    public float AccumulationPerUpdate = 0.05f;
+    public float AccumulationPerUpdate = 0.15f;
+
+    /// <summary>
+    /// Accumulation threshold at which point the vampire should be set ablaze.
+    /// </summary>
+    [DataField]
+    public float AccumulationIgnitionThreshold = 0.75f;
 
     /// <summary>
     /// The damage to take per update. Note that this value is multiplied with the current <see cref="Accumulation"/>.
